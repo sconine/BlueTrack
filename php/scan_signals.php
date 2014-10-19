@@ -3,7 +3,7 @@
 // and load results into a dynamoDB
 
 // Load my configuration
-$datastring = file_get_contents('/usr/www/html/BlueTrack/master_config.json');
+$datastring = file_get_contents('/home/pi/BlueTrack/master_config.json');
 $config = json_decode($datastring, true);
 $debug = true;
 $file_batch_size = 25;
@@ -22,7 +22,7 @@ use Aws\Common\Aws;
 
 // You'll need to edit this with your config file
 // make sure you specify the correct region as dynamo is region specific
-$aws = Aws::factory('/usr/www/html/BlueTrack/php/amazon_config.json');
+$aws = Aws::factory('/home/pi/BlueTrack/php/amazon_config.json');
 $client = $aws->get('DynamoDb');
 
 // Make sure the dynamo tables exists assumes $client is defined
