@@ -79,8 +79,8 @@ if (!$has_collectors ) {
             'WriteCapacityUnits' => 1
         )
     ));
-    if ($debug) {echo "Created Table: collector_screens<br>\n";}
-    $client->waitUntilTableExists(array('TableName' => 'collector_screens'));
+    if ($debug) {echo "Created Table: collectors<br>\n";}
+    $client->waitUntilTableExists(array('TableName' => 'collectors'));
     if ($debug) {echo "Table Exists!<br>\n";}
 }
 
