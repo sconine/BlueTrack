@@ -3,6 +3,6 @@
     "region": "Boston",
     "public_ip": "99.99.99.99",
     "my_key" : "put a string you want to use for token verification here, should be long and unique",
-    "log_folder": "/usr/www/html/BlueTrack/data/",
+    "log_folder": "/home/pi/BlueTrack/data/",
     "master_server": "amazon_url_goes_here",
 }
