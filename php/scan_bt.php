@@ -1,7 +1,7 @@
 <?php
 
 // Load date from previous runs here
-$file = "/home/pi/my_macs.txt";
+$file = "/home/pi/BlueTrack/my_macs.txt";
 $f = file_get_contents($file);
 $my_macs = json_decode($f, true);
 $lp_cnt = 0;

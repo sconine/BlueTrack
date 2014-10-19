@@ -1,7 +1,7 @@
 <?php
 
 
-$file = "/home/pi/my_macs.txt";
+$file = "/home/pi/BlueTrack/my_macs.txt";
 $f = file_get_contents($file);
 $my_macs = json_decode($f, true);
 $total = 0;
