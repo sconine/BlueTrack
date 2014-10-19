@@ -5,7 +5,8 @@ $file = "/home/pi/BlueTrack/my_macs.txt";
 $f = file_get_contents($file);
 $my_macs = json_decode($f, true);
 $lp_cnt = 0;
-$conine = "D8:A2:5E:88:3C:68";
+$known_dev = array("D8:A2:5E:88:3C:68", "70:F1:A1:67:5B:10");
+
 
 // Clean these out
 //$my_macs[$conine]['scan_on'] = '';
@@ -21,8 +22,8 @@ while (1 == 1) {
 	foreach ($out as $i => $v) {
 		if ($i > 0) {
 			$d = explode("\t", $v);
-			// don't bother saving our personal device
-			if ($d[1] != $conine) {
+			// don't bother saving well known devices
+			if !(in_array($d[1], $known_dev)) {
 				$my_macs[$d[1]]['name'] = str_replace("\u2019", "'", $d[2]);
 				$my_macs[$d[1]]['scan_count']++;
 				$my_macs[$d[1]]['scan_on'][time()] = 'y';
@@ -37,8 +38,8 @@ while (1 == 1) {
 	foreach ($out as $i => $v) {
 		if ($i > 0) {
 			$d = explode("\t", $v);
-			// don't bother saving our personal device
-			if ($d[1] != $conine) {
+			// don't bother saving well known devices
+			if !(in_array($d[1], $known_dev)) {
 				$my_macs[$d[1]]['clock offset'] = str_replace("clock offset: ", "", $d[2]);
 				$my_macs[$d[1]]['class'] = str_replace("class: ", "", $d[3]);
 				$my_macs[$d[1]]['inq_count']++;
