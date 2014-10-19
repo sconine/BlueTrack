@@ -8,14 +8,7 @@ $lp_cnt = 0;
 $known_dev = array("D8:A2:5E:88:3C:68", "70:F1:A1:67:5B:10");
 
 
-// Clean these out
-//$my_macs[$conine]['scan_on'] = '';
-//$my_macs[$conine]['inq_count'] = '1';
-//$my_macs[$conine]['inq_on'] = '';
-
-
 while (1 == 1) {
-	//echo "Loop count $lp_cnt \n";
 	//First run a scan and get names of BT devices
 	exec("hcitool scan", $out);
 	//var_dump($out);
