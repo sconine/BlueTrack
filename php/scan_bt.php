@@ -23,7 +23,7 @@ while (1 == 1) {
 		if ($i > 0) {
 			$d = explode("\t", $v);
 			// don't bother saving well known devices
-			if !(in_array($d[1], $known_dev)) {
+			if (!(in_array($d[1], $known_dev))) {
 				$my_macs[$d[1]]['name'] = str_replace("\u2019", "'", $d[2]);
 				$my_macs[$d[1]]['scan_count']++;
 				$my_macs[$d[1]]['scan_on'][time()] = 'y';
@@ -39,7 +39,7 @@ while (1 == 1) {
 		if ($i > 0) {
 			$d = explode("\t", $v);
 			// don't bother saving well known devices
-			if !(in_array($d[1], $known_dev)) {
+			if (!(in_array($d[1], $known_dev))) {
 				$my_macs[$d[1]]['clock offset'] = str_replace("clock offset: ", "", $d[2]);
 				$my_macs[$d[1]]['class'] = str_replace("class: ", "", $d[3]);
 				$my_macs[$d[1]]['inq_count']++;
