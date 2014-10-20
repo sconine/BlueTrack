@@ -185,6 +185,13 @@ while (1 == 1) {
         foreach ($my_macs as $mac => $farray) {
             // See if data has changed since we saved it last
             if ($farray['status'] = 'dirty') {
+				$my_macs[$d[1]]['name'] = str_replace("\u2019", "'", $d[2]);
+				$my_macs[$d[1]]['scan_count']++;
+				$my_macs[$d[1]]['scan_on'][time()] = 'y';
+				$my_macs[$d[1]]['clock offset'] = str_replace("clock offset: ", "", $d[2]);
+				$my_macs[$d[1]]['class'] = str_replace("class: ", "", $d[3]);
+				$my_macs[$d[1]]['inq_count']++;
+				$my_macs[$d[1]]['inq_on'][time()] = 'y';
                 
                 $result = $client->putItem(array(
                   'TableName' => 'collector_data',
