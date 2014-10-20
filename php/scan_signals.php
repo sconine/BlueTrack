@@ -6,7 +6,13 @@
 $datastring = file_get_contents('/home/pi/BlueTrack/master_config.json');
 $config = json_decode($datastring, true);
 $debug = true;
-$file_batch_size = 25;
+$file = $config['log_folder'] . "my_macs.txt";
+$f = file_get_contents($file);
+$my_macs = json_decode($f, true);
+$lp_cnt = 0;
+
+// TODO: move known devices to the config file
+$known_dev = array("D8:A2:5E:88:3C:68", "70:F1:A1:67:5B:10");
 
 require '../vendor/autoload.php';
 
@@ -113,7 +119,7 @@ if (!isset($result['Item']['collector_id']['S'])) {
     }
 
 } else {
-    // Update the collector_last_checkin and IP values for this screen
+    // Update the collector_last_checkin and IP values for this collector
     if ($debug) {echo "$collector_id in $region_name found!<br>\n";}
     $result = $client->updateItem(array(
         'TableName' => 'collectors',
@@ -135,23 +141,67 @@ if (!isset($result['Item']['collector_id']['S'])) {
 
 // Now start running hci tool in a loop and loading data it sees to Dynamo
 
-while (1==1) {
+while (1 == 1) {
+	//First run a scan and get names of BT devices
+	exec("hcitool scan", $out);
+	//var_dump($out);
+	foreach ($out as $i => $v) {
+		if ($i > 0) {
+			$d = explode("\t", $v);
+			// don't bother saving well known devices
+			if (!(in_array($d[1], $known_dev))) {
+				$my_macs[$d[1]]['status'] = 'dirty';
+				$my_macs[$d[1]]['name'] = str_replace("\u2019", "'", $d[2]);
+				$my_macs[$d[1]]['scan_count']++;
+				$my_macs[$d[1]]['scan_on'][time()] = 'y';
+			} 
+		}
+	}
+	$out = '';
 
-  exec('hcitool inq  --flush --length=3', $out);
-  if ($debug) {echo "$out<br>\n";}
-  break;
-  
-  $result = $client->putItem(array(
-      'TableName' => 'collector_data',
-      'Item' => $client->formatAttributes(array(
-          'collector_id'      => $collector_id,
-          'time'    => time(),
-          'data'    => $out
-      )),
-      'ReturnConsumedCapacity' => 'TOTAL'
-  ));
+	// Then run an inquire and get clock and class of BT devices
+	exec("hcitool inq --flush --length=3", $out);
+	//var_dump($out);
+	foreach ($out as $i => $v) {
+		if ($i > 0) {
+			$d = explode("\t", $v);
+			// don't bother saving well known devices
+			if (!(in_array($d[1], $known_dev))) {
+				$my_macs[$d[1]]['status'] = 'dirty';
+				$my_macs[$d[1]]['clock offset'] = str_replace("clock offset: ", "", $d[2]);
+				$my_macs[$d[1]]['class'] = str_replace("class: ", "", $d[3]);
+				$my_macs[$d[1]]['inq_count']++;
+				$my_macs[$d[1]]['inq_on'][time()] = 'y';
+			} 
+		}
+	}
+	$out = '';
 
+	// Write data out after each run in case we re-boot
+	file_put_contents($file, json_encode($my_macs));
+    
+    // every 60th run connect to EC2 and save our data
+    if ($lp_cnt % 60 = 0) {
+        foreach ($my_macs as $mac => $farray) {
+            // See if data has changed since we saved it last
+            if ($farray['status'] = 'dirty') {
+                
+                $result = $client->putItem(array(
+                  'TableName' => 'collector_data',
+                  'Item' => $client->formatAttributes(array(
+                      'collector_id'      => $collector_id,
+                      'time'    => time(),
+                      'data'    => $out
+                  )),
+                  'ReturnConsumedCapacity' => 'TOTAL'
+                ));
+                
+            }
+        }
+        
+    }
    
+	$lp_cnt++;
 }
 
 
