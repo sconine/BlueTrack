@@ -234,7 +234,7 @@ while (1 == 1) {
 				"scan_on" => array(
 					"Value" => array("NS" => $scan_on),
 					"Action" => "ADD"
-				),
+				)
 			),
 		          'ReturnValues' => "NONE"
 		        ));
