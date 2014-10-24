@@ -6,6 +6,7 @@
 $datastring = file_get_contents('/home/pi/BlueTrack/master_config.json');
 $config = json_decode($datastring, true);
 $debug = true;
+if ($debug) {var_dump($config);}
 $file = $config['log_folder'] . "my_macs.txt";
 if ($debug) {echo "Opening: $file\n";}
 $f = file_get_contents($file);
@@ -31,10 +32,10 @@ include 'dynamo_tables.php';
 // ok we've got tables, see what we were sent
 if ($debug) {echo "Current Tables Exist<br>\n";}
 $created_region = false;
-$region_name = isset($config['region'] ) ? $config['region']  : '';
-$collector_id = isset($config['$collector_id'] ) ? $config['$collector_id']  : '';
+$region_name = isset($config['region'] ) ? $config['region']  : 'Default';
+$collector_id = isset($config['$collector_id'] ) ? $config['$collector_id']  : 'Default';
 $collector_private_ip = gethostbyname(trim(`hostname --all-ip-addresses`));
-$collector_public_ip = isset($config['public_ip'] ) ? $config['public_ip']  : '';
+$collector_public_ip = isset($config['public_ip'] ) ? $config['public_ip']  : '9.9.9.9';
 $collector_storage = 0;
 $time = time();
 
