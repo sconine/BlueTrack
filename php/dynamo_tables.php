@@ -101,10 +101,6 @@ if (!$has_collector_data ) {
             array(
                 'AttributeName' => 'collector_id',
                 'AttributeType' => 'S'
-            ),
-            array(
-                'AttributeName' => 'time',
-                'AttributeType' => 'N'
             )
         ),
         'KeySchema' => array(
@@ -114,10 +110,6 @@ if (!$has_collector_data ) {
             ),
             array(
                 'AttributeName' => 'collector_id',
-                'KeyType'       => 'HASH'
-            ),
-            array(
-                'AttributeName' => 'time',
                 'KeyType'       => 'RANGE'
             )
 
