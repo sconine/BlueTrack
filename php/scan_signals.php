@@ -34,7 +34,7 @@ include 'dynamo_tables.php';
 if ($debug) {echo "Current Tables Exist<br>\n";}
 $created_region = false;
 $region_name = isset($config['region'] ) ? $config['region']  : 'Default';
-$collector_id = isset($config['$collector_id'] ) ? $config['$collector_id']  : 'Default';
+$collector_id = isset($config['collector_id'] ) ? $config['collector_id']  : 'Default';
 $collector_private_ip = gethostbyname(trim(`hostname --all-ip-addresses`));
 $collector_public_ip = isset($config['public_ip'] ) ? $config['public_ip']  : '9.9.9.9';
 $collector_storage = 0;
@@ -177,7 +177,7 @@ while (1 == 1) {
 	file_put_contents($file, json_encode($my_macs));
 	
 	// every 60th run connect to EC2 and save our data
-	if ($lp_cnt % 6 == 0) {
+	if ($lp_cnt % 6 == 0 && $lp_cnt > 0) {
         	if ($debug) {echo "$lp_cnt loops - dumping data to Dynamo\n";}
 		foreach ($my_macs as $mac => $farray) {
 		    // See if data has changed since we saved it last
@@ -187,8 +187,8 @@ while (1 == 1) {
 			$class = isset($farray['class']) ? $farray['class'] : 'n/a';
 			$inq_count = isset($farray['inq_count']) ? $farray['inq_count'] : 'n/a';
 			$scan_count = isset($farray['scan_count']) ? $farray['scan_count'] : 'n/a';
-			$inq_on = array_keys($farray['inq_on']);
-			$scan_on = array_keys($farray['scan_on']);
+			if (isset($farray['inq_on'])) {$inq_on = array_keys($farray['inq_on']);} else {$inq_on = array();}
+			if (isset($farray['scan_on'])) {$scan_on = array_keys($farray['scan_on']);} else {$scan_on = array();}
         		if ($debug) {echo "name = $name \n";}
         		if ($debug) {echo "clock_offset = $clock_offset \n";}
         		if ($debug) {echo "class = $class \n";}
