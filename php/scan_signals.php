@@ -105,7 +105,7 @@ if (!isset($result['Item']['collector_id']['S'])) {
         $result = $client->updateItem(array(
             'TableName' => 'collector_regions',
             'Key'       => array(
-                'collector_name'   => array('S' => $collector_name)
+                'region_name'   => array('S' => $collector_name)
             ),
             'AttributeUpdates' => array(
                 'region_collector_list'   => array('Action' => 'ADD', 'Value' => array('SS' => array($screen_id)))
