@@ -95,6 +95,10 @@ if (!$has_collector_data ) {
         'TableName' => 'collector_data',
         'AttributeDefinitions' => array(
             array(
+                'AttributeName' => 'mac_id',
+                'AttributeType' => 'S'
+            ),
+            array(
                 'AttributeName' => 'collector_id',
                 'AttributeType' => 'S'
             ),
@@ -104,6 +108,10 @@ if (!$has_collector_data ) {
             )
         ),
         'KeySchema' => array(
+            array(
+                'AttributeName' => 'mac_id',
+                'KeyType'       => 'HASH'
+            ),
             array(
                 'AttributeName' => 'collector_id',
                 'KeyType'       => 'HASH'
