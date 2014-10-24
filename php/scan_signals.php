@@ -6,6 +6,7 @@
 $datastring = file_get_contents('/home/pi/BlueTrack/master_config.json');
 $config = json_decode($datastring, true);
 $debug = true;
+if ($debug) {echo "Opening: $file\n";}
 $file = $config['log_folder'] . "my_macs.txt";
 $f = file_get_contents($file);
 $my_macs = json_decode($f, true);
@@ -16,13 +17,6 @@ $known_dev = array("D8:A2:5E:88:3C:68", "70:F1:A1:67:5B:10");
 
 require '../vendor/autoload.php';
 
-// don't want to print debug through web server in general
-$debug = false; 
-if (!isset($_SERVER['HTTP_HOST'])) {
-    $debug = true; 
-} else {
-    if (isset($_REQUEST['debug'])) {$debug = true;}
-}
 
 use Aws\Common\Aws;
 
