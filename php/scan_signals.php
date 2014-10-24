@@ -173,8 +173,9 @@ while (1 == 1) {
 	}
 	$out = '';
 
+	//TODO: uncomment this when in production
 	// Write data out after each run in case we re-boot
-	file_put_contents($file, json_encode($my_macs));
+	//file_put_contents($file, json_encode($my_macs));
 	
 	// every 60th run connect to EC2 and save our data
 	if (1 == 1 || ($lp_cnt % 60 == 0 && $lp_cnt > 0)) {
@@ -187,10 +188,10 @@ while (1 == 1) {
 			$name = isset($farray['name']) ? $farray['name'] : 'n/a';
 			$clock_offset = isset($farray['clock offset']) ? $farray['clock offset'] : 'n/a';
 			$class = isset($farray['class']) ? $farray['class'] : 'n/a';
-			$inq_count = isset($farray['inq_count']) ? $farray['inq_count'] : 'n/a';
-			$scan_count = isset($farray['scan_count']) ? $farray['scan_count'] : 'n/a';
-			if (is_array($farray['inq_on'])) {$inq_on = array_keys($farray['inq_on']);} else {$inq_on = array();}
-			if (is_array($farray['scan_on'])) {$scan_on = array_keys($farray['scan_on']);} else {$scan_on = array();}
+			$inq_count = isset($farray['inq_count']) ? $farray['inq_count'] : 0;
+			$scan_count = isset($farray['scan_count']) ? $farray['scan_count'] : 0;
+			if (isset($farray['inq_on'])) {if (is_array($farray['inq_on'])) {$inq_on = array_keys($farray['inq_on']);} else {$inq_on = array();}}
+			if (isset($farray['inq_on'])) {if (is_array($farray['scan_on'])) {$scan_on = array_keys($farray['scan_on']);} else {$scan_on = array();}}
         		if ($debug) {echo "mac = $mac \n";}
         		if ($debug) {echo "name = $name \n";}
         		if ($debug) {echo "clock_offset = $clock_offset \n";}
