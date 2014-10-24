@@ -6,8 +6,8 @@
 $datastring = file_get_contents('/home/pi/BlueTrack/master_config.json');
 $config = json_decode($datastring, true);
 $debug = true;
-if ($debug) {echo "Opening: $file\n";}
 $file = $config['log_folder'] . "my_macs.txt";
+if ($debug) {echo "Opening: $file\n";}
 $f = file_get_contents($file);
 $my_macs = json_decode($f, true);
 $lp_cnt = 0;
