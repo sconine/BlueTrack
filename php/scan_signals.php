@@ -3,9 +3,10 @@
 // and load results into a dynamoDB
 
 // Load my configuration
-$datastring = file_get_contents('/home/pi/BlueTrack/master_config.json');
-$config = json_decode($datastring, true);
 $debug = true;
+$datastring = file_get_contents('/home/pi/BlueTrack/master_config.json');
+if ($debug) {echo "datastring = $datastring \n";}
+$config = json_decode($datastring, true);
 if ($debug) {var_dump($config);}
 $file = $config['log_folder'] . "my_macs.txt";
 if ($debug) {echo "Opening: $file\n";}
