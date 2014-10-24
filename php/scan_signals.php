@@ -227,7 +227,7 @@ while (1 == 1) {
 				"scan_count" => array(
 					"Value" => array("N" => $scan_count),
 					"Action" => "ADD"
-				)/*,
+				),
 				"inq_on" => array(
 					"Value" => array("NS" => $inq_on),
 					"Action" => "ADD"
@@ -235,7 +235,7 @@ while (1 == 1) {
 				"scan_on" => array(
 					"Value" => array("NS" => $scan_on),
 					"Action" => "ADD"
-				)*/
+				)
 			),
 		          'ReturnValues' => "NONE"
 		        ));
