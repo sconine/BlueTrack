@@ -59,7 +59,7 @@ if (!isset($result['Item']['region_name']['S'])) {
         'Item' => $client->formatAttributes(array(
             'region_name'      => $region_name,
             'region_active'    => true,
-            'region_collector_list'   => array($screen_id)
+            'region_collector_list'   => array($collector_id)
         )),
         'ReturnConsumedCapacity' => 'TOTAL'
     ));
