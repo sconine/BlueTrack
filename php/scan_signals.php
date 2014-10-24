@@ -191,8 +191,8 @@ while (1 == 1) {
 			$class = isset($farray['class']) ? $farray['class'] : 'n/a';
 			$inq_count = isset($farray['inq_count']) ? $farray['inq_count'] : 'n/a';
 			$scan_count = isset($farray['scan_count']) ? $farray['scan_count'] : 'n/a';
-			$inq_on = array_keys($farray['inq_on'])
-			$scan_on = array_keys($farray['scan_on'])
+			$inq_on = array_keys($farray['inq_on']);
+			$scan_on = array_keys($farray['scan_on']);
         		if ($debug) {echo "name = $name \n";}
         		if ($debug) {echo "clock_offset = $clock_offset \n";}
         		if ($debug) {echo "class = $class \n";}
