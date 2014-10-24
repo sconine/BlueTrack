@@ -185,9 +185,9 @@ while (1 == 1) {
 			$fstatus = isset($farray['status']) ? $farray['status'] : 'dirty';
 			if ($fstatus == 'dirty') {
 				if ($debug) {echo "farray ------\n"; var_dump($farray);}
-				$name = isset($farray['name']) ? $farray['name'] : 'n/a';
-				$clock_offset = isset($farray['clock offset']) ? $farray['clock offset'] : 'n/a';
-				$class = isset($farray['class']) ? $farray['class'] : 'n/a';
+				$name = array(isset($farray['name']) ? $farray['name'] : 'n/a');
+				$clock_offset = array(isset($farray['clock offset']) ? $farray['clock offset'] : 'n/a');
+				$class = array(isset($farray['class']) ? $farray['class'] : 'n/a');
 				if (isset($farray['inq_on'])) {if (is_array($farray['inq_on'])) {$inq_on = array_keys($farray['inq_on']);} else {$inq_on = array(1);}} else {$inq_on = array(1);}
 				if (isset($farray['inq_on'])) {if (is_array($farray['scan_on'])) {$scan_on = array_keys($farray['scan_on']);} else {$scan_on = array(1);}} else {$inq_on = array(1);}
 				if ($debug) {echo "mac = $mac \n";}
@@ -205,16 +205,16 @@ while (1 == 1) {
 					),
 					"AttributeUpdates" => array(
 						"name" => array(
-							"Value" => array("S" => $name),
-							"Action" => "PUT"
+							"Value" => array("SS" => $name),
+							"Action" => "ADD"
 						),
 						"clock_offset" => array(
-							"Value" => array("S" => $clock_offset),
-							"Action" => "PUT"
+							"Value" => array("SS" => $clock_offset),
+							"Action" => "ADD"
 						),
 						"class" => array(
-							"Value" => array("S" => $class),
-							"Action" => "PUT"
+							"Value" => array("SS" => $class),
+							"Action" => "ADD"
 						),
 						"inq_on" => array(
 							"Value" => array("NS" => $inq_on),
