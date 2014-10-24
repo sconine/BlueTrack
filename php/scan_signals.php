@@ -177,7 +177,7 @@ while (1 == 1) {
 	file_put_contents($file, json_encode($my_macs));
 	
 	// every 60th run connect to EC2 and save our data
-	if ($lp_cnt % 1 == 0 && $lp_cnt > 0) {
+	if (1 == 1 || ($lp_cnt % 60 == 0 && $lp_cnt > 0)) {
         	if ($debug) {echo "$lp_cnt loops - dumping data to Dynamo\n";}
 		foreach ($my_macs as $mac => $farray) {
 		    // See if data has changed since we saved it last
@@ -203,8 +203,8 @@ while (1 == 1) {
 		        $result = $client->updateItem(array(
 		          'TableName' => 'collector_data',
 		          'Key' => array(
-		              'mac_id'      => $mac,
-		              'collector_id'      => $collector_id
+		              'mac_id'      => array("S" => $mac),
+		              'collector_id'      => array("S" => $collector_id)
 		          ),
 			 "AttributeUpdates" => array(
 				"name" => array(
@@ -226,7 +226,7 @@ while (1 == 1) {
 				"scan_count" => array(
 					"Value" => array("N" => $scan_count),
 					"Action" => "ADD"
-				),
+				)/*,
 				"inq_on" => array(
 					"Value" => array("NS" => $inq_on),
 					"Action" => "ADD"
@@ -234,7 +234,7 @@ while (1 == 1) {
 				"scan_on" => array(
 					"Value" => array("NS" => $scan_on),
 					"Action" => "ADD"
-				)
+				)*/
 			),
 		          'ReturnValues' => "NONE"
 		        ));
