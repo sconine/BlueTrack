@@ -120,7 +120,7 @@ if (!isset($result['Item']['collector_id']['S'])) {
     $result = $client->updateItem(array(
         'TableName' => 'collectors',
         'Key'       => array(
-            'collector_id'   => array('S' => $screen_id),
+            'collector_id'   => array('S' => $collector_id),
             'collector_region_name'   => array('S' => $region_name)
         ),
         'AttributeUpdates' => array(
