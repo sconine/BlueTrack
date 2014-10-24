@@ -188,16 +188,12 @@ while (1 == 1) {
 			$name = isset($farray['name']) ? $farray['name'] : 'n/a';
 			$clock_offset = isset($farray['clock offset']) ? $farray['clock offset'] : 'n/a';
 			$class = isset($farray['class']) ? $farray['class'] : 'n/a';
-			$inq_count = isset($farray['inq_count']) ? $farray['inq_count'] : 0;
-			$scan_count = isset($farray['scan_count']) ? $farray['scan_count'] : 0;
 			if (isset($farray['inq_on'])) {if (is_array($farray['inq_on'])) {$inq_on = array_keys($farray['inq_on']);} else {$inq_on = array(1);}} else {$inq_on = array(1);}
 			if (isset($farray['inq_on'])) {if (is_array($farray['scan_on'])) {$scan_on = array_keys($farray['scan_on']);} else {$scan_on = array(1);}} else {$inq_on = array(1);}
         		if ($debug) {echo "mac = $mac \n";}
         		if ($debug) {echo "name = $name \n";}
         		if ($debug) {echo "clock_offset = $clock_offset \n";}
         		if ($debug) {echo "class = $class \n";}
-        		if ($debug) {echo "inq_count = $inq_count \n";}
-        		if ($debug) {echo "scan_count = $scan_count \n";}
 		        if ($debug) {var_dump($inq_on);}
 		        if ($debug) {var_dump($scan_on);}
 
@@ -219,14 +215,6 @@ while (1 == 1) {
 				"class" => array(
 					"Value" => array("S" => $class),
 					"Action" => "PUT"
-				),
-				"inq_count" => array(
-					"Value" => array("N" => $inq_count),
-					"Action" => "ADD"
-				),
-				"scan_count" => array(
-					"Value" => array("N" => $scan_count),
-					"Action" => "ADD"
 				),
 				"inq_on" => array(
 					"Value" => array("NS" => $inq_on),
