@@ -181,63 +181,77 @@ while (1 == 1) {
 	if (1 == 1 || ($lp_cnt % 60 == 0 && $lp_cnt > 0)) {
         	if ($debug) {echo "$lp_cnt loops - dumping data to Dynamo\n";}
 		foreach ($my_macs as $mac => $farray) {
-		    // See if data has changed since we saved it last
-		    $fstatus = isset($farray['status']) ? $farray['status'] : 'dirty';
-		    if ($fstatus == 'dirty') {
-		        if ($debug) {echo "farray ------\n"; var_dump($farray);}
-			$name = isset($farray['name']) ? $farray['name'] : 'n/a';
-			$clock_offset = isset($farray['clock offset']) ? $farray['clock offset'] : 'n/a';
-			$class = isset($farray['class']) ? $farray['class'] : 'n/a';
-			if (isset($farray['inq_on'])) {if (is_array($farray['inq_on'])) {$inq_on = array_keys($farray['inq_on']);} else {$inq_on = array(1);}} else {$inq_on = array(1);}
-			if (isset($farray['inq_on'])) {if (is_array($farray['scan_on'])) {$scan_on = array_keys($farray['scan_on']);} else {$scan_on = array(1);}} else {$inq_on = array(1);}
-        		if ($debug) {echo "mac = $mac \n";}
-        		if ($debug) {echo "name = $name \n";}
-        		if ($debug) {echo "clock_offset = $clock_offset \n";}
-        		if ($debug) {echo "class = $class \n";}
-		        if ($debug) {var_dump($inq_on);}
-		        if ($debug) {var_dump($scan_on);}
+			// See if data has changed since we saved it last
+			$fstatus = isset($farray['status']) ? $farray['status'] : 'dirty';
+			if ($fstatus == 'dirty') {
+				if ($debug) {echo "farray ------\n"; var_dump($farray);}
+				$name = isset($farray['name']) ? $farray['name'] : 'n/a';
+				$clock_offset = isset($farray['clock offset']) ? $farray['clock offset'] : 'n/a';
+				$class = isset($farray['class']) ? $farray['class'] : 'n/a';
+				if (isset($farray['inq_on'])) {if (is_array($farray['inq_on'])) {$inq_on = array_keys($farray['inq_on']);} else {$inq_on = array(1);}} else {$inq_on = array(1);}
+				if (isset($farray['inq_on'])) {if (is_array($farray['scan_on'])) {$scan_on = array_keys($farray['scan_on']);} else {$scan_on = array(1);}} else {$inq_on = array(1);}
+				if ($debug) {echo "mac = $mac \n";}
+				if ($debug) {echo "name = $name \n";}
+				if ($debug) {echo "clock_offset = $clock_offset \n";}
+				if ($debug) {echo "class = $class \n";}
+				if ($debug) {var_dump($inq_on);}
+				if ($debug) {var_dump($scan_on);}
+				
+				$result = $client->updateItem(array(
+					'TableName' => 'collector_data',
+					'Key' => array(
+						'mac_id'      => array("S" => $mac),
+						'collector_id'      => array("S" => $collector_id)
+					),
+					"AttributeUpdates" => array(
+						"name" => array(
+							"Value" => array("S" => $name),
+							"Action" => "PUT"
+						),
+						"clock_offset" => array(
+							"Value" => array("S" => $clock_offset),
+							"Action" => "PUT"
+						),
+						"class" => array(
+							"Value" => array("S" => $class),
+							"Action" => "PUT"
+						),
+						"inq_on" => array(
+							"Value" => array("NS" => $inq_on),
+							"Action" => "ADD"
+						),
+						"scan_on" => array(
+							"Value" => array("NS" => $scan_on),
+							"Action" => "ADD"
+						)
+					),
+					'ReturnValues' => "NONE"
+				));
+				
+				//TODO: Now that we've stored these values reset the counters so that we don't store again
+				//$my_macs[$mac]['status'] = 'clean';
+				//$my_macs[$mac]['inq_count'] = 0;
+				//$my_macs[$mac]['scan_count'] = 0;
+				//unset($my_macs[$mac]['inq_on']);
+				//unset($my_macs[$mac]['scan_on']);
 
-		        $result = $client->updateItem(array(
-		          'TableName' => 'collector_data',
-		          'Key' => array(
-		              'mac_id'      => array("S" => $mac),
-		              'collector_id'      => array("S" => $collector_id)
-		          ),
-			 "AttributeUpdates" => array(
-				"name" => array(
-					"Value" => array("S" => $name),
-					"Action" => "PUT"
-				),
-				"clock_offset" => array(
-					"Value" => array("S" => $clock_offset),
-					"Action" => "PUT"
-				),
-				"class" => array(
-					"Value" => array("S" => $class),
-					"Action" => "PUT"
-				),
-				"inq_on" => array(
-					"Value" => array("NS" => $inq_on),
-					"Action" => "ADD"
-				),
-				"scan_on" => array(
-					"Value" => array("NS" => $scan_on),
-					"Action" => "ADD"
-				)
-			),
-		          'ReturnValues' => "NONE"
-		        ));
-		        
-		    }
-		    
-		    //TODO: Now that we've stored these values reset the counters so that we don't store again
-		    //$my_macs[$mac]['status'] = 'clean';
-		    //$my_macs[$mac]['inq_count'] = 0;
-		    //$my_macs[$mac]['scan_count'] = 0;
-		    //unset($my_macs[$mac]['inq_on']);
-		    //unset($my_macs[$mac]['scan_on']);
-		
+			}
 		}
+		
+		// update that this collector has called in
+		$result = $client->updateItem(array(
+		        'TableName' => 'collectors',
+		        'Key'       => array(
+		            'collector_id'   => array('S' => $collector_id),
+		            'collector_region_name'   => array('S' => $region_name)
+		        ),
+		        'AttributeUpdates' => array(
+		            'collector_last_checkin'    =>  array('Action' => 'PUT', 'Value' => array('N' => time())),
+		            'collector_checkin_count'    =>  array('Action' => 'ADD', 'Value' => array('N' => 1))
+		        )
+		));    
+		if ($debug) {echo "$collector_id in $region_name updated<br>\n";}
+		
 	}
    
 	$lp_cnt++;
