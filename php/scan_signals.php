@@ -175,9 +175,8 @@ while (1 == 1) {
 	}
 	$out = '';
 
-	//TODO: uncomment this when in production
 	// Write data out after each run in case we re-boot
-	//file_put_contents($file, json_encode($my_macs));
+	file_put_contents($file, json_encode($my_macs));
 	
 	// every 60th run connect to EC2 and save our data
 	if (1 == 1 || ($lp_cnt % 60 == 0 && $lp_cnt > 0)) {
@@ -191,7 +190,7 @@ while (1 == 1) {
 				$clock_offset = array(isset($farray['clock offset']) ? $farray['clock offset'] : 'n/a');
 				$class = array(isset($farray['class']) ? $farray['class'] : 'n/a');
 				if (isset($farray['inq_on'])) {if (is_array($farray['inq_on'])) {$inq_on = array_keys($farray['inq_on']);} else {$inq_on = array(1);}} else {$inq_on = array(1);}
-				if (isset($farray['inq_on'])) {if (is_array($farray['scan_on'])) {$scan_on = array_keys($farray['scan_on']);} else {$scan_on = array(1);}} else {$inq_on = array(1);}
+				if (isset($farray['scan_on'])) {if (is_array($farray['scan_on'])) {$scan_on = array_keys($farray['scan_on']);} else {$scan_on = array(1);}} else {$inq_on = array(1);}
 				if ($debug) {echo "mac = $mac \n";}
 				if ($debug) {echo "name \n"; var_dump($name);}
 				if ($debug) {echo "clock_offset \n"; var_dump($clock_offset);}
@@ -231,11 +230,11 @@ while (1 == 1) {
 				));
 				
 				//TODO: Now that we've stored these values reset the counters so that we don't store again
-				//$my_macs[$mac]['status'] = 'clean';
-				//$my_macs[$mac]['inq_count'] = 0;
-				//$my_macs[$mac]['scan_count'] = 0;
-				//unset($my_macs[$mac]['inq_on']);
-				//unset($my_macs[$mac]['scan_on']);
+				$my_macs[$mac]['status'] = 'clean';
+				$my_macs[$mac]['inq_count'] = 0;
+				$my_macs[$mac]['scan_count'] = 0;
+				unset($my_macs[$mac]['inq_on']);
+				unset($my_macs[$mac]['scan_on']);
 
 			}
 		}
