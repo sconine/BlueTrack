@@ -148,7 +148,8 @@ while (1 == 1) {
 			if (!(in_array($d[1], $known_dev))) {
 				$my_macs[$d[1]]['status'] = 'dirty';
 				$my_macs[$d[1]]['name'] = str_replace("\u2019", "'", $d[2]);
-				$my_macs[$d[1]]['scan_count']++;
+				if (isset($my_macs[$d[1]]['scan_count'])) {$my_macs[$d[1]]['scan_count']++;} 
+				else {$my_macs[$d[1]]['scan_count'] = 1;}
 				$my_macs[$d[1]]['scan_on'][time()] = 'y';
 			} 
 		}
@@ -166,7 +167,8 @@ while (1 == 1) {
 				$my_macs[$d[1]]['status'] = 'dirty';
 				$my_macs[$d[1]]['clock offset'] = str_replace("clock offset: ", "", $d[2]);
 				$my_macs[$d[1]]['class'] = str_replace("class: ", "", $d[3]);
-				$my_macs[$d[1]]['inq_count']++;
+				if (isset($my_macs[$d[1]]['inq_count'])) {$my_macs[$d[1]]['inq_count']++;} 
+				else {$my_macs[$d[1]]['inq_count'] = 1;}
 				$my_macs[$d[1]]['inq_on'][time()] = 'y';
 			} 
 		}
@@ -191,9 +193,9 @@ while (1 == 1) {
 				if (isset($farray['inq_on'])) {if (is_array($farray['inq_on'])) {$inq_on = array_keys($farray['inq_on']);} else {$inq_on = array(1);}} else {$inq_on = array(1);}
 				if (isset($farray['inq_on'])) {if (is_array($farray['scan_on'])) {$scan_on = array_keys($farray['scan_on']);} else {$scan_on = array(1);}} else {$inq_on = array(1);}
 				if ($debug) {echo "mac = $mac \n";}
-				if ($debug) {echo "name = $name \n";}
-				if ($debug) {echo "clock_offset = $clock_offset \n";}
-				if ($debug) {echo "class = $class \n";}
+				if ($debug) {echo "name \n"; var_dump($name);}
+				if ($debug) {echo "clock_offset \n"; var_dump($clock_offset);}
+				if ($debug) {echo "class \n"; var_dump($class);}
 				if ($debug) {var_dump($inq_on);}
 				if ($debug) {var_dump($scan_on);}
 				
