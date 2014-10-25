@@ -3,7 +3,7 @@
 // and load results into a dynamoDB
 
 // Load my configuration
-$debug = true;
+$debug = false;
 $datastring = file_get_contents('/home/pi/BlueTrack/master_config.json');
 if ($debug) {echo "datastring = $datastring \n";}
 $config = json_decode($datastring, true);
@@ -18,7 +18,6 @@ $lp_cnt = 0;
 $known_dev = array("D8:A2:5E:88:3C:68", "70:F1:A1:67:5B:10");
 
 require '../vendor/autoload.php';
-
 
 use Aws\Common\Aws;
 
@@ -179,7 +178,7 @@ while (1 == 1) {
 	file_put_contents($file, json_encode($my_macs));
 	
 	// every 60th run connect to EC2 and save our data
-	if (1 == 1 || ($lp_cnt % 60 == 0 && $lp_cnt > 0)) {
+	if (($lp_cnt % 6 == 0 && $lp_cnt > 0)) {
         	if ($debug) {echo "$lp_cnt loops - dumping data to Dynamo\n";}
 		foreach ($my_macs as $mac => $farray) {
 			// See if data has changed since we saved it last
@@ -254,7 +253,7 @@ while (1 == 1) {
 		if ($debug) {echo "$collector_id in $region_name updated<br>\n";}
 		
 	}
-   
+   	echo "$lp_cnt \n";
 	$lp_cnt++;
 }
 
