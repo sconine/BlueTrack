@@ -38,7 +38,7 @@ do {
     foreach ($response['Items'] as $key => $value) {
       //echo "<tr><td>" . $value['mac_id']["S"] . "</td>";
       //echo "<td>" . $value['collector_id']["S"] . "</td>";
-      echo "<td>" . implode(',', $value['name']["SS"]) . "</td>";
+      echo "<tr><td>" . implode(',', $value['name']["SS"]) . "</td></tr>";
       //echo "<td>" . implode(',', $value['clock_offset']["SS"]) . "</td>";
       //echo "<td>" . implode(',', $value['class']["SS"]) . "</td>";
       //$seen = array_merge($value['scan_on']["NS"], $value['inq_on']["NS"]);
