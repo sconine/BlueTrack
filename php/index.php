@@ -1,5 +1,6 @@
 <html>
-<head>BlueTrack</head>
+<head>BlueTrack
+<meta charset="UTF-8"></head>
 <body>
 <?php
 
