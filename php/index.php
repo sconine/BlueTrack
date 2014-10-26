@@ -18,7 +18,7 @@ use Aws\Common\Aws;
 
 // You'll need to edit this with your config file
 // make sure you specify the correct region as dynamo is region specific
-$aws = Aws::factory('/home/pi/BlueTrack/php/amazon_config.json');
+$aws = Aws::factory('/usr/www/html/BlueTrack/php/amazon_config.json');
 $client = $aws->get('DynamoDb');
 
 
