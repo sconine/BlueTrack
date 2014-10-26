@@ -19,7 +19,8 @@ $aws = Aws::factory('/usr/www/html/BlueTrack/php/amazon_config.json');
 $client = $aws->get('DynamoDb');
 $tableName = "collector_data";
 
-echo "<table><tr><td>mac_id</td><td>collector_id</td><td>name</td><td>clock_offset</td><td>class</td><td>inq_on</td><td>scan_on</td></tr>";
+//echo "<table><tr><td>mac_id</td><td>collector_id</td><td>name</td><td>clock_offset</td><td>class</td><td>inq_on</td><td>scan_on</td></tr>";
+echo "<table><td>name</td></tr>";
 
 // The Scan API is paginated. Issue the Scan request multiple times.
 do {
@@ -40,12 +41,12 @@ do {
       echo "<td>" . implode(',', $value['name']["SS"]) . "</td>";
       //echo "<td>" . implode(',', $value['clock_offset']["SS"]) . "</td>";
       //echo "<td>" . implode(',', $value['class']["SS"]) . "</td>";
-      $seen = array_merge($value['scan_on']["NS"], $value['inq_on']["NS"]);
-      foreach ($seen as $t => $v) {
-          $show_seen[] = date("Y-m-d h:i a", $t - 14400);
-      }      
-      $show_seen = array_unique($show_seen);
-      echo "<td>" . implode('<br>', $show_seen) . "</td>";
+      //$seen = array_merge($value['scan_on']["NS"], $value['inq_on']["NS"]);
+      //foreach ($seen as $t => $v) {
+       //   $show_seen[] = date("Y-m-d h:i a", $t - 14400);
+      //}      
+     // $show_seen = array_unique($show_seen);
+      //echo "<td>" . implode('<br>', $show_seen) . "</td>";
     }
 } while(isset($response['LastEvaluatedKey'])); 
 //If there is no LastEvaluatedKey in the response, there are no more items matching this Scan invocation
