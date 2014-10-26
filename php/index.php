@@ -37,11 +37,11 @@ do {
         $request['ExclusiveStartKey'] = $response['LastEvaluatedKey'];
     }
     $response = $client->scan($request);
+    echo "new page<hr>";
 
     foreach ($response['Items'] as $key => $value) {
-      var_dump($value);
-        //echo "Id: " . $value['Id'][Type::NUMBER] . PHP_EOL;
-
+      //var_dump($value);
+      echo "mac_id: " . $value['mac_id']["S"] . "<br>";
     }
 } while(isset($response['LastEvaluatedKey'])); 
 //If there is no LastEvaluatedKey in the response, there are no more items matching this Scan invocation
