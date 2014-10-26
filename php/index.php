@@ -90,6 +90,8 @@ do {
     }
 } while(isset($response['LastEvaluatedKey'])); 
 
+var_dump$by_day);
+exit;
 // Dat for device count by day
 $day_count = "series: [{name: 'Devices',data: [";
 $data = '';
