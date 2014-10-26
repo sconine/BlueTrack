@@ -80,6 +80,7 @@ do {
             $minute = strtotime(date("Y-m-d h:i a", $v - 14400));
             $hour = strtotime(date("1990-01-01 h:00 a", $v - 14400));
             $day = strtotime(date("Y-m-d", $v - 14400));
+            $dayofyear = "Y-m-d", $v - 14400);
             $dayofweek = date("w", $v - 14400);
             $dayofweek3 = date("D", $v - 14400);
 
@@ -95,8 +96,8 @@ do {
             // Build data for bubble chart
             if (isset($seen_dayofw[$mac][$dayofweek3])) {$seen_dayofw[$mac][$dayofweek3]++;}
             else {$seen_dayofw[$mac][$dayofweek3] = 1;}
-            if (isset($seen_days[$mac][$day])) {$seen_days[$mac][$day]++;}
-            else {$seen_days[$mac][$day] = 1;}
+            if (isset($seen_days[$mac][$dayofyear])) {$seen_days[$mac][$dayofyear]++;}
+            else {$seen_days[$mac][$dayofyear] = 1;}
 
             // Stuff to show various tables
             /*
