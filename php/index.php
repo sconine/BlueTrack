@@ -5,9 +5,8 @@
 <meta charset="UTF-8"></head>
 <body>
 
-<div id="container" style="width:100%; height:400px;"></div>
-
-
+<div id="byday" style="width:50%; height:400px;"></div>
+<div id="byclass" style="width:50%; height:400px;"></div>
 
 <?php
 
@@ -31,6 +30,7 @@ $tableName = "collector_data";
 $count = 0;
 $last_hour = array();
 $by_day = array();
+$by_class = array();
 $top = array();
 $names = array();
 $show_minutes = array();
@@ -60,29 +60,34 @@ do {
         $seen = array_merge($value['scan_on']["NS"], $value['inq_on']["NS"]);
         $seen_count = 0;
         foreach ($seen as $i => $v) {
-          $seen_count++;
-          
-          // Keep track of ones we've seen in last hour
-          if ($v > (time() - 3600)) {
-            if (isset($last_hour[$mac])) {$last_hour[$mac]++;}
-            else {$last_hour[$mac] = 1;}
-          }
-          
-          $minute = strtotime(date("Y-m-d h:i a", $v - 14400));
-          $hour = strtotime(date("1990-01-01 h:00 a", $v - 14400));
-          $day = strtotime(date("Y-m-d", $v - 14400));
-          $dayofweek = date("w", $v - 14400);
-          
-        // Keep track of counts by day
-        if (isset($by_day[$dayofweek][$mac])) {$by_day[$dayofweek][$mac]++;}
-        else {$by_day[$dayofweek][$mac] = 1;}
+            $seen_count++;
+            
+            // Keep track of ones we've seen in last hour
+            if ($v > (time() - 3600)) {
+                if (isset($last_hour[$mac])) {$last_hour[$mac]++;}
+                else {$last_hour[$mac] = 1;}
+            }
+            
+            $minute = strtotime(date("Y-m-d h:i a", $v - 14400));
+            $hour = strtotime(date("1990-01-01 h:00 a", $v - 14400));
+            $day = strtotime(date("Y-m-d", $v - 14400));
+            $dayofweek = date("w", $v - 14400);
 
-          if (isset($show_minutes[$mac][$minute])) {$show_minutes[$mac][$minute]++;}
-          else {$show_minutes[$mac][$minute] = 1;}
-          if (isset($seen_hours[$mac][$hour])) {$seen_hours[$mac][$hour]++;}
-          else {$seen_hours[$mac][$hour] = 1;}
-          if (isset($seen_days[$mac][$day])) {$seen_days[$mac][$day]++;}
-          else {$seen_days[$mac][$day] = 1;}
+            // Keep track of counts by day
+            if (isset($by_day[$dayofweek][$mac])) {$by_day[$dayofweek][$mac]++;}
+            else {$by_day[$dayofweek][$mac] = 1;}
+            
+            // Keep track of counts by class
+            $t_class = implode(',', $value['class']["SS"]);
+            if (isset($by_class[$t_class][$mac])) {$by_class[$t_class][$mac]++;}
+            else {$by_class[$t_class][$mac] = 1;}
+
+            if (isset($show_minutes[$mac][$minute])) {$show_minutes[$mac][$minute]++;}
+            else {$show_minutes[$mac][$minute] = 1;}
+            if (isset($seen_hours[$mac][$hour])) {$seen_hours[$mac][$hour]++;}
+            else {$seen_hours[$mac][$hour] = 1;}
+            if (isset($seen_days[$mac][$day])) {$seen_days[$mac][$day]++;}
+            else {$seen_days[$mac][$day] = 1;}
         }  
         
         // create a vew arrays of data we care about
@@ -100,11 +105,18 @@ foreach ($by_day as $day => $mac) {
 }
 $day_count .= $data . "]}]";
 
+// Data for class share pie chart
+$class_data = '';
+foreach ($by_class as $class => $mac) {
+    if ($class_data != '') {$class_data .= ',';}
+    $class_data .= "[" . $class . "', " . (count($by_class[$class])/$count) . "]";
+}
+
 ?>
 
 <script>
 $(function () {
-    $('#container').highcharts({
+    $('#byday').highcharts({
         chart: {
             type: 'line'
         },
@@ -130,6 +142,46 @@ $(function () {
         ?>
     });
 });
+
+
+$(function () {
+    $('#byclass').highcharts({
+        chart: {
+            plotBackgroundColor: null,
+            plotBorderWidth: 1,//null,
+            plotShadow: false
+        },
+        title: {
+            text: 'Device Classes Seen'
+        },
+        tooltip: {
+            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+        },
+        plotOptions: {
+            pie: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                dataLabels: {
+                    enabled: true,
+                    format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                    style: {
+                        color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
+                    }
+                }
+            }
+        },
+        series: [{
+            type: 'pie',
+            name: 'Class Share',
+            data: [
+            <?php
+            echo $class_data;
+            ?>
+            ]
+        }]
+    });
+});
+
 </script>
 
 <?php
