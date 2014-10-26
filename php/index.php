@@ -142,7 +142,7 @@ foreach ($top as $mac => $mct) {
     $top_day = key($adys);
 
     if ($b_data != '') {$b_data .= ", \n";}
-    $b_data .= "{ name: '". str_replace("'", "\'", $name[$mac]) . "', data: [{ name: '". $mac . "', x: " . $top_day . ", y: " . $top_dayofweek . ", z: " . $mct . "}]}";
+    $b_data .= "{ showInLegend: false, name: '". str_replace("'", "\'", $name[$mac]) . "', data: [{x: " . $top_day . ", y: " . $top_dayofweek . ", z: " . $mct . "}]}";
     //$b_data .= "[1, 2, " . $count . "]";
 }
 
