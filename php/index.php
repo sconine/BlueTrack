@@ -142,7 +142,7 @@ foreach ($top as $mac => $mct) {
     $top_day = key($adys);
 
     if ($b_data != '') {$b_data .= ", \n";}
-    $b_data .= "{ name: '". $mac . "', x: " . $top_day . ", y: " . $top_dayofweek . ", z: " . $mct . "}";
+    $b_data .= "{ name: '". $name[$mac] . "', data: [{ name: '". $mac . "', x: " . $top_day . ", y: " . $top_dayofweek . ", z: " . $mct . "}]}";
     //$b_data .= "[1, 2, " . $count . "]";
 }
 
@@ -221,15 +221,18 @@ $(function () {
         title: {
             text: 'Devices'
         },
-        dataLabels: {
-            enabled: true,
-            formatter: function() {
-                return this.point.name;
+        plotOptions: {
+            bubble: {
+                dataLabels: {
+                    enabled: true,
+                    style: { textShadow: 'none' },
+                    formatter: function() {
+                        return this.point.name;
+                    }
+                }
             }
         },
-        series: [{
-            data: [<?php echo $b_data; ?>]
-        }]
+        series: [<?php echo $b_data; ?>]
     });
 });
 
