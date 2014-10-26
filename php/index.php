@@ -52,12 +52,16 @@ do {
         $seen_count = 0;
         foreach ($seen as $i => $v) {
           $seen_count++;
-          if (isset($show_minutes[$mac][date("Y-m-d h:i a", $v - 14400)])) {$show_minutes[$mac][date("Y-m-d h:i a", $v - 14400)]++;}
-          else {$show_minutes[$mac][date("Y-m-d h:i a", $v - 14400)] = 1;}
-          if (isset($seen_hours[$mac][date("h a", $v - 14400)])) {$seen_hours[$mac][date("h a", $v - 14400)]++;}
-          else {$seen_hours[$mac][date("h a", $v - 14400)] = 1;}
-          if (isset($seen_days[$mac][date("Y-m-d", $v - 14400)])) {$seen_days[$mac][date("Y-m-d", $v - 14400)]++;}
-          else {$seen_days[$mac][date("Y-m-d", $v - 14400)] = 1;}
+          $minute = strtotime(date("Y-m-d h:i a", $v - 14400));
+          $hour = strtotime(date("1990-01-01 h:00 a", $v - 14400));
+          $day = strtotime(date("Y-m-d", $v - 14400));
+          
+          if (isset($show_minutes[$mac][$minute])) {$show_minutes[$mac][$minute]++;}
+          else {$show_minutes[$mac][$minute] = 1;}
+          if (isset($seen_hours[$mac][$hour])) {$seen_hours[$mac][$hour]++;}
+          else {$seen_hours[$mac][$hour] = 1;}
+          if (isset($seen_days[$mac][$day])) {$seen_days[$mac][$day]++;}
+          else {$seen_days[$mac][$day] = 1;}
         }  
         
         // create a vew arrays of data we care about
@@ -84,13 +88,17 @@ arsort($top);
 
 foreach ($top as $mac => $count) {
     echo "<tr><td>$name[$mac]</td><td>$count</td><td><table><tr><td>Day</td><td>Count</td></tr>\n";
+    arsort($seen_days[$mac]);
     foreach ($seen_days[$mac] as $d => $c) {
-        echo "<tr><td>$d</td><td>$c</td></tr>\n";
+        echo "<tr><td>" . date("Y-m-d", $d) . "</td><td>$c</td></tr>\n";
     }
     echo "</table></td></tr>\n";
 }
 
 echo "</table><br> There are <b>$count</b> Total!<br>";
+
+
+
 
 ?>
 
