@@ -10,6 +10,9 @@
         <div id="byday" style="width: 400px;  height:400px; display: table-cell;"></div>
         <div id="byclass" style="width: 400px;  height:400px; display: table-cell;"></div>
     </div>
+    <div style="display: table-row">
+        <div id="bydevice" style="width: 800px;  height:600px; display: table-cell;"></div>
+    </div>
 </div>
 
 
@@ -77,6 +80,7 @@ do {
             $hour = strtotime(date("1990-01-01 h:00 a", $v - 14400));
             $day = strtotime(date("Y-m-d", $v - 14400));
             $dayofweek = date("w", $v - 14400);
+            $dayofweek3 = date("D", $v - 14400);
 
             // Keep track of counts by day
             if (isset($by_day[$dayofweek][$mac])) {$by_day[$dayofweek][$mac]++;}
@@ -86,13 +90,22 @@ do {
             $t_class = implode(',', $value['class']["SS"]);
             if (isset($by_class[$t_class][$mac])) {$by_class[$t_class][$mac]++;}
             else {$by_class[$t_class][$mac] = 1;}
+            
+            // Build data for bubble chart
+            if (isset($seen_dayofw[$mac][$dayofweek3])) {$seen_dayofw[$mac][$dayofweek3]++;}
+            else {$seen_dayofw[$mac][$dayofweek3] = 1;}
+            if (isset($seen_days[$mac][$day])) {$seen_days[$mac][$day]++;}
+            else {$seen_days[$mac][$day] = 1;}
 
+            // Stuff to show various tables
+            /*
             if (isset($show_minutes[$mac][$minute])) {$show_minutes[$mac][$minute]++;}
             else {$show_minutes[$mac][$minute] = 1;}
             if (isset($seen_hours[$mac][$hour])) {$seen_hours[$mac][$hour]++;}
             else {$seen_hours[$mac][$hour] = 1;}
             if (isset($seen_days[$mac][$day])) {$seen_days[$mac][$day]++;}
             else {$seen_days[$mac][$day] = 1;}
+            */
         }  
         
         // create a vew arrays of data we care about
@@ -115,6 +128,21 @@ $class_data = '';
 foreach ($by_class as $class => $mac) {
     if ($class_data != '') {$class_data .= ", \n";}
     $class_data .= "['" . $class . "', " . (count($by_class[$class])/$count) . "]";
+}
+
+// Data for bubble chart
+$b_data = '';
+foreach ($top as $mac => $count) {
+    // For each device get the top day it's been seen and the top date
+    foreach ($seen_dayofw[$mac] as $dow => $dcnt) {$adow[$dow] = $dcnt;}
+    foreach ($seen_days[$mac] as $dys => $dcnt) {$adys[dys] = $dcnt;}
+    arsort($adow);
+    arsort($adys);
+    $top_dayofweek = $adow[0];
+    $top_day = $adys[0];
+
+    if ($b_data != '') {$b_data .= ", \n";}
+    $b_data .= "['" . $top_day . "', '" . $top_dayofweek . "', " . $count . "]";
 }
 
 ?>
@@ -181,6 +209,29 @@ $(function () {
     });
 });
 
+$(function () {
+    $('#bydevice').highcharts({
+
+        chart: {
+            type: 'bubble',
+            zoomType: 'xy'
+        },
+
+        title: {
+            text: 'Devices'
+        },
+
+        series: [{
+            data: [[97, 36, 79], [94, 74, 60], [68, 76, 58], [64, 87, 56], [68, 27, 73], [74, 99, 42], [7, 93, 87], [51, 69, 40], [38, 23, 33], [57, 86, 31]]
+        }, {
+            data: [[25, 10, 87], [2, 75, 59], [11, 54, 8], [86, 55, 93], [5, 3, 58], [90, 63, 44], [91, 33, 17], [97, 3, 56], [15, 67, 48], [54, 25, 81]]
+        }, {
+            data: [[47, 47, 21], [20, 12, 4], [6, 76, 91], [38, 30, 60], [57, 98, 64], [61, 17, 80], [83, 60, 13], [67, 78, 75], [64, 12, 10], [30, 77, 82]]
+        }]
+    });
+});
+
+
 </script>
 
 <?php
@@ -189,18 +240,15 @@ echo "Key Facts:<table><tr><td>Total Seen</td><td>$count</td></tr>";
 echo "<tr><td>Seen in Last Hour</td><td>" . count($last_hour) . "</td></tr>";
 echo "</table><hr>Seen in Last Hour:<br>";
 
+/*
 echo "<table><tr><td>name</td><td>count</td></tr>";
 arsort($last_hour);
-
 foreach ($last_hour as $mac => $count) {
     echo "<tr><td>$name[$mac]</td><td>$count</td></tr>\n";
 }
 echo "</table><hr>Total List:<br>";
-
-
 echo "<table><tr><td>name</td><td>count</td><td>Days</td></tr>";
 arsort($top);
-
 foreach ($top as $mac => $count) {
     echo "<tr><td>$name[$mac]</td><td>$count</td><td><table><tr><td>Day</td><td>Count</td></tr>\n";
     krsort($seen_days[$mac]);
@@ -209,8 +257,8 @@ foreach ($top as $mac => $count) {
     }
     echo "</table></td></tr>\n";
 }
-
 echo "</table><br> There are <b>$count</b> Total!<br>";
+*/
 
 ?>
 
