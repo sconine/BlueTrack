@@ -37,11 +37,11 @@ do {
     foreach ($response['Items'] as $key => $value) {
       echo "<tr><td>" . $value['mac_id']["S"] . "</td>";
       echo "<td>" . $value['collector_id']["S"] . "</td>";
-      echo "<td>" . $value['name']["SS"] . "</td>";
-      echo "<td>" . $value['clock_offset']["SS"] . "</td>";
-      echo "<td>" . $value['class']["SS"] . "</td>";
-      echo "<td>" . $value['inq_on']["NS"] . "</td>";
-      echo "<td>" . $value['scan_on']["NS"] . "</td></tr>";
+      echo "<td>" . implode(',', $value['name']["SS"]) . "</td>";
+      echo "<td>" . implode(',', $value['clock_offset']["SS"]) . "</td>";
+      echo "<td>" . implode(',', $value['class']["SS"]) . "</td>";
+      echo "<td>" . implode(',', $value['inq_on']["NS"]) . "</td>";
+      echo "<td>" . implode(',', $value['scan_on']["NS"]) . "</td></tr>";
     }
 } while(isset($response['LastEvaluatedKey'])); 
 //If there is no LastEvaluatedKey in the response, there are no more items matching this Scan invocation
