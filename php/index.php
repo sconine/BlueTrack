@@ -226,7 +226,7 @@ $(function () {
             formatter: function() {
                 return this.point.name;
             }
-        }
+        },
         plotOptions: {
             bubble: {
                 tooltip: {
