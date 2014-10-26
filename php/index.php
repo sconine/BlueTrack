@@ -21,6 +21,7 @@ $tableName = "collector_data";
 
 //echo "<table><tr><td>mac_id</td><td>collector_id</td><td>name</td><td>clock_offset</td><td>class</td><td>inq_on</td><td>scan_on</td></tr>";
 echo "<table><td>name</td></tr>";
+$count = 0;
 
 // The Scan API is paginated. Issue the Scan request multiple times.
 do {
@@ -36,6 +37,7 @@ do {
     $response = $client->scan($request);
 
     foreach ($response['Items'] as $key => $value) {
+        $count++;
       //echo "<tr><td>" . $value['mac_id']["S"] . "</td>";
       //echo "<td>" . $value['collector_id']["S"] . "</td>";
       echo "<tr><td>" . implode(',', $value['name']["SS"]) . "</td></tr>";
@@ -53,7 +55,7 @@ do {
 
 
 
-echo '</table>Made it here!<br>';
+echo '</table><br> There are <b>$count</b> Total!<br>';
 
 ?>
 
