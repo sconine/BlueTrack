@@ -96,7 +96,7 @@ foreach ($by_day as $day => $mac) {
     if ($data != '') {$data .= ',';}
     $data .= count($by_day[$day]);
 }
-$day_count .= "]},";
+$day_count .= $data . "]}]";
 
 ?>
 
