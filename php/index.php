@@ -13,7 +13,7 @@
         <div id="byclass" style="width: 400px;  height:400px; display: table-cell;"></div>
     </div>
 </div>
-<div id="bydevice" style="width: 800px;  height:600px;"></div>
+<div id="bydevice" style="width: 100%;  height:600px;"></div>
 
 <?php
 
@@ -142,7 +142,7 @@ foreach ($top as $mac => $count) {
     $top_day = key($adys);
 
     if ($b_data != '') {$b_data .= ", \n";}
-    $b_data .= "[" . $top_day . ", " . $top_dayofweek . ", " . $count . "]";
+    $b_data .= "{ name: '". $mac . "', x: " . $top_day . ", y: " . $top_dayofweek . ", z: " . $count . "}";
     //$b_data .= "[1, 2, " . $count . "]";
 }
 
@@ -221,6 +221,12 @@ $(function () {
         title: {
             text: 'Devices'
         },
+        dataLabels: {
+            enabled: true,
+            formatter: function() {
+                return this.point.name;
+            }
+        }
         plotOptions: {
             bubble: {
                 tooltip: {
@@ -235,6 +241,7 @@ $(function () {
         }]
     });
 });
+
 
 
 </script>
