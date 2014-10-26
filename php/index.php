@@ -42,7 +42,7 @@ do {
       //echo "<td>" . implode(',', $value['class']["SS"]) . "</td>";
       $seen = array_merge($value['scan_on']["NS"], $value['inq_on']["NS"]);
       foreach ($seen as $t => $v) {
-          $show_seen[] = date("Y-m-d h:i a", $tm - 14400);
+          $show_seen[] = date("Y-m-d h:i a", $t - 14400);
       }      
       $show_seen = array_unique($show_seen);
       echo "<td>" . implode('<br>', $show_seen) . "</td>";
