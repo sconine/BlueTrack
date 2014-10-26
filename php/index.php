@@ -135,11 +135,11 @@ $b_data = '';
 foreach ($top as $mac => $count) {
     // For each device get the top day it's been seen and the top date
     foreach ($seen_dayofw[$mac] as $dow => $dcnt) {$adow[$dow] = $dcnt;}
-    foreach ($seen_days[$mac] as $dys => $dcnt) {$adys[dys] = $dcnt;}
+    foreach ($seen_days[$mac] as $dys => $dcnt) {$adys[$dys] = $dcnt;}
     arsort($adow);
     arsort($adys);
-    $top_dayofweek = $adow[0];
-    $top_day = $adys[0];
+    $top_dayofweek = array_values($adow)[0];
+    $top_day = array_values($adys)[0];
 
     if ($b_data != '') {$b_data .= ", \n";}
     $b_data .= "['" . $top_day . "', '" . $top_dayofweek . "', " . $count . "]";
