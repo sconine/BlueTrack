@@ -79,6 +79,7 @@ do {
 //If there is no LastEvaluatedKey in the response, there are no more items matching this Scan invocation
 
 echo "<table><td>name</td><td>count</td></tr>";
+arsort($top);
 
 foreach ($top as $mac => $count) {
     echo "<tr><td>$name[$mac]</td><td>$count</td></tr>\n";
