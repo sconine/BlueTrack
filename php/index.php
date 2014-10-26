@@ -71,7 +71,7 @@ do {
           $minute = strtotime(date("Y-m-d h:i a", $v - 14400));
           $hour = strtotime(date("1990-01-01 h:00 a", $v - 14400));
           $day = strtotime(date("Y-m-d", $v - 14400));
-          $dayofweek = strtotime(date("D", $v - 14400));
+          $dayofweek = date("w", $v - 14400);
           
         // Keep track of counts by day
         if (isset($by_day[$dayofweek][$mac])) {$by_day[$dayofweek][$mac]++;}
@@ -90,9 +90,8 @@ do {
     }
 } while(isset($response['LastEvaluatedKey'])); 
 
-var_dump($by_day);
-exit;
-// Dat for device count by day
+// Data for device count by day
+asort($by_day);
 $day_count = "series: [{name: 'Devices',data: [";
 $data = '';
 foreach ($by_day as $day => $mac) {
