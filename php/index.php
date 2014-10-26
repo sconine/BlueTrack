@@ -20,8 +20,11 @@ $client = $aws->get('DynamoDb');
 $tableName = "collector_data";
 
 //echo "<table><tr><td>mac_id</td><td>collector_id</td><td>name</td><td>clock_offset</td><td>class</td><td>inq_on</td><td>scan_on</td></tr>";
-echo "<table><td>name</td></tr>";
 $count = 0;
+$top = array();
+$show_minutes = array();
+$seen_hours = array();
+$seen_days = array();
 
 // The Scan API is paginated. Issue the Scan request multiple times.
 do {
@@ -38,9 +41,26 @@ do {
 
     foreach ($response['Items'] as $key => $value) {
         $count++;
+        $mac = $value['mac_id']["S"];
+        // Manipulate the dates a bit
+        $seen = array_merge($value['scan_on']["NS"], $value['inq_on']["NS"]);
+        $seen_count = 0;
+        foreach ($seen as $i => $v) {
+          $seen_count++;
+          if (isset($show_minutes[$mac][date("Y-m-d h:i a", $v - 14400)])) {$show_minutes[$mac][date("Y-m-d h:i a", $v - 14400)]++;}
+          else {$show_minutes[$mac][date("Y-m-d h:i a", $v - 14400)] = 1;}
+          if (isset($seen_hours[$mac][date("h a", $v - 14400)])) {$seen_hours[$mac][date("h a", $v - 14400)]++;}
+          else {$seen_hours[$mac][date("h a", $v - 14400)] = 1;}
+          if (isset($seen_days[$mac][date("Y-m-d", $v - 14400)])) {$seen_days[$mac][date("Y-m-d", $v - 14400)]++;}
+          else {$seen_days[$mac][date("Y-m-d", $v - 14400)] = 1;}
+        }  
+        
+        // create a vew arrays of data we care about
+        $top[$mac] = $seen_count;
+        
       //echo "<tr><td>" . $value['mac_id']["S"] . "</td>";
       //echo "<td>" . $value['collector_id']["S"] . "</td>";
-      echo "<tr><td>" . implode(',', $value['name']["SS"]) . "</td></tr>";
+      ////echo "<tr><td>" . implode(',', $value['name']["SS"]) . "</td></tr>";
       //echo "<td>" . implode(',', $value['clock_offset']["SS"]) . "</td>";
       //echo "<td>" . implode(',', $value['class']["SS"]) . "</td>";
       //$seen = array_merge($value['scan_on']["NS"], $value['inq_on']["NS"]);
@@ -49,11 +69,16 @@ do {
       //}      
      // $show_seen = array_unique($show_seen);
       //echo "<td>" . implode('<br>', $show_seen) . "</td>";
+      
     }
 } while(isset($response['LastEvaluatedKey'])); 
 //If there is no LastEvaluatedKey in the response, there are no more items matching this Scan invocation
 
+echo "<table><td>name</td><td>count</td></tr>";
 
+foreach ($top as $mac => $count) {
+    echo "<tr><td>$mac</td><td>$count</td></tr>\n";
+}
 
 echo "</table><br> There are <b>$count</b> Total!<br>";
 
