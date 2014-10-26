@@ -229,6 +229,9 @@ while (1 == 1) {
 				));
 				
 				//Now that we've stored these values reset the counters so that we don't store again
+				//In the future might want to just unset($my_macs) since that way we'll 
+				//never run out of space or slow the process over time.  Would want to check
+				//that load to Ec2 was successful first though
 				$my_macs[$mac]['status'] = 'clean';
 				$my_macs[$mac]['inq_count'] = 0;
 				$my_macs[$mac]['scan_count'] = 0;
