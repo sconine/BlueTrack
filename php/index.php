@@ -102,8 +102,8 @@ do {
             
             if (isset($show_minutes[$mac][$minute])) {$show_minutes[$mac][$minute]++;}
             else {$show_minutes[$mac][$minute] = 1;}
-            if (isset($seen_hours[$mac][$hour])) {$seen_hours[$mac][$hour]++;}
-            else {$seen_hours[$mac][$hour] = 1;}
+            if (isset($seen_hourss[$mac][$hour])) {$seen_hourss[$mac][$hour]++;}
+            else {$seen_hourss[$mac][$hour] = 1;}
             if (isset($seen_days[$mac][$day])) {$seen_days[$mac][$day]++;}
             else {$seen_days[$mac][$day] = 1;}
             
@@ -258,9 +258,9 @@ echo "<table><tr><td>name</td><td>count</td><td>Days</td></tr>";
 arsort($top);
 foreach ($top as $mac => $count) {
     echo "<tr><td>$name[$mac]</td><td>$count</td><td><table><tr><td>Day</td><td>Count</td></tr>\n";
-    krsort($seen_days[$mac]);
-    foreach ($seen_days[$mac] as $d => $c) {
-        echo "<tr><td>" . date("Y-m-d", $d) . "</td><td>$c</td></tr>\n";
+    krsort($seen_hourss[$mac]);
+    foreach ($seen_hourss[$mac] as $d => $c) {
+        echo "<tr><td>" . date("h:00 a", $d) . "</td><td>$c</td></tr>\n";
     }
     echo "</table></td></tr>\n";
 }
