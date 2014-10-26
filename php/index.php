@@ -2,7 +2,9 @@
 <head>BlueTrack</head>
 <body>
 Hi There!<br>
-<?echo time() ?>
+<?php
+echo "hi Steve!";
+?>
 
 
 
