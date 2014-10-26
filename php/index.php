@@ -5,8 +5,10 @@
 <meta charset="UTF-8"></head>
 <body>
 
-<div id="byday" style="width:50%; height:400px;"></div>
-<div id="byclass" style="width:50%; height:400px;"></div>
+<div style="width: 100%; overflow: hidden;">
+    <div id="byday" style="width:50%; height:400px; float: left;"></div>
+    <div id="byclass" style="margin-left: 620px; height:400px;"></div>
+</div>
 
 <?php
 
