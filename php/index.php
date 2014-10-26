@@ -14,7 +14,7 @@
         <div id="bydevice" style="width: 800px;  height:600px; display: table-cell;"></div>
     </div>
 </div>
-
+<div id="container" style="height: 400px; min-width: 310px; max-width: 600px; margin: 0 auto"></div>
 
 <?php
 
@@ -210,7 +210,7 @@ $(function () {
 });
 
 $(function () {
-    $('#bydevice').highcharts({
+    $('#container').highcharts({
 
         chart: {
             type: 'bubble',
