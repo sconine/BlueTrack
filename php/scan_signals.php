@@ -32,7 +32,7 @@ include 'dynamo_tables.php';
 // ok we've got tables, see what we were sent
 if ($debug) {echo "Current Tables Exist<br>\n";}
 $created_region = false;
-$region_name = isset($config['region'] ) ? $config['region']  : 'Default';
+$region_name = gethostmacaddr();
 $collector_id = isset($config['collector_id'] ) ? $config['collector_id']  : 'Default';
 $collector_private_ip = gethostbyname(trim(`hostname --all-ip-addresses`));
 $collector_public_ip = isset($config['public_ip'] ) ? $config['public_ip']  : '9.9.9.9';
@@ -228,7 +228,7 @@ while (1 == 1) {
 					'ReturnValues' => "NONE"
 				));
 				
-				//TODO: Now that we've stored these values reset the counters so that we don't store again
+				//Now that we've stored these values reset the counters so that we don't store again
 				$my_macs[$mac]['status'] = 'clean';
 				$my_macs[$mac]['inq_count'] = 0;
 				$my_macs[$mac]['scan_count'] = 0;
@@ -253,12 +253,23 @@ while (1 == 1) {
 		if ($debug) {echo "$collector_id in $region_name updated<br>\n";}
 		
 	}
-   	echo "$lp_cnt \n";
+
 	$lp_cnt++;
 }
 
-
-
+// Function to get the mac address of the onboard ethernet card (which should not change)
+function gethostmacaddr() {
+	$mm = "unknown";
+	exec("ifconfig", $out);
+	var_dump($out);
+	foreach ($out as $i => $v) {
+		if (substr($v, 0, 4) = 'eth0') {
+			$mm = substr($v, strpos($v, 'HWaddr') + 7, 17);
+		}
+	}
+	echo "mm = $mm \n";
+	return $mm;
+}
 
 
 
