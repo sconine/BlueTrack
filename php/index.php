@@ -55,7 +55,7 @@ do {
 
 
 
-echo '</table><br> There are <b>$count</b> Total!<br>';
+echo "</table><br> There are <b>$count</b> Total!<br>";
 
 ?>
 
