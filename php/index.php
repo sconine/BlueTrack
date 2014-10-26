@@ -79,11 +79,15 @@ do {
 } while(isset($response['LastEvaluatedKey'])); 
 //If there is no LastEvaluatedKey in the response, there are no more items matching this Scan invocation
 
-echo "<table><td>name</td><td>count</td></tr>";
+echo "<table><td>name</td><td>count</td><td>Days</td></tr>";
 arsort($top);
 
 foreach ($top as $mac => $count) {
-    echo "<tr><td>$name[$mac]</td><td>$count</td></tr>\n";
+    echo "<tr><td>$name[$mac]</td><td>$count</td><td><table><tr><td>Day</td><td>Count</td></tr>\n";
+    foreach ($seen_days[$mac] as $d => $c) {
+        echo "<tr><td>$d</td><td>$c</td></tr>\n"
+    }
+    echo "</td></tr>\n";
 }
 
 echo "</table><br> There are <b>$count</b> Total!<br>";
