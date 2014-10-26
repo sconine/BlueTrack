@@ -22,6 +22,7 @@ $tableName = "collector_data";
 
 //echo "<table><tr><td>mac_id</td><td>collector_id</td><td>name</td><td>clock_offset</td><td>class</td><td>inq_on</td><td>scan_on</td></tr>";
 $count = 0;
+$last_hour = array();
 $top = array();
 $names = array();
 $show_minutes = array();
@@ -52,6 +53,13 @@ do {
         $seen_count = 0;
         foreach ($seen as $i => $v) {
           $seen_count++;
+          
+          // Keep track of ones we've seen in last hour
+          if ($v > (time() - 3600)) {
+            if (isset($last_hour[$mac])) {$last_hour[$mac]++;}
+            else {$last_hour[$mac] = 1;}
+          }
+          
           $minute = strtotime(date("Y-m-d h:i a", $v - 14400));
           $hour = strtotime(date("1990-01-01 h:00 a", $v - 14400));
           $day = strtotime(date("Y-m-d", $v - 14400));
@@ -66,22 +74,15 @@ do {
         
         // create a vew arrays of data we care about
         $top[$mac] = $seen_count;
-        
-      //echo "<tr><td>" . $value['mac_id']["S"] . "</td>";
-      //echo "<td>" . $value['collector_id']["S"] . "</td>";
-      ////echo "<tr><td>" . implode(',', $value['name']["SS"]) . "</td></tr>";
-      //echo "<td>" . implode(',', $value['clock_offset']["SS"]) . "</td>";
-      //echo "<td>" . implode(',', $value['class']["SS"]) . "</td>";
-      //$seen = array_merge($value['scan_on']["NS"], $value['inq_on']["NS"]);
-      //foreach ($seen as $t => $v) {
-       //   $show_seen[] = date("Y-m-d h:i a", $t - 14400);
-      //}      
-     // $show_seen = array_unique($show_seen);
-      //echo "<td>" . implode('<br>', $show_seen) . "</td>";
-      
     }
 } while(isset($response['LastEvaluatedKey'])); 
 //If there is no LastEvaluatedKey in the response, there are no more items matching this Scan invocation
+
+echo "Key Facts:<table><tr><td>Total Seen</td><td>$count</td></tr>";
+echo "<tr><td>Seen in Last Hour</td><td>" . count($last_hour) . "</td></tr>";
+echo "</table><br><br>";
+
+
 
 echo "<table><tr><td>name</td><td>count</td><td>Days</td></tr>";
 arsort($top);
