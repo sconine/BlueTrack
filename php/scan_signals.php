@@ -178,7 +178,7 @@ while (1 == 1) {
 	file_put_contents($file, json_encode($my_macs));
 	
 	// every 60th run connect to EC2 and save our data
-	if (($lp_cnt % 6 == 0 && $lp_cnt > 0)) {
+	if (($lp_cnt % 60 == 0 && $lp_cnt > 0)) {
         	if ($debug) {echo "$lp_cnt loops - dumping data to Dynamo\n";}
 		foreach ($my_macs as $mac => $farray) {
 			// See if data has changed since we saved it last
@@ -267,7 +267,6 @@ function gethostmacaddr() {
 			$mm = substr($v, strpos($v, 'HWaddr') + 7, 17);
 		}
 	}
-	echo "mm = $mm \n";
 	return $mm;
 }
 
