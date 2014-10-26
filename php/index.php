@@ -80,7 +80,7 @@ do {
             $minute = strtotime(date("Y-m-d h:i a", $v - 14400));
             $hour = strtotime(date("1990-01-01 h:00 a", $v - 14400));
             $day = strtotime(date("Y-m-d", $v - 14400));
-            $dayofyear = "Y-m-d", $v - 14400);
+            $dayofyear = date("Y-m-d", $v - 14400);
             $dayofweek = date("w", $v - 14400);
             $dayofweek3 = date("D", $v - 14400);
 
