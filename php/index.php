@@ -134,15 +134,15 @@ foreach ($by_class as $class => $mac) {
 $b_data = '';
 foreach ($top as $mac => $mct) {
     // For each device get the top day it's been seen and the top date
-    foreach ($seen_dayofw[$mac] as $dow => $dcnt) {$adow[$dow] = $dcnt;}
-    foreach ($seen_days[$mac] as $dys => $dcnt) {$adys[$dys] = $dcnt;}
-    arsort($adow);
-    arsort($adys);
-    $top_dayofweek = key($adow);
-    $top_day = key($adys);
+    $dowtot = 0;
+    $doytot = 0;
+    foreach ($seen_dayofw[$mac] as $dow => $dcnt) {$dowtot = $dow * $dcnt;}
+    foreach ($seen_days[$mac] as $dys => $dcnt) {$doytot = $dys * $dcnt;}
+    $avg_dayofweek = $dowtot/$mct;
+    $avg_day = $doytot/$mct;
 
     if ($b_data != '') {$b_data .= ", \n";}
-    $b_data .= "{ showInLegend: false, name: '". str_replace("'", "\'", $name[$mac]) . "', data: [{x: " . $top_day . ", y: " . $top_dayofweek . ", z: " . $mct . "}]}";
+    $b_data .= "{ showInLegend: false, name: '". str_replace("'", "\'", $name[$mac]) . "', data: [{x: " . $avg_day . ", y: " . $avg_dayofweek . ", z: " . $mct . "}]}";
     //$b_data .= "[1, 2, " . $count . "]";
 }
 
