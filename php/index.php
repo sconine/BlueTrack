@@ -144,7 +144,8 @@ foreach ($top as $mac => $count) {
     $top_day = key($adys);
 
     if ($b_data != '') {$b_data .= ", \n";}
-    $b_data .= "['" . $top_day . "', '" . $top_dayofweek . "', " . $count . "]";
+    //$b_data .= "['" . $top_day . "', '" . $top_dayofweek . "', " . $count . "]";
+    $b_data .= "[1, 2, " . $count . "]";
 }
 
 ?>
