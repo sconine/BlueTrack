@@ -108,8 +108,8 @@ $day_count .= $data . "]}]";
 // Data for class share pie chart
 $class_data = '';
 foreach ($by_class as $class => $mac) {
-    if ($class_data != '') {$class_data .= ',';}
-    $class_data .= "[" . $class . "', " . (count($by_class[$class])/$count) . "]";
+    if ($class_data != '') {$class_data .= ", \n";}
+    $class_data .= "['" . $class . "', " . (count($by_class[$class])/$count) . "]";
 }
 
 ?>
