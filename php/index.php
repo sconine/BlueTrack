@@ -22,6 +22,7 @@ $tableName = "collector_data";
 //echo "<table><tr><td>mac_id</td><td>collector_id</td><td>name</td><td>clock_offset</td><td>class</td><td>inq_on</td><td>scan_on</td></tr>";
 $count = 0;
 $top = array();
+$names = array();
 $show_minutes = array();
 $seen_hours = array();
 $seen_days = array();
@@ -43,6 +44,8 @@ do {
     foreach ($response['Items'] as $key => $value) {
         $count++;
         $mac = $value['mac_id']["S"];
+        $name[$mac] = implode(',', $value['name']["SS"]);
+        
         // Manipulate the dates a bit
         $seen = array_merge($value['scan_on']["NS"], $value['inq_on']["NS"]);
         $seen_count = 0;
@@ -78,7 +81,7 @@ do {
 echo "<table><td>name</td><td>count</td></tr>";
 
 foreach ($top as $mac => $count) {
-    echo "<tr><td>$mac</td><td>$count</td></tr>\n";
+    echo "<tr><td>$name[$mac]</td><td>$count</td></tr>\n";
 }
 
 echo "</table><br> There are <b>$count</b> Total!<br>";
