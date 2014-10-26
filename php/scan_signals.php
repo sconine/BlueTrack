@@ -263,7 +263,7 @@ function gethostmacaddr() {
 	exec("ifconfig", $out);
 	var_dump($out);
 	foreach ($out as $i => $v) {
-		if (substr($v, 0, 4) = 'eth0') {
+		if (substr($v, 0, 4) == 'eth0') {
 			$mm = substr($v, strpos($v, 'HWaddr') + 7, 17);
 		}
 	}
