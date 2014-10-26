@@ -80,8 +80,15 @@ do {
 
 echo "Key Facts:<table><tr><td>Total Seen</td><td>$count</td></tr>";
 echo "<tr><td>Seen in Last Hour</td><td>" . count($last_hour) . "</td></tr>";
-echo "</table><br><br>";
+echo "</table><hr>Seen in Last Hour:<br>";
 
+echo "<table><tr><td>name</td><td>count</td></tr>";
+arsort($last_hour);
+
+foreach ($last_hour as $mac => $count) {
+    echo "<tr><td>$name[$mac]</td><td>$count</td></tr>\n";
+}
+echo "</table><hr>Total List:<br>";
 
 
 echo "<table><tr><td>name</td><td>count</td><td>Days</td></tr>";
