@@ -32,8 +32,8 @@ include 'dynamo_tables.php';
 // ok we've got tables, see what we were sent
 if ($debug) {echo "Current Tables Exist<br>\n";}
 $created_region = false;
-$region_name = gethostmacaddr();
-$collector_id = isset($config['collector_id'] ) ? $config['collector_id']  : 'Default';
+$region_name = isset($config['region'] ) ? $config['region']  : 'Default';
+$collector_id = gethostmacaddr();
 $collector_private_ip = gethostbyname(trim(`hostname --all-ip-addresses`));
 $collector_public_ip = isset($config['public_ip'] ) ? $config['public_ip']  : '9.9.9.9';
 $collector_storage = 0;
