@@ -224,7 +224,7 @@ $(function () {
         },
 
         series: [{
-            data: <?php echo $b_data; ?>
+            data: [<?php echo $b_data; ?>]
         }]
     });
 });
