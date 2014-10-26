@@ -12,10 +12,8 @@
         <div id="byday" style="width: 400px;  height:400px; display: table-cell;"></div>
         <div id="byclass" style="width: 400px;  height:400px; display: table-cell;"></div>
     </div>
-    <div style="display: table-row">
-        <div id="bydevice" style="width: 800px;  height:600px; display: table-cell;"></div>
-    </div>
 </div>
+<div id="bydevice" style="width: 800px;  height:600px;"></div>
 
 <?php
 
@@ -223,7 +221,15 @@ $(function () {
         title: {
             text: 'Devices'
         },
+        plotOptions: {
+            bubble: {
+                tooltip: {
+                    headerFormat: '<b>{series.name}</b><br>',
+                    pointFormat: '{point.x} day, {point.y} weekday, {point.z}  seen'
 
+                }
+            }
+        },
         series: [{
             data: [<?php echo $b_data; ?>]
         }]
