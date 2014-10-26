@@ -132,7 +132,7 @@ foreach ($by_class as $class => $mac) {
 
 // Data for bubble chart
 $b_data = '';
-foreach ($top as $mac => $count) {
+foreach ($top as $mac => $mct) {
     // For each device get the top day it's been seen and the top date
     foreach ($seen_dayofw[$mac] as $dow => $dcnt) {$adow[$dow] = $dcnt;}
     foreach ($seen_days[$mac] as $dys => $dcnt) {$adys[$dys] = $dcnt;}
@@ -142,7 +142,7 @@ foreach ($top as $mac => $count) {
     $top_day = key($adys);
 
     if ($b_data != '') {$b_data .= ", \n";}
-    $b_data .= "{ name: '". $mac . "', x: " . $top_day . ", y: " . $top_dayofweek . ", z: " . $count . "}";
+    $b_data .= "{ name: '". $mac . "', x: " . $top_day . ", y: " . $top_dayofweek . ", z: " . $mct . "}";
     //$b_data .= "[1, 2, " . $count . "]";
 }
 
@@ -227,15 +227,6 @@ $(function () {
                 return this.point.name;
             }
         },
-        plotOptions: {
-            bubble: {
-                tooltip: {
-                    headerFormat: '<b>{series.name}</b><br>',
-                    pointFormat: '{point.x} day, {point.y} weekday, {point.z}  seen'
-
-                }
-            }
-        },
         series: [{
             data: [<?php echo $b_data; ?>]
         }]
@@ -250,7 +241,7 @@ $(function () {
 //If there is no LastEvaluatedKey in the response, there are no more items matching this Scan invocation
 echo "Key Facts:<table><tr><td>Total Seen</td><td>$count</td></tr>";
 echo "<tr><td>Seen in Last Hour</td><td>" . count($last_hour) . "</td></tr>";
-echo "</table><hr>Seen in Last Hour:<br>";
+echo "</table><br>";
 
 /*
 echo "<table><tr><td>name</td><td>count</td></tr>";
