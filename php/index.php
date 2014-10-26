@@ -80,9 +80,9 @@ do {
             $minute = strtotime(date("Y-m-d h:i a", $v - 14400));
             $hour = strtotime(date("1990-01-01 h:00 a", $v - 14400));
             $day = strtotime(date("Y-m-d", $v - 14400));
-            $dayofyear = date("Y-m-d", $v - 14400);
+            $dayofyear = date("z", $v - 14400);
             $dayofweek = date("w", $v - 14400);
-            $dayofweek3 = date("D", $v - 14400);
+            $dayofweek3 = date("w", $v - 14400);
 
             // Keep track of counts by day
             if (isset($by_day[$dayofweek][$mac])) {$by_day[$dayofweek][$mac]++;}
@@ -144,8 +144,8 @@ foreach ($top as $mac => $count) {
     $top_day = key($adys);
 
     if ($b_data != '') {$b_data .= ", \n";}
-    //$b_data .= "['" . $top_day . "', '" . $top_dayofweek . "', " . $count . "]";
-    $b_data .= "[1, 2, " . $count . "]";
+    $b_data .= "[" . $top_day . ", " . $top_dayofweek . ", " . $count . "]";
+    //$b_data .= "[1, 2, " . $count . "]";
 }
 
 ?>
