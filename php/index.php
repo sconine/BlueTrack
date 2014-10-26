@@ -139,8 +139,8 @@ foreach ($top as $mac => $mct) {
     $doytot = 0;
     foreach ($seen_dayofw[$mac] as $dow => $dcnt) {$dowtot = $dow * $dcnt;}
     foreach ($seen_hours[$mac] as $dys => $dcnt) {$doytot = $dys * $dcnt;}
-    $avg_dayofweek = $dowtot/$mct;
-    $avg_day = $doytot/$mct;
+    $avg_dayofweek = round($dowtot/$mct,2);
+    $avg_day = round($doytot/$mct,2);
 
     if ($b_data != '') {$b_data .= ", \n";}
     $b_data .= "{ showInLegend: false, name: '". str_replace("'", "\'", $name[$mac]) . "', data: [{x: " . $avg_day . ", y: " . $avg_dayofweek . ", z: " . $mct . "}]}";
@@ -247,7 +247,7 @@ echo "Key Facts:<table><tr><td>Total Seen</td><td>$count</td></tr>";
 echo "<tr><td>Seen in Last Hour</td><td>" . count($last_hour) . "</td></tr>";
 echo "</table><br>";
 
-/*
+
 echo "<table><tr><td>name</td><td>count</td></tr>";
 arsort($last_hour);
 foreach ($last_hour as $mac => $count) {
@@ -265,7 +265,7 @@ foreach ($top as $mac => $count) {
     echo "</table></td></tr>\n";
 }
 echo "</table><br> There are <b>$count</b> Total!<br>";
-*/
+
 
 ?>
 
