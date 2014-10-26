@@ -99,14 +99,14 @@ do {
             else {$seen_hours[$mac][$hourofday] = 1;}
 
             // Stuff to show various tables
-            /*
+            
             if (isset($show_minutes[$mac][$minute])) {$show_minutes[$mac][$minute]++;}
             else {$show_minutes[$mac][$minute] = 1;}
             if (isset($seen_hours[$mac][$hour])) {$seen_hours[$mac][$hour]++;}
             else {$seen_hours[$mac][$hour] = 1;}
             if (isset($seen_days[$mac][$day])) {$seen_days[$mac][$day]++;}
             else {$seen_days[$mac][$day] = 1;}
-            */
+            
         }  
         
         // create a vew arrays of data we care about
