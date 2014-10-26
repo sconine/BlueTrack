@@ -78,6 +78,7 @@ do {
             $minute = strtotime(date("Y-m-d h:i a", $v - 14400));
             $hour = strtotime(date("1990-01-01 h:00 a", $v - 14400));
             $day = strtotime(date("Y-m-d", $v - 14400));
+            $hourofday = date("H", $v - 14400);
             $dayofyear = date("z", $v - 14400);
             $dayofweek = date("w", $v - 14400);
             $dayofweek3 = date("w", $v - 14400);
@@ -94,8 +95,8 @@ do {
             // Build data for bubble chart
             if (isset($seen_dayofw[$mac][$dayofweek3])) {$seen_dayofw[$mac][$dayofweek3]++;}
             else {$seen_dayofw[$mac][$dayofweek3] = 1;}
-            if (isset($seen_days[$mac][$dayofyear])) {$seen_days[$mac][$dayofyear]++;}
-            else {$seen_days[$mac][$dayofyear] = 1;}
+            if (isset($seen_hours[$mac][$hourofday])) {$seen_hours[$mac][$hourofday]++;}
+            else {$seen_hours[$mac][$hourofday] = 1;}
 
             // Stuff to show various tables
             /*
@@ -137,7 +138,7 @@ foreach ($top as $mac => $mct) {
     $dowtot = 0;
     $doytot = 0;
     foreach ($seen_dayofw[$mac] as $dow => $dcnt) {$dowtot = $dow * $dcnt;}
-    foreach ($seen_days[$mac] as $dys => $dcnt) {$doytot = $dys * $dcnt;}
+    foreach ($seen_hours[$mac] as $dys => $dcnt) {$doytot = $dys * $dcnt;}
     $avg_dayofweek = $dowtot/$mct;
     $avg_day = $doytot/$mct;
 
