@@ -35,13 +35,17 @@ do {
     $response = $client->scan($request);
 
     foreach ($response['Items'] as $key => $value) {
-      echo "<tr><td>" . $value['mac_id']["S"] . "</td>";
-      echo "<td>" . $value['collector_id']["S"] . "</td>";
+      //echo "<tr><td>" . $value['mac_id']["S"] . "</td>";
+      //echo "<td>" . $value['collector_id']["S"] . "</td>";
       echo "<td>" . implode(',', $value['name']["SS"]) . "</td>";
-      echo "<td>" . implode(',', $value['clock_offset']["SS"]) . "</td>";
-      echo "<td>" . implode(',', $value['class']["SS"]) . "</td>";
-      echo "<td>" . implode(',', $value['inq_on']["NS"]) . "</td>";
-      echo "<td>" . implode(',', $value['scan_on']["NS"]) . "</td></tr>";
+      //echo "<td>" . implode(',', $value['clock_offset']["SS"]) . "</td>";
+      //echo "<td>" . implode(',', $value['class']["SS"]) . "</td>";
+      $seen = array_merge($value['scan_on']["NS"], $value['inq_on']["NS"]);
+      foreach ($seen as $t => $v) {
+          $show_seen[] = date("Y-m-d h:i a", $tm - 14400);
+      }      
+      $show_seen = array_unique($show_seen);
+      echo "<td>" . implode('<br>', $show_seen) . "</td>";
     }
 } while(isset($response['LastEvaluatedKey'])); 
 //If there is no LastEvaluatedKey in the response, there are no more items matching this Scan invocation
