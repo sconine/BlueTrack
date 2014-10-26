@@ -25,6 +25,7 @@ $top = array();
 $show_minutes = array();
 $seen_hours = array();
 $seen_days = array();
+date_default_timezone_set('UTC');
 
 // The Scan API is paginated. Issue the Scan request multiple times.
 do {
