@@ -136,12 +136,6 @@ $(function () {
                 text: 'Counts'
             }
         },
-        legend: {
-            layout: 'vertical',
-            align: 'right',
-            verticalAlign: 'middle',
-            borderWidth: 0
-        },
         <?php
         echo $day_count;
         ?>
