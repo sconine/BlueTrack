@@ -156,7 +156,7 @@ foreach ($top as $mac => $mct) {
     $avg_hr = round($doytot/$mct,2);
 
     if ($b_data != '') {$b_data .= ", \n";}
-    $b_data .= "{ showInLegend: false, name: '". str_replace("'", "\'", $name[$mac]) . "', data: [{m: '" . $mac . "', l: " . date("Y-m-d h:i a", $last_seen[$mac]) . ", x: " . $avg_hr . ", y: " . $avg_dayofweek . ", z: " . $mct . "}]}";
+    $b_data .= "{ showInLegend: false, name: '". str_replace("'", "\'", $name[$mac]) . "', data: [{m: '" . $mac . "', l: '" . date("Y-m-d h:i a", $last_seen[$mac]) . "', x: " . $avg_hr . ", y: " . $avg_dayofweek . ", z: " . $mct . "}]}";
     //$b_data .= "[1, 2, " . $count . "]";
 }
 
