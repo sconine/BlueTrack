@@ -6,39 +6,7 @@
 <body>
 
 <div id="container" style="width:100%; height:400px;"></div>
-<script>
-$(function () {
-    $('#container').highcharts({
-        chart: {
-            type: 'line'
-        },
-        title: {
-            text: 'Daily Devices'
-        },
-        xAxis: {
-            categories: ['Sun', 'Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat']
-        },
-        yAxis: {
-            title: {
-                text: 'Counts'
-            }
-        },
-        legend: {
-            layout: 'vertical',
-            align: 'right',
-            verticalAlign: 'middle',
-            borderWidth: 0
-        },
-        series: [{
-            name: '37 Braddock',
-            data: [1,2,3,4,5,6,7]
-        }, {
-            name: 'Other Location',
-            data: [2,3,4,3,2,1,0]
-        }],
-    });
-});
-</script>
+
 
 
 <?php
@@ -62,6 +30,7 @@ $tableName = "collector_data";
 //echo "<table><tr><td>mac_id</td><td>collector_id</td><td>name</td><td>clock_offset</td><td>class</td><td>inq_on</td><td>scan_on</td></tr>";
 $count = 0;
 $last_hour = array();
+$by_day = array();
 $top = array();
 $names = array();
 $show_minutes = array();
@@ -103,6 +72,10 @@ do {
           $hour = strtotime(date("1990-01-01 h:00 a", $v - 14400));
           $day = strtotime(date("Y-m-d", $v - 14400));
           
+        // Keep track of counts by day
+        if (isset($by_day[$day][$mac])) {$by_day[$day][$mac]++;}
+        else {$by_day[$day][$mac] = 1;}
+
           if (isset($show_minutes[$mac][$minute])) {$show_minutes[$mac][$minute]++;}
           else {$show_minutes[$mac][$minute] = 1;}
           if (isset($seen_hours[$mac][$hour])) {$seen_hours[$mac][$hour]++;}
@@ -115,8 +88,50 @@ do {
         $top[$mac] = $seen_count;
     }
 } while(isset($response['LastEvaluatedKey'])); 
-//If there is no LastEvaluatedKey in the response, there are no more items matching this Scan invocation
 
+// Dat for device count by day
+$day_count = "series: [{name: 'Devices',data: [";
+$data = '';
+foreach ($by_day as $day => $mac) {
+    if ($data != '') {$data .= ',';}
+    $data .= count($by_day[$day]);
+}
+$day_count .= "]},";
+
+?>
+
+<script>
+$(function () {
+    $('#container').highcharts({
+        chart: {
+            type: 'line'
+        },
+        title: {
+            text: 'Daily Devices'
+        },
+        xAxis: {
+            categories: ['Sun', 'Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat']
+        },
+        yAxis: {
+            title: {
+                text: 'Counts'
+            }
+        },
+        legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'middle',
+            borderWidth: 0
+        },
+        <?php
+        echo $day_count;
+        ?>
+    });
+});
+</script>
+
+<?php
+//If there is no LastEvaluatedKey in the response, there are no more items matching this Scan invocation
 echo "Key Facts:<table><tr><td>Total Seen</td><td>$count</td></tr>";
 echo "<tr><td>Seen in Last Hour</td><td>" . count($last_hour) . "</td></tr>";
 echo "</table><hr>Seen in Last Hour:<br>";
@@ -144,11 +159,7 @@ foreach ($top as $mac => $count) {
 
 echo "</table><br> There are <b>$count</b> Total!<br>";
 
-
-
-
 ?>
-
 
 
 </body>
