@@ -13,22 +13,28 @@ $(function () {
             type: 'line'
         },
         title: {
-            text: 'Fruit Consumption'
+            text: 'Daily Devices'
         },
         xAxis: {
-            categories: ['Apples', 'Bananas', 'Oranges']
+            categories: ['Sun', 'Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat']
         },
         yAxis: {
             title: {
-                text: 'Fruit eaten'
+                text: 'Counts'
             }
         },
+        legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'middle',
+            borderWidth: 0
+        },
         series: [{
-            name: 'Jane',
-            data: [[1,2], [0,3], [4,4]]
+            name: '37 Braddock',
+            data: [1,2,3,4,5,6,7]
         }, {
-            name: 'John',
-            data: [[5,2], [7,3], [3,4]]
+            name: 'Other Location',
+            data: [2,3,4,3,2,1,0]
         }],
     });
 });
