@@ -99,14 +99,14 @@ do {
             else {$seen_hours[$mac][$hourofday] = 1;}
 
             // Stuff to show various tables
-            
+            /*
             if (isset($show_minutes[$mac][$minute])) {$show_minutes[$mac][$minute]++;}
             else {$show_minutes[$mac][$minute] = 1;}
             if (isset($seen_hourss[$mac][$hour])) {$seen_hourss[$mac][$hour]++;}
             else {$seen_hourss[$mac][$hour] = 1;}
             if (isset($seen_days[$mac][$day])) {$seen_days[$mac][$day]++;}
             else {$seen_days[$mac][$day] = 1;}
-            
+            */
         }  
         
         // create a vew arrays of data we care about
@@ -138,12 +138,15 @@ foreach ($top as $mac => $mct) {
     $dowtot = 0;
     $doytot = 0;
     foreach ($seen_dayofw[$mac] as $dow => $dcnt) {$dowtot = $dow * $dcnt;}
-    foreach ($seen_hours[$mac] as $dys => $dcnt) {$doytot = $dys * $dcnt;}
+    foreach ($seen_hours[$mac] as $hrs => $dcnt) {
+        $doytot = $hrs * $dcnt;
+        if ($mac == "5C:51:4F:4F:CC:BA") {echo "hrd = $hrs , count = $dcnt <br>\n";}
+    }
     $avg_dayofweek = round($dowtot/$mct,2);
-    $avg_day = round($doytot/$mct,2);
+    $avg_hr = round($doytot/$mct,2);
 
     if ($b_data != '') {$b_data .= ", \n";}
-    $b_data .= "{ showInLegend: false, name: '". str_replace("'", "\'", $name[$mac]) . "', data: [{x: " . $avg_day . ", y: " . $avg_dayofweek . ", z: " . $mct . "}]}";
+    $b_data .= "{ showInLegend: false, name: '". str_replace("'", "\'", $name[$mac]) . "', data: [{x: " . $avg_hr . ", y: " . $avg_dayofweek . ", z: " . $mct . "}]}";
     //$b_data .= "[1, 2, " . $count . "]";
 }
 
@@ -247,7 +250,7 @@ echo "Key Facts:<table><tr><td>Total Seen</td><td>$count</td></tr>";
 echo "<tr><td>Seen in Last Hour</td><td>" . count($last_hour) . "</td></tr>";
 echo "</table><br>";
 
-
+/*
 echo "<table><tr><td>name</td><td>count</td></tr>";
 arsort($last_hour);
 foreach ($last_hour as $mac => $count) {
@@ -265,7 +268,7 @@ foreach ($top as $mac => $count) {
     echo "</table></td></tr>\n";
 }
 echo "</table><br> There are <b>$count</b> Total!<br>";
-
+*/
 
 ?>
 
