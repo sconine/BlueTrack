@@ -85,7 +85,7 @@ arsort($top);
 foreach ($top as $mac => $count) {
     echo "<tr><td>$name[$mac]</td><td>$count</td><td><table><tr><td>Day</td><td>Count</td></tr>\n";
     foreach ($seen_days[$mac] as $d => $c) {
-        echo "<tr><td>$d</td><td>$c</td></tr>\n"
+        echo "<tr><td>$d</td><td>$c</td></tr>\n";
     }
     echo "</td></tr>\n";
 }
