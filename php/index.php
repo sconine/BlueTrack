@@ -103,7 +103,7 @@ do {
 
             // Last Seen
             if (isset($last_seen[$mac])) {
-                if ($last_seen[$mac] < $v) {$last_seen[$mac] = $v}
+                if ($last_seen[$mac] < $v) {$last_seen[$mac] = $v;}
             } else {
                 $last_seen[$mac] = $v;
             }
