@@ -71,10 +71,11 @@ do {
           $minute = strtotime(date("Y-m-d h:i a", $v - 14400));
           $hour = strtotime(date("1990-01-01 h:00 a", $v - 14400));
           $day = strtotime(date("Y-m-d", $v - 14400));
+          $dayofweek = strtotime(date("D", $v - 14400));
           
         // Keep track of counts by day
-        if (isset($by_day[$day][$mac])) {$by_day[$day][$mac]++;}
-        else {$by_day[$day][$mac] = 1;}
+        if (isset($by_day[$dayofweek][$mac])) {$by_day[$dayofweek][$mac]++;}
+        else {$by_day[$dayofweek][$mac] = 1;}
 
           if (isset($show_minutes[$mac][$minute])) {$show_minutes[$mac][$minute]++;}
           else {$show_minutes[$mac][$minute] = 1;}
