@@ -138,8 +138,8 @@ foreach ($top as $mac => $count) {
     foreach ($seen_days[$mac] as $dys => $dcnt) {$adys[$dys] = $dcnt;}
     arsort($adow);
     arsort($adys);
-    $top_dayofweek = array_values($adow)[0];
-    $top_day = array_values($adys)[0];
+    $top_dayofweek = key($adow);
+    $top_day = key($adys);
 
     if ($b_data != '') {$b_data .= ", \n";}
     $b_data .= "['" . $top_day . "', '" . $top_dayofweek . "', " . $count . "]";
