@@ -38,6 +38,7 @@ $count = 0;
 $last_hour = array();
 $by_day = array();
 $by_class = array();
+$last_seen = array();
 $top = array();
 $names = array();
 $show_minutes = array();
@@ -68,6 +69,8 @@ do {
         $seen_count = 0;
         foreach ($seen as $i => $v) {
             $seen_count++;
+            // put in EST
+            $v = $v - 14400;
             
             // Keep track of ones we've seen in last hour
             if ($v > (time() - 3600)) {
@@ -75,13 +78,13 @@ do {
                 else {$last_hour[$mac] = 1;}
             }
             
-            $minute = strtotime(date("Y-m-d h:i a", $v - 14400));
-            $hour = strtotime(date("1990-01-01 h:00 a", $v - 14400));
-            $day = strtotime(date("Y-m-d", $v - 14400));
-            $hourofday = date("H", $v - 14400);
-            $dayofyear = date("z", $v - 14400);
-            $dayofweek = date("w", $v - 14400);
-            $dayofweek3 = date("w", $v - 14400);
+            $minute = strtotime(date("Y-m-d h:i a", $v));
+            $hour = strtotime(date("1990-01-01 h:00 a", $v));
+            $day = strtotime(date("Y-m-d", $v));
+            $hourofday = date("H", $v);
+            $dayofyear = date("z", $v);
+            $dayofweek = date("w", $v);
+            $dayofweek3 = date("w", $v);
 
             // Keep track of counts by day
             if (isset($by_day[$dayofweek][$mac])) {$by_day[$dayofweek][$mac]++;}
@@ -97,6 +100,13 @@ do {
             else {$seen_dayofw[$mac][$dayofweek3] = 1;}
             if (isset($seen_hours[$mac][$hourofday])) {$seen_hours[$mac][$hourofday]++;}
             else {$seen_hours[$mac][$hourofday] = 1;}
+
+            // Last Seen
+            if (isset($last_seen[$mac])) {
+                if ($last_seen[$mac] < $v) {$last_seen[$mac] = $v}
+            } else {
+                $last_seen[$mac] = $v;
+            }
 
             // Stuff to show various tables
             /*
@@ -140,13 +150,13 @@ foreach ($top as $mac => $mct) {
     foreach ($seen_dayofw[$mac] as $dow => $dcnt) {$dowtot = $dowtot + ($dow * $dcnt);}
     foreach ($seen_hours[$mac] as $hrs => $dcnt) {
         $doytot = $doytot + ($hrs * $dcnt);
-        if ($mac == "5C:51:4F:4F:CC:BA") {echo "hrd = $hrs , count = $dcnt , totl = $doytot <br>\n";}
+        //if ($mac == "5C:51:4F:4F:CC:BA") {echo "hrd = $hrs , count = $dcnt , totl = $doytot <br>\n";}
     }
     $avg_dayofweek = round($dowtot/$mct,2);
     $avg_hr = round($doytot/$mct,2);
 
     if ($b_data != '') {$b_data .= ", \n";}
-    $b_data .= "{ showInLegend: false, name: '". str_replace("'", "\'", $name[$mac]) . "', data: [{x: " . $avg_hr . ", y: " . $avg_dayofweek . ", z: " . $mct . "}]}";
+    $b_data .= "{ showInLegend: false, name: '". str_replace("'", "\'", $name[$mac]) . "', data: [{m: '" . $mac . "', l: " . date("Y-m-d h:i a", $last_seen[$mac]) . ", x: " . $avg_hr . ", y: " . $avg_dayofweek . ", z: " . $mct . "}]}";
     //$b_data .= "[1, 2, " . $count . "]";
 }
 
@@ -227,12 +237,9 @@ $(function () {
         },
         plotOptions: {
             bubble: {
-                dataLabels: {
-                    enabled: true,
-                    style: { textShadow: 'none' },
-                    formatter: function() {
-                        return this.point.name;
-                    }
+                tooltip: {
+                    headerFormat: '<b>{series.name}</b><br>',
+                    pointFormat: '{point.z} Total<br>{point.x} Avg Hour<br>{point.y} Avg Day<br>{point.m} MAC<br>{point.l} Last Seen<br>'
                 }
             }
         },
