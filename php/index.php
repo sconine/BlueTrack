@@ -249,8 +249,7 @@ $(function () {
         plotOptions: {
             bubble: {
                 tooltip: {
-                    headerFormat: '<b>{point.n}</b> ',
-                    pointFormat: '<br>Seen: {point.z} times<br>Avg Hour: {point.x}, Avg Day: {point.y}<br>MAC: {point.m}<br>Last Seen: <b>{point.l}</b><br>'
+                    pointFormat: '<b>{point.n}</b><br>Seen: {point.z} times<br>Avg Hour: {point.x}, Avg Day: {point.y}<br>MAC: {point.m}<br>Last Seen: <b>{point.l}</b><br>'
                 }
             }
         },
