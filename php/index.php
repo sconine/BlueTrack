@@ -176,6 +176,7 @@ foreach ($top as $mac => $mct) {
     if (isset($series[$lsn])) { $series[$lsn] .= ", \n";} else {$series[$lsn] = '';}
     $mctd = $mct;
     if ($mctd > 300) {$mctd = 300;}
+    $type = "M";
     
     $series[$lsn] .= "{n: '". str_replace("'", "\'", $name[$mac]) 
             . "', m: '" . $mac 
@@ -183,6 +184,7 @@ foreach ($top as $mac => $mct) {
             . "', f: '" . date("m/d/Y h:i a", $first_seen[$mac]) 
             . "', d: '" . $day_names[(round($avg_dayofweek) - 1)]
             . "', h: '" . $disp_hr 
+            . "', type: '" . $type 
             . "', t: " . $mct 
             . ", x: " . $avg_hr 
             . ", y: " . $avg_dayofweek
@@ -274,12 +276,14 @@ $(function () {
         title: {
             text: 'Devices'
         },
-        
         tooltip: {
             useHTML: true, 
             formatter: function() {
                 return '<b>' + this.point.n + '</b><br>Seen: ' + this.point.t + 'times' +
-                    '<a href="" javascript="alert(\'hi\');">hi</a>' + 
+                    '<a onclick="do_stuff(\'M\');">M</a> | ' + 
+                    '<a onclick="do_stuff(\'C\');">C</a> | ' + 
+                    '<a onclick="do_stuff(\'P\');">P</a> | ' + 
+                    '<a onclick="do_stuff(\'D\');">D</a>' + 
                     '<br>Avg Hour: ' + this.point.h + ', Avg Day: ' + this.point.d +
                     '<br>MAC: ' + this.point.m + 
                     '<br>First Seen: <b>' + this.point.f +
@@ -288,6 +292,14 @@ $(function () {
         },
         plotOptions: {
             bubble: {
+                dataLabels: {
+                    enabled: true,
+                    style: { textShadow: 'none' },
+                    formatter: function() {
+                        return this.point.type;
+                    }
+                },
+            
                 minSize:10,
                 maxSize:100
                 //minSize:'2%',
