@@ -174,15 +174,19 @@ foreach ($top as $mac => $mct) {
         $lsn = strtotime(date("m/d/Y", $last_seen[$mac]));
     }
     if (isset($series[$lsn])) { $series[$lsn] .= ", \n";} else {$series[$lsn] = '';}
+    $mctd = mct;
+    if ($mctd > 500) {$mctd = 500;}
+    
     $series[$lsn] .= "{n: '". str_replace("'", "\'", $name[$mac]) 
             . "', m: '" . $mac 
             . "', l: '" . date("m/d/Y h:i a", $last_seen[$mac]) 
             . "', f: '" . date("m/d/Y h:i a", $first_seen[$mac]) 
             . "', d: '" . $day_names[(round($avg_dayofweek) - 1)]
             . "', h: '" . $disp_hr 
-            . "', x: " . $avg_hr 
+            . "', t: " . $mct 
+            . ", x: " . $avg_hr 
             . ", y: " . $avg_dayofweek
-            . ", z: " . $mct . "}";
+            . ", z: " . $mctd . "}";
 }
 krsort($series);
 foreach ($series as $lsn => $lsn_data) {
@@ -274,7 +278,7 @@ $(function () {
             bubble: {
                 tooltip: {
                     headerFormat: '',
-                    pointFormat: '<b>{point.n}</b><br>Seen: {point.z} times<br>Avg Hour: {point.h}, Avg Day: {point.d}<br>MAC: {point.m}<br>First Seen: <b>{point.f}</b><br>Last Seen: <b>{point.l}</b>'
+                    pointFormat: '<b>{point.n}</b><br>Seen: {point.t} times<br>Avg Hour: {point.h}, Avg Day: {point.d}<br>MAC: {point.m}<br>First Seen: <b>{point.f}</b><br>Last Seen: <b>{point.l}</b>'
                 },
                 //minSize:2,
                 //maxSize:100
