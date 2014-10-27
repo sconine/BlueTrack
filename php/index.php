@@ -280,10 +280,10 @@ $(function () {
             useHTML: true, 
             formatter: function() {
                 return '<b>' + this.point.n + '</b><br>Seen: ' + this.point.t + 'times' +
-                    '<a onclick="do_stuff(\'M\');">M</a> | ' + 
-                    '<a onclick="do_stuff(\'C\');">C</a> | ' + 
-                    '<a onclick="do_stuff(\'P\');">P</a> | ' + 
-                    '<a onclick="do_stuff(\'D\');">D</a>' + 
+                    ' (<a onclick="set_type(\'M\', ' + this.point.m + ');">M</a> | ' + 
+                    '<a onclick="set_type(\'C\', ' + this.point.m + ');">C</a> | ' + 
+                    '<a onclick="set_type(\'P\', ' + this.point.m + ');">P</a> | ' + 
+                    '<a onclick="set_type(\'D\', ' + this.point.m + ');">D</a>)' + 
                     '<br>Avg Hour: ' + this.point.h + ', Avg Day: ' + this.point.d +
                     '<br>MAC: ' + this.point.m + 
                     '<br>First Seen: <b>' + this.point.f +
@@ -294,7 +294,7 @@ $(function () {
             bubble: {
                 dataLabels: {
                     enabled: true,
-                    style: { textShadow: 'none' },
+                    style: { textShadow: 'none', color: '#000000' },
                     formatter: function() {
                         return this.point.type;
                     }
@@ -311,7 +311,11 @@ $(function () {
     });
 });
 
-
+function set_type(type, mac) {
+    alert('set type: ' + type + ' for mac: ' + mac);
+    return false;
+    
+}
 
 </script>
 
