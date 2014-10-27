@@ -280,10 +280,10 @@ $(function () {
                     headerFormat: '',
                     pointFormat: '<b>{point.n}</b><br>Seen: {point.t} times<br>Avg Hour: {point.h}, Avg Day: {point.d}<br>MAC: {point.m}<br>First Seen: <b>{point.f}</b><br>Last Seen: <b>{point.l}</b>'
                 },
-                //minSize:2,
-                //maxSize:100
-                minSize:'2%',
-                maxSize:'50%'
+                minSize:2,
+                maxSize:25
+                //minSize:'2%',
+                //maxSize:'50%'
                 
             }
         },
