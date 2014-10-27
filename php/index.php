@@ -35,7 +35,7 @@ $tableName = "collector_data";
 
 //echo "<table><tr><td>mac_id</td><td>collector_id</td><td>name</td><td>clock_offset</td><td>class</td><td>inq_on</td><td>scan_on</td></tr>";
 $count = 0;
-$day_names = array["Mon", "Tues", "Wed", "Thurs", "Fri", "Sat", "Sun"];
+$day_names = array("Mon", "Tues", "Wed", "Thurs", "Fri", "Sat", "Sun");
 $last_hour = array();
 $by_day = array();
 $by_class = array();
