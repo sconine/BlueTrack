@@ -280,7 +280,6 @@ $(function () {
                 maxSize:75
                 //minSize:'5%',
                 //maxSize:'50%'
-            }
                 
             }
         },
