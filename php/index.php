@@ -174,9 +174,10 @@ foreach ($top as $mac => $mct) {
             . "', m: '" . $mac 
             . "', l: '" . date("m/d/Y h:i a", $last_seen[$mac]) 
             . "', f: '" . date("m/d/Y h:i a", $first_seen[$mac]) 
+            . "', d: '" . jddayofweek(round($avg_dayofweek), 2) 
             . "', x: " . $avg_hr 
-            . ", y: '" . jddayofweek(round($avg_dayofweek), 2)
-            . "', z: " . $mct . "}";
+            . ", y: " . $avg_dayofweek
+            . ", z: " . $mct . "}";
 }
 krsort($series);
 foreach ($series as $lsn => $lsn_data) {
@@ -263,7 +264,7 @@ $(function () {
             bubble: {
                 tooltip: {
                     headerFormat: '',
-                    pointFormat: '<b>{point.n}</b><br>Seen: {point.z} times<br>Avg Hour: {point.x}, Avg Day: {point.y}<br>MAC: {point.m}<br>First Seen: <b>{point.f}</b><br>Last Seen: <b>{point.l}</b>'
+                    pointFormat: '<b>{point.n}</b><br>Seen: {point.z} times<br>Avg Hour: {point.x}, Avg Day: {point.d}<br>MAC: {point.m}<br>First Seen: <b>{point.f}</b><br>Last Seen: <b>{point.l}</b>'
                 }
             }
         },
