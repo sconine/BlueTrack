@@ -161,7 +161,7 @@ foreach ($top as $mac => $mct) {
     if ($last_seen[$mac] > (time() - (3600*24*7))) {
         $lsn = date("m/d/Y", $last_seen[$mac]);
     }
-    if (isset($series[$lsn])) { $series[$lsn] .= ", \n";}
+    if (isset($series[$lsn])) { $series[$lsn] .= ", \n";} else {$series[$lsn] = '';}
     $series[$lsn] .= "{n: '". str_replace("'", "\'", $name[$mac]) 
             . "', m: '" . $mac . "', l: '" . date("m/d/Y h:i a", $last_seen[$mac]) . "', x: " 
             . $avg_hr . ", y: " . $avg_dayofweek . ", z: " . $mct . "}";
