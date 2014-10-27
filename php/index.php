@@ -35,6 +35,7 @@ $tableName = "collector_data";
 
 //echo "<table><tr><td>mac_id</td><td>collector_id</td><td>name</td><td>clock_offset</td><td>class</td><td>inq_on</td><td>scan_on</td></tr>";
 $count = 0;
+$day_names = array["Mon", "Tues", "Wed", "Thurs", "Fri", "Sat", "Sun"];
 $last_hour = array();
 $by_day = array();
 $by_class = array();
@@ -177,7 +178,7 @@ foreach ($top as $mac => $mct) {
             . "', m: '" . $mac 
             . "', l: '" . date("m/d/Y h:i a", $last_seen[$mac]) 
             . "', f: '" . date("m/d/Y h:i a", $first_seen[$mac]) 
-            . "', d: '" . round($avg_dayofweek)
+            . "', d: '" . $day_names[(round($avg_dayofweek) - 1)];
             . "', h: '" . $disp_hr 
             . "', x: " . $avg_hr 
             . ", y: " . $avg_dayofweek
@@ -201,7 +202,7 @@ $(function () {
             text: 'Daily Devices'
         },
         xAxis: {
-            categories: ['Sun', 'Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat']
+            categories: ['Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat', 'Sun']
         },
         yAxis: {
             title: {
