@@ -280,10 +280,10 @@ $(function () {
             useHTML: true, 
             formatter: function() {
                 return '<b>' + this.point.n + '</b><br>Seen: ' + this.point.t + 'times' +
-                    ' (<a onclick="set_type(\'M\', ' + this.point.m + ');">M</a> | ' + 
-                    '<a onclick="set_type(\'C\', ' + this.point.m + ');">C</a> | ' + 
-                    '<a onclick="set_type(\'P\', ' + this.point.m + ');">P</a> | ' + 
-                    '<a onclick="set_type(\'D\', ' + this.point.m + ');">D</a>)' + 
+                    ' (<a onclick="set_type(\'M\', \'' + this.point.m + '\');">M</a> | ' + 
+                    '<a onclick="set_type(\'C\', \'' + this.point.m + '\');">C</a> | ' + 
+                    '<a onclick="set_type(\'P\', \'' + this.point.m + '\');">P</a> | ' + 
+                    '<a onclick="set_type(\'D\', \'' + this.point.m + '\');">D</a>)' + 
                     '<br>Avg Hour: ' + this.point.h + ', Avg Day: ' + this.point.d +
                     '<br>MAC: ' + this.point.m + 
                     '<br>First Seen: <b>' + this.point.f +
