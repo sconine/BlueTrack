@@ -253,8 +253,8 @@ $(function () {
 
 <?php
 //If there is no LastEvaluatedKey in the response, there are no more items matching this Scan invocation
-<hr>
-echo "Key Facts:<table><tr><td>Total Seen</td><td>$count</td></tr>";
+
+echo "<hr>Key Facts:<table><tr><td>Total Seen</td><td>$count</td></tr>";
 echo "<tr><td>Seen in Last Hour</td><td>" . count($last_hour) . "</td></tr>";
 echo "</table><br>";
 
