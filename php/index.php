@@ -265,7 +265,7 @@ $(function () {
             labels: {
                 enabled: true
             },
-            categories: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun']
+            categories: [' ', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun', ' ']
         },
         title: {
             text: 'Devices'
@@ -276,8 +276,8 @@ $(function () {
                     headerFormat: '',
                     pointFormat: '<b>{point.n}</b><br>Seen: {point.z} times<br>Avg Hour: {point.h}, Avg Day: {point.d}<br>MAC: {point.m}<br>First Seen: <b>{point.f}</b><br>Last Seen: <b>{point.l}</b>'
                 },
-                minSize:10,
-                maxSize:75
+                minSize:2,
+                maxSize:10
                 //minSize:'5%',
                 //maxSize:'50%'
                 
