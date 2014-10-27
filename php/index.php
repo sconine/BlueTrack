@@ -39,6 +39,7 @@ $last_hour = array();
 $by_day = array();
 $by_class = array();
 $last_seen = array();
+$first_seen = array();
 $top = array();
 $names = array();
 $show_minutes = array();
@@ -108,6 +109,13 @@ do {
                 $last_seen[$mac] = $v;
             }
 
+            // First Seen
+            if (isset($first_seen[$mac])) {
+                if ($first_seen[$mac] > $v) {$first_seen[$mac] = $v;}
+            } else {
+                $first_seen[$mac] = $v;
+            }
+
             // Stuff to show various tables
             /*
             if (isset($show_minutes[$mac][$minute])) {$show_minutes[$mac][$minute]++;}
@@ -163,8 +171,12 @@ foreach ($top as $mac => $mct) {
     }
     if (isset($series[$lsn])) { $series[$lsn] .= ", \n";} else {$series[$lsn] = '';}
     $series[$lsn] .= "{n: '". str_replace("'", "\'", $name[$mac]) 
-            . "', m: '" . $mac . "', l: '" . date("m/d/Y h:i a", $last_seen[$mac]) . "', x: " 
-            . $avg_hr . ", y: " . $avg_dayofweek . ", z: " . $mct . "}";
+            . "', m: '" . $mac 
+            . "', l: '" . date("m/d/Y h:i a", $last_seen[$mac]) 
+            . "', f: '" . date("m/d/Y h:i a", $first_seen[$mac]) 
+            . "', x: " . $avg_hr 
+            . ", y: " . $avg_dayofweek 
+            . ", z: " . $mct . "}";
 }
 krsort($series);
 foreach ($series as $lsn => $lsn_data) {
@@ -250,7 +262,7 @@ $(function () {
         plotOptions: {
             bubble: {
                 tooltip: {
-                    pointFormat: '<b>{point.n}</b><br>Seen: {point.z} times<br>Avg Hour: {point.x}, Avg Day: {point.y}<br>MAC: {point.m}<br>Last Seen: <b>{point.l}</b><br>'
+                    pointFormat: '<b>{point.n}</b><br>Seen: {point.z} times<br>Avg Hour: {point.x}, Avg Day: {point.y}<br>MAC: {point.m}<br>First Seen: <b>{point.f}</b><br>Last Seen: <b>{point.l}</b>'
                 }
             }
         },
