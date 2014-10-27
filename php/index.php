@@ -143,6 +143,7 @@ foreach ($by_class as $class => $mac) {
 
 // Data for bubble chart
 $b_data = '';
+$series = array();
 foreach ($top as $mac => $mct) {
     // For each device get the top day it's been seen and the top date
     $dowtot = 0;
@@ -155,11 +156,21 @@ foreach ($top as $mac => $mct) {
     $avg_dayofweek = round($dowtot/$mct,2);
     $avg_hr = round($doytot/$mct,2);
 
-    if ($b_data != '') {$b_data .= ", \n";}
-    $b_data .= "{ showInLegend: false, name: '". str_replace("'", "\'", $name[$mac]) . "', data: [{m: '" . $mac . "', l: '" . date("m/d/Y h:i a", $last_seen[$mac]) . "', x: " . $avg_hr . ", y: " . $avg_dayofweek . ", z: " . $mct . "}]}";
-    //$b_data .= "[1, 2, " . $count . "]";
+    // Name series based on how recently these were seen
+    $lsn = 'More than 7 Days Ago';
+    if ($last_seen[$mac] > (time() - (3600*24*7))) {
+        $lsn = date("m/d/Y", $last_seen[$mac]);
+    }
+    if (isset($series[$lsn])) { $series[$lsn] .= ", \n";}
+    $series[$lsn] .= "{n: '". str_replace("'", "\'", $name[$mac]) 
+            . "', m: '" . $mac . "', l: '" . date("m/d/Y h:i a", $last_seen[$mac]) . "', x: " 
+            . $avg_hr . ", y: " . $avg_dayofweek . ", z: " . $mct . "}";
 }
 
+foreach ($series as $lsn => $lsn_data) {
+    if ($b_data != '') {$b_data .= ", \n";}
+    $b_data .= "{ showInLegend: true, name: '". $lsn . "', data: [" . $lsn_data . "]}";
+}
 ?>
 
 <script>
@@ -238,8 +249,8 @@ $(function () {
         plotOptions: {
             bubble: {
                 tooltip: {
-                    headerFormat: '<b>{series.name}</b> ',
-                    pointFormat: 'Seen: {point.z} times<br>Avg Hour: {point.x}, Avg Day: {point.y}<br>MAC: {point.m}<br>Last Seen: <b>{point.l}</b><br>'
+                    headerFormat: '<b>{point.n}</b> ',
+                    pointFormat: '<br>Seen: {point.z} times<br>Avg Hour: {point.x}, Avg Day: {point.y}<br>MAC: {point.m}<br>Last Seen: <b>{point.l}</b><br>'
                 }
             }
         },
