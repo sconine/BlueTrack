@@ -274,12 +274,20 @@ $(function () {
         title: {
             text: 'Devices'
         },
+        
+        tooltip: {
+            useHTML: true, 
+            formatter: function() {
+                return '<b>' + this.point.n + '</b><br>Seen: ' + this.point.t + 'times' +
+                    '<a href="" javascript="alert(\'hi\');">hi</a>' + 
+                    '<br>Avg Hour: ' + this.point.h + ', Avg Day: ' + this.point.d +
+                    '<br>MAC: ' + this.point.m + 
+                    '<br>First Seen: <b>' + this.point.f +
+                    '</b><br>Last Seen: <b>' + this.point.l + '</b>';
+            }
+        },
         plotOptions: {
             bubble: {
-                tooltip: {
-                    headerFormat: '',
-                    pointFormat: '<b>{point.n}</b><br>Seen: {point.t} times <a href"" javascript="alert(\'hi\');">hi</a><br>Avg Hour: {point.h}, Avg Day: {point.d}<br>MAC: {point.m}<br>First Seen: <b>{point.f}</b><br>Last Seen: <b>{point.l}</b>'
-                },
                 minSize:10,
                 maxSize:100
                 //minSize:'2%',
