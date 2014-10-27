@@ -70,8 +70,6 @@ do {
         $seen_count = 0;
         foreach ($seen as $i => $v) {
             $seen_count++;
-            // put in EST
-            $v = $v - 14400;
             
             // Keep track of ones we've seen in last hour
             if ($v > (time() - 3600)) {
@@ -79,6 +77,9 @@ do {
                 else {$last_hour[$mac] = 1;}
             }
             
+            // put in EST
+            $v = $v - (3600 * 5);
+
             $minute = strtotime(date("Y-m-d h:i a", $v));
             $hour = strtotime(date("1990-01-01 h:00 a", $v));
             $day = strtotime(date("Y-m-d", $v));
@@ -176,7 +177,7 @@ foreach ($top as $mac => $mct) {
             . "', m: '" . $mac 
             . "', l: '" . date("m/d/Y h:i a", $last_seen[$mac]) 
             . "', f: '" . date("m/d/Y h:i a", $first_seen[$mac]) 
-            . "', d: '" . jddayofweek(round($avg_dayofweek), 2) 
+            . "', d: '" . round($avg_dayofweek)
             . "', h: '" . $disp_hr 
             . "', x: " . $avg_hr 
             . ", y: " . $avg_dayofweek
