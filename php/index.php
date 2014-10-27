@@ -178,7 +178,7 @@ foreach ($top as $mac => $mct) {
             . "', m: '" . $mac 
             . "', l: '" . date("m/d/Y h:i a", $last_seen[$mac]) 
             . "', f: '" . date("m/d/Y h:i a", $first_seen[$mac]) 
-            . "', d: '" . $day_names[(round($avg_dayofweek) - 1)];
+            . "', d: '" . $day_names[(round($avg_dayofweek) - 1)]
             . "', h: '" . $disp_hr 
             . "', x: " . $avg_hr 
             . ", y: " . $avg_dayofweek
