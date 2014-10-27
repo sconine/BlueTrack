@@ -157,7 +157,7 @@ foreach ($top as $mac => $mct) {
     $avg_hr = round($doytot/$mct,2);
 
     // Name series based on how recently these were seen
-    $lsn = 'More than 7 Days Ago';
+    $lsn = 0;
     if ($last_seen[$mac] > (time() - (3600*24*7))) {
         $lsn = strtotime(date("m/d/Y", $last_seen[$mac]));
     }
@@ -169,7 +169,8 @@ foreach ($top as $mac => $mct) {
 arsort($series);
 foreach ($series as $lsn => $lsn_data) {
     if ($b_data != '') {$b_data .= ", \n";}
-    $b_data .= "{ showInLegend: true, name: '". date("m/d/Y", $lsn) . "', data: [" . $lsn_data . "]}";
+    if ($lsn == 0) {$lsn = "More than 7 Days Ago";} else {$lsn = date("m/d/Y", $lsn);}
+    $b_data .= "{ showInLegend: true, name: '". $lsn . "', data: [" . $lsn_data . "]}";
 }
 ?>
 
