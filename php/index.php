@@ -159,17 +159,17 @@ foreach ($top as $mac => $mct) {
     // Name series based on how recently these were seen
     $lsn = 'More than 7 Days Ago';
     if ($last_seen[$mac] > (time() - (3600*24*7))) {
-        $lsn = date("m/d/Y", $last_seen[$mac]);
+        $lsn = strtotime(date("m/d/Y", $last_seen[$mac]));
     }
     if (isset($series[$lsn])) { $series[$lsn] .= ", \n";} else {$series[$lsn] = '';}
     $series[$lsn] .= "{n: '". str_replace("'", "\'", $name[$mac]) 
             . "', m: '" . $mac . "', l: '" . date("m/d/Y h:i a", $last_seen[$mac]) . "', x: " 
             . $avg_hr . ", y: " . $avg_dayofweek . ", z: " . $mct . "}";
 }
-
+arsort($series);
 foreach ($series as $lsn => $lsn_data) {
     if ($b_data != '') {$b_data .= ", \n";}
-    $b_data .= "{ showInLegend: true, name: '". $lsn . "', data: [" . $lsn_data . "]}";
+    $b_data .= "{ showInLegend: true, name: '". date("m/d/Y", $lsn) . "', data: [" . $lsn_data . "]}";
 }
 ?>
 
