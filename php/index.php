@@ -175,7 +175,7 @@ foreach ($top as $mac => $mct) {
     }
     if (isset($series[$lsn])) { $series[$lsn] .= ", \n";} else {$series[$lsn] = '';}
     $mctd = $mct;
-    if ($mctd > 500) {$mctd = 500;}
+    if ($mctd > 300) {$mctd = 300;}
     
     $series[$lsn] .= "{n: '". str_replace("'", "\'", $name[$mac]) 
             . "', m: '" . $mac 
@@ -281,7 +281,7 @@ $(function () {
                     pointFormat: '<b>{point.n}</b><br>Seen: {point.t} times<br>Avg Hour: {point.h}, Avg Day: {point.d}<br>MAC: {point.m}<br>First Seen: <b>{point.f}</b><br>Last Seen: <b>{point.l}</b>'
                 },
                 minSize:2,
-                maxSize:25
+                maxSize:1000
                 //minSize:'2%',
                 //maxSize:'50%'
                 
