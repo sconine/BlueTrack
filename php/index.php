@@ -277,7 +277,7 @@ $(function () {
                     pointFormat: '<b>{point.n}</b><br>Seen: {point.z} times<br>Avg Hour: {point.h}, Avg Day: {point.d}<br>MAC: {point.m}<br>First Seen: <b>{point.f}</b><br>Last Seen: <b>{point.l}</b>'
                 },
                 minSize:2,
-                maxSize:10
+                maxSize:100
                 //minSize:'5%',
                 //maxSize:'50%'
                 
