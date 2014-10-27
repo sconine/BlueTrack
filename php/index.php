@@ -156,7 +156,7 @@ foreach ($top as $mac => $mct) {
     $avg_hr = round($doytot/$mct,2);
 
     if ($b_data != '') {$b_data .= ", \n";}
-    $b_data .= "{ showInLegend: false, name: '". str_replace("'", "\'", $name[$mac]) . "', data: [{m: '" . $mac . "', l: '" . date("Y-m-d h:i a", $last_seen[$mac]) . "', x: " . $avg_hr . ", y: " . $avg_dayofweek . ", z: " . $mct . "}]}";
+    $b_data .= "{ showInLegend: false, name: '". str_replace("'", "\'", $name[$mac]) . "', data: [{m: '" . $mac . "', l: '" . date("m/d/Y h:i a", $last_seen[$mac]) . "', x: " . $avg_hr . ", y: " . $avg_dayofweek . ", z: " . $mct . "}]}";
     //$b_data .= "[1, 2, " . $count . "]";
 }
 
@@ -238,8 +238,8 @@ $(function () {
         plotOptions: {
             bubble: {
                 tooltip: {
-                    headerFormat: '<b>{series.name}</b><br>',
-                    pointFormat: '{point.z} Total<br>{point.x} Avg Hour<br>{point.y} Avg Day<br>{point.m} MAC<br>{point.l} Last Seen<br>'
+                    headerFormat: '<b>{series.name}</b> ',
+                    pointFormat: 'Seen: {point.z} times<br>Avg Hour: {point.x}, Avg Day: {point.y}<br>MAC: {point.m}<br>Last Seen: <b>{point.l}</b><br>'
                 }
             }
         },
@@ -253,6 +253,7 @@ $(function () {
 
 <?php
 //If there is no LastEvaluatedKey in the response, there are no more items matching this Scan invocation
+<hr>
 echo "Key Facts:<table><tr><td>Total Seen</td><td>$count</td></tr>";
 echo "<tr><td>Seen in Last Hour</td><td>" . count($last_hour) . "</td></tr>";
 echo "</table><br>";
