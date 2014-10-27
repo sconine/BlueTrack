@@ -175,7 +175,7 @@ foreach ($top as $mac => $mct) {
             . "', l: '" . date("m/d/Y h:i a", $last_seen[$mac]) 
             . "', f: '" . date("m/d/Y h:i a", $first_seen[$mac]) 
             . "', x: " . $avg_hr 
-            . ", y: " . $avg_dayofweek 
+            . ", y: " . jddayofweek(round($avg_dayofweek), 2)
             . ", z: " . $mct . "}";
 }
 krsort($series);
