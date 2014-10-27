@@ -174,7 +174,7 @@ foreach ($top as $mac => $mct) {
         $lsn = strtotime(date("m/d/Y", $last_seen[$mac]));
     }
     if (isset($series[$lsn])) { $series[$lsn] .= ", \n";} else {$series[$lsn] = '';}
-    $mctd = mct;
+    $mctd = $mct;
     if ($mctd > 500) {$mctd = 500;}
     
     $series[$lsn] .= "{n: '". str_replace("'", "\'", $name[$mac]) 
