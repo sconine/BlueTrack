@@ -84,8 +84,8 @@ do {
             $day = strtotime(date("Y-m-d", $v));
             $hourofday = date("H", $v);
             $dayofyear = date("z", $v);
-            $dayofweek = date("w", $v);
-            $dayofweek3 = date("w", $v);
+            $dayofweek = date("N", $v);
+            $dayofweek3 = date("N", $v);
 
             // Keep track of counts by day
             if (isset($by_day[$dayofweek][$mac])) {$by_day[$dayofweek][$mac]++;}
@@ -163,6 +163,8 @@ foreach ($top as $mac => $mct) {
     }
     $avg_dayofweek = round($dowtot/$mct,2);
     $avg_hr = round($doytot/$mct,2);
+    $disp_hr = date("h:i a", round($avg_hr * 60 * 60));
+    
 
     // Name series based on how recently these were seen
     $lsn = 0;
@@ -175,6 +177,7 @@ foreach ($top as $mac => $mct) {
             . "', l: '" . date("m/d/Y h:i a", $last_seen[$mac]) 
             . "', f: '" . date("m/d/Y h:i a", $first_seen[$mac]) 
             . "', d: '" . jddayofweek(round($avg_dayofweek), 2) 
+            . "', h: '" . $disp_hr 
             . "', x: " . $avg_hr 
             . ", y: " . $avg_dayofweek
             . ", z: " . $mct . "}";
@@ -264,7 +267,7 @@ $(function () {
             bubble: {
                 tooltip: {
                     headerFormat: '',
-                    pointFormat: '<b>{point.n}</b><br>Seen: {point.z} times<br>Avg Hour: {point.x}, Avg Day: {point.d}<br>MAC: {point.m}<br>First Seen: <b>{point.f}</b><br>Last Seen: <b>{point.l}</b>'
+                    pointFormat: '<b>{point.n}</b><br>Seen: {point.z} times<br>Avg Hour: {point.h}, Avg Day: {point.d}<br>MAC: {point.m}<br>First Seen: <b>{point.f}</b><br>Last Seen: <b>{point.l}</b>'
                 }
             }
         },
