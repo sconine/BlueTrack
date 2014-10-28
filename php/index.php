@@ -46,7 +46,7 @@ $type_list['A'] = 1; // Apple Device
 $type_list['C'] = 1; // Computer
 $type_list['G'] = 1; // GPS
 $type_list['T'] = 1; // TV Device
-$type_list['M'] = 1; // Music Device
+$type_list['S'] = 1; // Music Device
 $type_list['U'] = 1; // Unknown
 $type_list['X'] = 1; // Not Set
 $by_day = array();
@@ -392,7 +392,7 @@ A = Apple Device<br>
 C = Computer<br>
 G = GPS<br>
 T = TV Device<br>
-M = Music Device<br>
+S = Music Device<br>
 U = Unknown<br>
 X = Not Set<br>
 
