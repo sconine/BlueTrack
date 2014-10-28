@@ -176,7 +176,7 @@ foreach ($top as $mac => $mct) {
     if (isset($series[$lsn])) { $series[$lsn] .= ", \n";} else {$series[$lsn] = '';}
     $mctd = $mct;
     if ($mctd > 300) {$mctd = 300;}
-    $type = "M";
+    $type = "X";
     
     $series[$lsn] .= "{n: '". str_replace("'", "\'", $name[$mac]) 
             . "', m: '" . $mac 
@@ -300,7 +300,7 @@ $(function () {
                     }
                 },
             
-                minSize:10,
+                minSize:15,
                 maxSize:100
                 //minSize:'2%',
                 //maxSize:'50%'
@@ -312,7 +312,18 @@ $(function () {
 });
 
 function set_type(type, mac) {
-    alert('set type: ' + type + ' for mac: ' + mac);
+    //alert('set type: ' + type + ' for mac: ' + mac);
+    var jqxhr = $.ajax( "set_type.php" )
+      .done(function(data) {
+        alert( "success:" + data );
+      })
+      .fail(function() {
+        alert( "error" );
+      })
+      .always(function() {
+        alert( "complete" );
+      });    
+      
     return false;
     
 }
