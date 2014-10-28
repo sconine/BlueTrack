@@ -196,7 +196,7 @@ foreach ($top as $mac => $mct) {
 // Build the type list for ajax setting
 $b_types = '';
 foreach ($type_list as $i => $type) {
-    if ($b_types == '') { $b_types = "'(";} else {$b_types .= " | ' + \n";}
+    if ($b_types == '') { $b_types = "\t\t'(";} else {$b_types .= " | ' + \n \t\t'";}
     $b_types .= "<a onclick=\"set_type(\'" . $type . "\', \'' + this.point.m + '\');\">" . $type . "</a>";
 }
 $b_types .= ")' + \n";
@@ -295,7 +295,7 @@ $(function () {
                     <?php
                         echo($b_types);
                     ?>
-                    ' <b>' + this.point.type + '</b>'
+                    ' <b>' + this.point.type + '</b>' +
                     '<br>Avg Hour: ' + this.point.h + ', Avg Day: ' + this.point.d +
                     '<br>MAC: ' + this.point.m + 
                     '<br>First Seen: <b>' + this.point.f +
