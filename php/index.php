@@ -53,6 +53,7 @@ $last_seen = array();
 $first_seen = array();
 $top = array();
 $names = array();
+$dev_type = array();
 $show_minutes = array();
 $seen_hours = array();
 $seen_days = array();
@@ -75,8 +76,8 @@ do {
         $count++;
         $mac = $value['mac_id']["S"];
         $name[$mac] = implode(',', $value['name']["SS"]);
-        $name[$mac]['type'] = isset($value['type']["S"]) ? $value['type']["S"] : 'X';
-        $type_list[$name[$mac]['type']] = 1;
+        $dev_type[$mac] = isset($value['type']["S"]) ? $value['type']["S"] : 'X';
+        $type_list[$dev_type[$mac]] = 1;
         
         // Manipulate the dates a bit
         $seen = array_merge($value['scan_on']["NS"], $value['inq_on']["NS"]);
@@ -196,7 +197,7 @@ foreach ($top as $mac => $mct) {
             . "', f: '" . date("m/d/Y h:i a", $first_seen[$mac]) 
             . "', d: '" . $day_names[(round($avg_dayofweek) - 1)]
             . "', h: '" . $disp_hr 
-            . "', type: '" . $name[$mac]['type'] 
+            . "', type: '" . $dev_type[$mac] 
             . "', t: " . $mct 
             . ", x: " . $avg_hr 
             . ", y: " . $avg_dayofweek
