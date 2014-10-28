@@ -196,10 +196,10 @@ foreach ($top as $mac => $mct) {
 // Build the type list for ajax setting
 $b_types = '';
 foreach ($type_list as $i => $type) {
-    if ($b_type == '') { $b_type = "'(";} else {$b_type .= " | ' + \n";}
-    $b_type .= "<a onclick=\"set_type(\'" . $type . "\', \'' + this.point.m + '\');\">" . $type . "</a>";
+    if ($b_types == '') { $b_types = "'(";} else {$b_types .= " | ' + \n";}
+    $b_types .= "<a onclick=\"set_type(\'" . $type . "\', \'' + this.point.m + '\');\">" . $type . "</a>";
 }
-$b_type .= ")' + \n";
+$b_types .= ")' + \n";
 
 // Build the series
 krsort($series);
