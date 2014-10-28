@@ -7,7 +7,7 @@ $config = json_decode($datastring, true);
 if ($debug) {var_dump($config);}
 
 if (isset($_REQUEST['type'])) {$type = $_REQUEST['type'];} else {echo 'No Type'; exit;}
-if (isset($_REQUEST['mac'])) {$mac = $_REQUEST['type'];} else {echo 'No Mac'; exit;}
+if (isset($_REQUEST['mac'])) {$mac = $_REQUEST['mac'];} else {echo 'No Mac'; exit;}
 
 $pattern = '/^[a-zA-Z0-9:]+$/';
 if (preg_match($pattern, $type) == 0) {echo 'Bad Type'; exit;}
