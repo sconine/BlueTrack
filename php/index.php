@@ -38,6 +38,15 @@ $count = 0;
 $day_names = array("Mon", "Tues", "Wed", "Thurs", "Fri", "Sat", "Sun");
 $last_hour = array();
 $type_list = array();
+// Set some default ones
+$type_list['M'] = 1; // Mobile Phone
+$type_list['H'] = 1; // Human
+$type_list['V'] = 1; // Vehicle
+$type_list['A'] = 1; // Apple Device
+$type_list['C'] = 1; // Computer
+$type_list['G'] = 1; // GPS
+$type_list['U'] = 1; // Unknown
+$type_list['X'] = 1; // Not Set
 $by_day = array();
 $by_class = array();
 $last_seen = array();
@@ -67,7 +76,7 @@ do {
         $mac = $value['mac_id']["S"];
         $name[$mac] = implode(',', $value['name']["SS"]);
         $name[$mac]['type'] = isset($value['type']["S"]) ? $value['type']["S"] : 'X';
-        $type_list[] = $name[$mac]['type'];
+        $type_list[$name[$mac]['type']] = 1;
         
         // Manipulate the dates a bit
         $seen = array_merge($value['scan_on']["NS"], $value['inq_on']["NS"]);
@@ -195,8 +204,8 @@ foreach ($top as $mac => $mct) {
 }
 // Build the type list for ajax setting
 $b_types = '';
-foreach ($type_list as $i => $type) {
-    if ($b_types == '') { $b_types = "\t\t'(";} else {$b_types .= " | ' + \n \t\t'";}
+foreach ($type_list as $type) {
+    if ($b_types == '') { $b_types = "\t\t\t\t'(";} else {$b_types .= " | ' + \n \t\t\t\t'";}
     $b_types .= "<a onclick=\"set_type(\'" . $type . "\', \'' + this.point.m + '\');\">" . $type . "</a>";
 }
 $b_types .= ")' + \n";
@@ -372,6 +381,15 @@ echo "</table><br> There are <b>$count</b> Total!<br>";
 
 ?>
 
+<b>Device Type Key</b><br>
+M = Mobile Phone<br>
+H = Human<br>
+V = Vehicle<br>
+A = Apple Device<br>
+C = Computer<br>
+G = GPS<br>
+U = Unknown<br>
+X = Not Set<br>
 
 </body>
 </html>
