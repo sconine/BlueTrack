@@ -313,15 +313,16 @@ $(function () {
 
 function set_type(type, mac) {
     //alert('set type: ' + type + ' for mac: ' + mac);
-    var jqxhr = $.ajax( "set_type.php" )
+    var url = "set_type.php?type=" + encodeURIComponent(type) + "&mac=" + encodeURIComponent(mac);
+    var jqxhr = $.ajax( url )
       .done(function(data) {
-        alert( "success:" + data );
+        alert( data + 'set type: ' + type + ' for mac: ' + mac);
       })
       .fail(function() {
-        alert( "error" );
+        //alert( "error" );
       })
       .always(function() {
-        alert( "complete" );
+        //alert( "complete" );
       });    
       
     return false;
