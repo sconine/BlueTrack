@@ -37,6 +37,7 @@ $tableName = "collector_data";
 $count = 0;
 $day_names = array("Mon", "Tues", "Wed", "Thurs", "Fri", "Sat", "Sun");
 $last_hour = array();
+$type_list = array();
 $by_day = array();
 $by_class = array();
 $last_seen = array();
@@ -65,6 +66,8 @@ do {
         $count++;
         $mac = $value['mac_id']["S"];
         $name[$mac] = implode(',', $value['name']["SS"]);
+        $name[$mac]['type'] = isset($value['type']["S"]) ? $value['type']["S"] : 'X';
+        $type_list[] = $name[$mac]['type'];
         
         // Manipulate the dates a bit
         $seen = array_merge($value['scan_on']["NS"], $value['inq_on']["NS"]);
@@ -174,22 +177,31 @@ foreach ($top as $mac => $mct) {
         $lsn = strtotime(date("m/d/Y", $last_seen[$mac]));
     }
     if (isset($series[$lsn])) { $series[$lsn] .= ", \n";} else {$series[$lsn] = '';}
+    // Set an upper limit on the circle size
     $mctd = $mct;
     if ($mctd > 300) {$mctd = 300;}
-    $type = "X";
-    
+
     $series[$lsn] .= "{n: '". str_replace("'", "\'", $name[$mac]) 
             . "', m: '" . $mac 
             . "', l: '" . date("m/d/Y h:i a", $last_seen[$mac]) 
             . "', f: '" . date("m/d/Y h:i a", $first_seen[$mac]) 
             . "', d: '" . $day_names[(round($avg_dayofweek) - 1)]
             . "', h: '" . $disp_hr 
-            . "', type: '" . $type 
+            . "', type: '" . $name[$mac]['type'] 
             . "', t: " . $mct 
             . ", x: " . $avg_hr 
             . ", y: " . $avg_dayofweek
             . ", z: " . $mctd . "}";
 }
+// Build the type list for ajax setting
+$b_types = '';
+foreach ($type_list as $i => $type) {
+    if ($b_type == '') { $b_type = "'(";} else {$b_type .= " | ' + \n";}
+    $b_type .= "<a onclick=\"set_type(\'" . $type . "\', \'' + this.point.m + '\');\">" . $type . "</a>";
+}
+$b_type .= ")' + \n";
+
+// Build the series
 krsort($series);
 foreach ($series as $lsn => $lsn_data) {
     if ($b_data != '') {$b_data .= ", \n";}
@@ -279,11 +291,11 @@ $(function () {
         tooltip: {
             useHTML: true, 
             formatter: function() {
-                return '<b>' + this.point.n + '</b><br>Seen: ' + this.point.t + 'times' +
-                    ' (<a onclick="set_type(\'M\', \'' + this.point.m + '\');">M</a> | ' + 
-                    '<a onclick="set_type(\'C\', \'' + this.point.m + '\');">C</a> | ' + 
-                    '<a onclick="set_type(\'P\', \'' + this.point.m + '\');">P</a> | ' + 
-                    '<a onclick="set_type(\'D\', \'' + this.point.m + '\');">D</a>)' + 
+                return '<b>' + this.point.n + '</b><br>Seen: ' + this.point.t + ' times' +
+                    <?php
+                        echo($b_types);
+                    ?>
+                    ' <b>' + this.point.type + '</b>'
                     '<br>Avg Hour: ' + this.point.h + ', Avg Day: ' + this.point.d +
                     '<br>MAC: ' + this.point.m + 
                     '<br>First Seen: <b>' + this.point.f +
