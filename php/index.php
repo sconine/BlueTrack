@@ -204,7 +204,7 @@ foreach ($top as $mac => $mct) {
 }
 // Build the type list for ajax setting
 $b_types = '';
-foreach ($type_list as $type) {
+foreach ($type_list as $type => $val) {
     if ($b_types == '') { $b_types = "\t\t\t\t'(";} else {$b_types .= " | ' + \n \t\t\t\t'";}
     $b_types .= "<a onclick=\"set_type(\'" . $type . "\', \'' + this.point.m + '\');\">" . $type . "</a>";
 }
