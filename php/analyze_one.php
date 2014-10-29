@@ -50,7 +50,7 @@ $result = $client->getItem(array(
     'TableName' => 'collector_data',
     'Key'       => array(
         'mac_id'   => array('S' => $mac),
-        'collector_id'   => array('S' => $region_name)
+        'collector_id'   => array('S' => $collector_id)
     )
 ));
 if ($debug) {var_dump($result); echo '<br>';}
