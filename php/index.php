@@ -42,6 +42,7 @@ if(!empty($_REQUEST['type'])) {
 // Make sure they look safe
 $pattern = '/^[a-z A-Z0-9,]+$/';
 if (preg_match($pattern, implode(",", $type_f)) == 0) {$type_f = array();}
+var_dump($type_f);
 
 //echo "<table><tr><td>mac_id</td><td>collector_id</td><td>name</td><td>clock_offset</td><td>class</td><td>inq_on</td><td>scan_on</td></tr>";
 $count = 0;
@@ -157,6 +158,7 @@ do {
         // create an array to use in the bubble chart if not filters
         if (!(in_array($dev_type[$mac], $type_f)) || empty($type_f)) {
             $top[$mac] = $seen_count;
+            echo $dev_type[$mac] . ' = ' . var_dump($type_f);
         }
     }
 } while(isset($response['LastEvaluatedKey'])); 
