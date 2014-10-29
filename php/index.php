@@ -335,7 +335,7 @@ $(function () {
                     enabled: true,
                     style: { textShadow: 'none', color: '#000000' },
                     formatter: function() {
-                        if (this.point.n == 'n/a') {
+                        if (this.point.n == 'n/a' || this.point.type != 'U') {
                             return this.point.type;
                         } else {
                             return '<b>(' + this.point.type + ')</b>';
