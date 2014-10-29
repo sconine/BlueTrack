@@ -38,10 +38,12 @@ $type_f = array();
 if(!empty($_REQUEST['type'])) {
     $type_f = $_REQUEST['type'];
 }
+echo $type_f;
+var_dump($type_f);
 
 // Make sure they look safe
-$pattern = '/^[a-zA-Z0-9,]+$/';
-if (preg_match($pattern, implode(",", $type_f)) == 0) {$type_f = '';}
+$pattern = '/^[a-z A-Z0-9,]+$/';
+if (preg_match($pattern, implode(",", $type_f)) == 0) {$type_f = array();}
 
 //echo "<table><tr><td>mac_id</td><td>collector_id</td><td>name</td><td>clock_offset</td><td>class</td><td>inq_on</td><td>scan_on</td></tr>";
 $count = 0;
@@ -411,8 +413,12 @@ function ischecked($v, $c) {
 ?>
 <form method="GET" action="index.php">
 <b>Device Type Key</b><br>
-<input type="checkbox" name="type[]" value="M" <?php echo ischecked('M', $_REQUEST("type")) ?>> M = Mobile Phone<br>
-<input type="checkbox" name="type[]" value="H" <?php echo ischecked('H', $_REQUEST("type")) ?>> H = Human<br>
+<input type="checkbox" name="type[]" value="M" <?php 
+echo ischecked('M', $_REQUEST("type")) 
+?>> M = Mobile Phone<br>
+<input type="checkbox" name="type[]" value="H" <?php 
+echo ischecked('H', $_REQUEST("type")) 
+?>> H = Human<br>
 <input type="checkbox" name="type[]" value="V" <?php echo ischecked('V', $_REQUEST("type")) ?>> V = Vehicle<br>
 <input type="checkbox" name="type[]" value="A" <?php echo ischecked('A', $_REQUEST("type")) ?>> A = Apple Device<br>
 <input type="checkbox" name="type[]" value="C" <?php echo ischecked('C', $_REQUEST("type")) ?>> C = Computer<br>
