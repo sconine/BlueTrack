@@ -338,7 +338,7 @@ $(function () {
                         if (this.point.n == 'n/a') {
                             return this.point.type;
                         } else {
-                            return '<b><h2>' + this.point.type + '</h2></b>';
+                            return '<b>(' + this.point.type + ')</b>';
                         }
                     }
                 },
