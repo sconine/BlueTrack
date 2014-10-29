@@ -7,14 +7,6 @@
 <meta charset="UTF-8"></head>
 <body>
 
-<div style="width: 100%; display: table;">
-    <div style="display: table-row">
-        <div id="byday" style="width: 400px;  height:400px; display: table-cell;"></div>
-        <div id="byclass" style="width: 400px;  height:400px; display: table-cell;"></div>
-    </div>
-</div>
-<div id="bydevice" style="width: 100%;  height:600px;"></div>
-
 <?php
 
 // Load my configuration
@@ -83,6 +75,17 @@ foreach ($by_class as $class => $mac) {
 }
 
 ?>
+
+
+<div style="width: 100%; display: table;">
+    <div style="display: table-row">
+        <div id="byday" style="width: 400px;  height:400px; display: table-cell;"></div>
+        <div id="byclass" style="width: 400px;  height:400px; display: table-cell;"></div>
+    </div>
+</div>
+<div id="bydevice" style="width: 100%;  height:600px;"></div>
+
+
 
 <script>
 $(function () {
