@@ -35,6 +35,7 @@ $tableName = "collector_data";
 
 // Setup filters
 $type_f = array();
+var_dump($_REQUEST);
 if(!empty($_REQUEST['type'])) {
     $type_f = $_REQUEST['type'];
 }
