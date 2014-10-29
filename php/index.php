@@ -411,17 +411,17 @@ function ischecked($v, $c) {
 ?>
 <form method="GET" action="index.php">
 <b>Device Type Key</b><br>
-<input type="checkbox" name="type[]" value="M" <?php echo ischecked('M', $_REQUEST["type"]);?>> M = Mobile Phone<br>
-<input type="checkbox" name="type[]" value="H" <?php echo ischecked('H', $_REQUEST["type"]); ?>> H = Human<br>
-<input type="checkbox" name="type[]" value="V" <?php echo ischecked('V', $_REQUEST["type"]); ?>> V = Vehicle<br>
-<input type="checkbox" name="type[]" value="A" <?php echo ischecked('A', $_REQUEST["type"]); ?>> A = Apple Device<br>
-<input type="checkbox" name="type[]" value="C" <?php echo ischecked('C', $_REQUEST["type"]); ?>> C = Computer<br>
-<input type="checkbox" name="type[]" value="G" <?php echo ischecked('G', $_REQUEST["type"]); ?>> G = GPS<br>
-<input type="checkbox" name="type[]" value="T" <?php echo ischecked('T', $_REQUEST["type"]); ?>> T = TV Device<br>
-<input type="checkbox" name="type[]" value="S" <?php echo ischecked('S', $_REQUEST["type"]); ?>> S = Music Device<br>
-<input type="checkbox" name="type[]" value="U" <?php echo ischecked('U', $_REQUEST["type"]); ?>> U = Unknown<br>
-<input type="checkbox" name="type[]" value="X" <?php echo ischecked('X', $_REQUEST["type"]); ?>> X = Not Set<br>
-<input type="button" name="update" value="update">
+<input type="checkbox" name="type[]" value="M" <?php echo ischecked('M', $type_f);?>> M = Mobile Phone<br>
+<input type="checkbox" name="type[]" value="H" <?php echo ischecked('H', $type_f); ?>> H = Human<br>
+<input type="checkbox" name="type[]" value="V" <?php echo ischecked('V', $type_f); ?>> V = Vehicle<br>
+<input type="checkbox" name="type[]" value="A" <?php echo ischecked('A', $type_f); ?>> A = Apple Device<br>
+<input type="checkbox" name="type[]" value="C" <?php echo ischecked('C', $type_f); ?>> C = Computer<br>
+<input type="checkbox" name="type[]" value="G" <?php echo ischecked('G', $type_f); ?>> G = GPS<br>
+<input type="checkbox" name="type[]" value="T" <?php echo ischecked('T', $type_f); ?>> T = TV Device<br>
+<input type="checkbox" name="type[]" value="S" <?php echo ischecked('S', $type_f); ?>> S = Music Device<br>
+<input type="checkbox" name="type[]" value="U" <?php echo ischecked('U', $type_f); ?>> U = Unknown<br>
+<input type="checkbox" name="type[]" value="X" <?php echo ischecked('X', $type_f); ?>> X = Not Set<br>
+<input type="submit" name="update" value="update">
 </form>
 </body>
 </html>
