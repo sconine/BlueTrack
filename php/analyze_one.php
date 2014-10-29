@@ -54,7 +54,34 @@ $result = $client->getItem(array(
     )
 ));
 if ($debug) {var_dump($result); echo '<br>';}
-exit;
+if (!isset($result['Item']['collector_id']['S'])) {echo 'No device found'; exit;}
+
+
+// Manipulate the dates a bit
+$seen = array_merge($value['scan_on']["NS"], $value['inq_on']["NS"]);
+$seen_count = 0;
+$data_set = '';
+foreach ($seen as $i => $v) {
+    $seen_count++;
+    
+    // put in EST
+    $v = $v - (3600 * 5);
+    $hourofday = date("H", $v);
+    $dayofweek = date("N", $v);
+
+    // First aggregate by hour and day
+    
+
+
+
+// Now put in highcharts format
+    if ($data_set != '') { $data_set .= ',';}
+    $data_set .= "{"
+            . ", x: " . $avg_hr 
+            . ", y: " . $avg_dayofweek
+            . ", z: " . $mctd . "}";
+
+
 
 
 // Data for device count by day
@@ -67,22 +94,10 @@ foreach ($by_day as $day => $mac) {
 }
 $day_count .= $data . "]}]";
 
-// Data for class share pie chart
-$class_data = '';
-foreach ($by_class as $class => $mac) {
-    if ($class_data != '') {$class_data .= ", \n";}
-    $class_data .= "['" . $class . "', " . (count($by_class[$class])/$count) . "]";
-}
 
 ?>
 
 
-<div style="width: 100%; display: table;">
-    <div style="display: table-row">
-        <div id="byday" style="width: 400px;  height:400px; display: table-cell;"></div>
-        <div id="byclass" style="width: 400px;  height:400px; display: table-cell;"></div>
-    </div>
-</div>
 <div id="bydevice" style="width: 100%;  height:600px;"></div>
 
 
