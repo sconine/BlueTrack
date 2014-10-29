@@ -155,7 +155,7 @@ do {
         }  
         
         // create an array to use in the bubble chart if not filters
-        if (!(in_array($type_f, $dev_type[$mac])) || empty($type_f)) {
+        if (!(in_array($dev_type[$mac], $type_f)) || empty($type_f)) {
             $top[$mac] = $seen_count;
         }
     }
@@ -394,7 +394,7 @@ foreach ($top as $mac => $count) {
 echo "</table><br> There are <b>$count</b> Total!<br>";
 */
 
-function is_checked($v, $c) {
+function ischecked($v, $c) {
     if (isset($c)) {
         if (is_array($c)) {
             foreach ($c as $i => $val) {
@@ -411,16 +411,16 @@ function is_checked($v, $c) {
 ?>
 <form method="GET" action="index.php">
 <b>Device Type Key</b><br>
-<input type="checkbox" name="type" value="M" <?php echo is_checked('M', $_REQUEST("type")) ?>> M = Mobile Phone<br>
-<input type="checkbox" name="type" value="H" <?php echo is_checked('H', $_REQUEST("type")) ?>> H = Human<br>
-<input type="checkbox" name="type" value="V" <?php echo is_checked('V', $_REQUEST("type")) ?>> V = Vehicle<br>
-<input type="checkbox" name="type" value="A" <?php echo is_checked('A', $_REQUEST("type")) ?>> A = Apple Device<br>
-<input type="checkbox" name="type" value="C" <?php echo is_checked('C', $_REQUEST("type")) ?>> C = Computer<br>
-<input type="checkbox" name="type" value="G" <?php echo is_checked('G', $_REQUEST("type")) ?>> G = GPS<br>
-<input type="checkbox" name="type" value="T" <?php echo is_checked('T', $_REQUEST("type")) ?>> T = TV Device<br>
-<input type="checkbox" name="type" value="S" <?php echo is_checked('S', $_REQUEST("type")) ?>> S = Music Device<br>
-<input type="checkbox" name="type" value="U" <?php echo is_checked('U', $_REQUEST("type")) ?>> U = Unknown<br>
-<input type="checkbox" name="type" value="X" <?php echo is_checked('X', $_REQUEST("type")) ?>> X = Not Set<br>
+<input type="checkbox" name="type[]" value="M" <?php echo ischecked('M', $_REQUEST("type")) ?>> M = Mobile Phone<br>
+<input type="checkbox" name="type[]" value="H" <?php echo ischecked('H', $_REQUEST("type")) ?>> H = Human<br>
+<input type="checkbox" name="type[]" value="V" <?php echo ischecked('V', $_REQUEST("type")) ?>> V = Vehicle<br>
+<input type="checkbox" name="type[]" value="A" <?php echo ischecked('A', $_REQUEST("type")) ?>> A = Apple Device<br>
+<input type="checkbox" name="type[]" value="C" <?php echo ischecked('C', $_REQUEST("type")) ?>> C = Computer<br>
+<input type="checkbox" name="type[]" value="G" <?php echo ischecked('G', $_REQUEST("type")) ?>> G = GPS<br>
+<input type="checkbox" name="type[]" value="T" <?php echo ischecked('T', $_REQUEST("type")) ?>> T = TV Device<br>
+<input type="checkbox" name="type[]" value="S" <?php echo ischecked('S', $_REQUEST("type")) ?>> S = Music Device<br>
+<input type="checkbox" name="type[]" value="U" <?php echo ischecked('U', $_REQUEST("type")) ?>> U = Unknown<br>
+<input type="checkbox" name="type[]" value="X" <?php echo ischecked('X', $_REQUEST("type")) ?>> X = Not Set<br>
 <input type="button" name="update" value="update">
 </form>
 </body>
