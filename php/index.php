@@ -335,7 +335,11 @@ $(function () {
                     enabled: true,
                     style: { textShadow: 'none', color: '#000000' },
                     formatter: function() {
-                        return this.point.type;
+                        if (this.point.n == 'n/a') {
+                            return this.point.type;
+                        } else {
+                            return '<b>' + this.point.type + '</b>';
+                        }
                     }
                 },
             
