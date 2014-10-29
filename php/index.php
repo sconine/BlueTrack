@@ -397,7 +397,7 @@ echo "</table><br> There are <b>$count</b> Total!<br>";
 function is_checked($v, $c) {
     if (isset($c)) {
         if (is_array($c)) {
-            foreach ($c as $i = $val) {
+            foreach ($c as $i => $val) {
                 if ($v == $val) {return ' checked ';}
             }
         }
