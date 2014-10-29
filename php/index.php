@@ -35,16 +35,16 @@ $tableName = "collector_data";
 
 // Setup filters
 $type_f = array();
-var_dump($_REQUEST);
+//var_dump($_REQUEST);
 if(!empty($_REQUEST['type'])) {
     $type_f = $_REQUEST['type'];
 }
-var_dump($type_f);
+//var_dump($type_f);
 
 // Make sure they look safe
 $pattern = '/^[a-zA-ZvV0-9,]+$/';
 if (preg_match($pattern, implode(",", $type_f)) == 0) {$type_f = array();}
-var_dump($type_f);
+//var_dump($type_f);
 
 //echo "<table><tr><td>mac_id</td><td>collector_id</td><td>name</td><td>clock_offset</td><td>class</td><td>inq_on</td><td>scan_on</td></tr>";
 $count = 0;
