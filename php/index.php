@@ -38,9 +38,10 @@ $type_f = array();
 if(!empty($_REQUEST['type'])) {
     $type_f = $_REQUEST['type'];
 }
+var_dump($type_f);
 
 // Make sure they look safe
-$pattern = '/^[a-z A-Z0-9,]+$/';
+$pattern = '/^[a-zA-ZvV0-9,]+$/';
 if (preg_match($pattern, implode(",", $type_f)) == 0) {$type_f = array();}
 var_dump($type_f);
 
