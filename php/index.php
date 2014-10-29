@@ -418,6 +418,7 @@ function ischecked($v, $c) {
 ?>
 <form method="GET" action="index.php">
 <b>Device Type Key</b><br>
+<input type="hidden" name="bust" value="<?php echo time();?>"> 
 <input type="checkbox" name="type[]" value="M" <?php echo ischecked('M', $type_f);?>> M = Mobile Phone<br>
 <input type="checkbox" name="type[]" value="H" <?php echo ischecked('H', $type_f); ?>> H = Human<br>
 <input type="checkbox" name="type[]" value="V" <?php echo ischecked('V', $type_f); ?>> V = Vehicle<br>
