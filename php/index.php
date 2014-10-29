@@ -156,9 +156,8 @@ do {
         }  
         
         // create an array to use in the bubble chart if not filters
-        if (!(in_array($dev_type[$mac], $type_f)) || empty($type_f)) {
+        if ((in_array($dev_type[$mac], $type_f)) || empty($type_f)) {
             $top[$mac] = $seen_count;
-            echo $dev_type[$mac] . ' = ' . var_dump($type_f);
         }
     }
 } while(isset($response['LastEvaluatedKey'])); 
