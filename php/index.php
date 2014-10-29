@@ -33,6 +33,16 @@ $aws = Aws::factory('/usr/www/html/BlueTrack/php/amazon_config.json');
 $client = $aws->get('DynamoDb');
 $tableName = "collector_data";
 
+// Setup filters
+$type_f = array();
+if(!empty($_REQUEST['type'])) {
+    $type_f = $_REQUEST['type'];
+}
+
+// Make sure they look safe
+$pattern = '/^[a-zA-Z0-9,]+$/';
+if (preg_match($pattern, implode(",", $type_f)) == 0) {$type_f = '';}
+
 //echo "<table><tr><td>mac_id</td><td>collector_id</td><td>name</td><td>clock_offset</td><td>class</td><td>inq_on</td><td>scan_on</td></tr>";
 $count = 0;
 $day_names = array("Mon", "Tues", "Wed", "Thurs", "Fri", "Sat", "Sun");
@@ -144,8 +154,10 @@ do {
             */
         }  
         
-        // create a vew arrays of data we care about
-        $top[$mac] = $seen_count;
+        // create an array to use in the bubble chart if not filters
+        if (!(in_array($type_f, $dev_type[$mac])) || empty($type_f)) {
+            $top[$mac] = $seen_count;
+        }
     }
 } while(isset($response['LastEvaluatedKey'])); 
 
