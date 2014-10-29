@@ -38,8 +38,6 @@ $type_f = array();
 if(!empty($_REQUEST['type'])) {
     $type_f = $_REQUEST['type'];
 }
-echo $type_f;
-var_dump($type_f);
 
 // Make sure they look safe
 $pattern = '/^[a-z A-Z0-9,]+$/';
@@ -414,19 +412,19 @@ function ischecked($v, $c) {
 <form method="GET" action="index.php">
 <b>Device Type Key</b><br>
 <input type="checkbox" name="type[]" value="M" <?php 
-echo ischecked('M', $_REQUEST("type")) 
+echo ischecked('M', $_REQUEST("type"));
 ?>> M = Mobile Phone<br>
 <input type="checkbox" name="type[]" value="H" <?php 
-echo ischecked('H', $_REQUEST("type")) 
+echo ischecked('H', $_REQUEST("type")); 
 ?>> H = Human<br>
-<input type="checkbox" name="type[]" value="V" <?php echo ischecked('V', $_REQUEST("type")) ?>> V = Vehicle<br>
-<input type="checkbox" name="type[]" value="A" <?php echo ischecked('A', $_REQUEST("type")) ?>> A = Apple Device<br>
-<input type="checkbox" name="type[]" value="C" <?php echo ischecked('C', $_REQUEST("type")) ?>> C = Computer<br>
-<input type="checkbox" name="type[]" value="G" <?php echo ischecked('G', $_REQUEST("type")) ?>> G = GPS<br>
-<input type="checkbox" name="type[]" value="T" <?php echo ischecked('T', $_REQUEST("type")) ?>> T = TV Device<br>
-<input type="checkbox" name="type[]" value="S" <?php echo ischecked('S', $_REQUEST("type")) ?>> S = Music Device<br>
-<input type="checkbox" name="type[]" value="U" <?php echo ischecked('U', $_REQUEST("type")) ?>> U = Unknown<br>
-<input type="checkbox" name="type[]" value="X" <?php echo ischecked('X', $_REQUEST("type")) ?>> X = Not Set<br>
+<input type="checkbox" name="type[]" value="V" <?php echo ischecked('V', $_REQUEST("type")); ?>> V = Vehicle<br>
+<input type="checkbox" name="type[]" value="A" <?php echo ischecked('A', $_REQUEST("type")); ?>> A = Apple Device<br>
+<input type="checkbox" name="type[]" value="C" <?php echo ischecked('C', $_REQUEST("type")); ?>> C = Computer<br>
+<input type="checkbox" name="type[]" value="G" <?php echo ischecked('G', $_REQUEST("type")); ?>> G = GPS<br>
+<input type="checkbox" name="type[]" value="T" <?php echo ischecked('T', $_REQUEST("type")); ?>> T = TV Device<br>
+<input type="checkbox" name="type[]" value="S" <?php echo ischecked('S', $_REQUEST("type")); ?>> S = Music Device<br>
+<input type="checkbox" name="type[]" value="U" <?php echo ischecked('U', $_REQUEST("type")); ?>> U = Unknown<br>
+<input type="checkbox" name="type[]" value="X" <?php echo ischecked('X', $_REQUEST("type")); ?>> X = Not Set<br>
 <input type="button" name="update" value="update">
 </form>
 </body>
