@@ -123,6 +123,17 @@ $(function () {
                 maxSize:100
             }
         },
+        xAxis: {        
+            type: 'datetime',
+            labels: {
+                formatter: function() {
+                    var monthStr = Highcharts.dateFormat('%b', this.value);
+                    var firstLetter = monthStr.substring(0, 1)
+                    return firstLetter;
+                }
+            },
+            tickInterval: 30 * 24 * 3600 * 1000
+        },
         series: [<?php echo $b_data; ?>]
     });
 });
