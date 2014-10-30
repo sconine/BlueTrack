@@ -126,8 +126,13 @@ $(function () {
         xAxis: {        
             type: 'datetime',
             labels: {
+                rotation: -45,
+                style: {
+                    fontSize: '13px',
+                    fontFamily: 'Verdana, sans-serif'
+                },
                 formatter: function() {
-                    return Highcharts.dateFormat('%D', this.value);
+                    return Highcharts.dateFormat('%m/%d/%y', this.value);
                 }
             }//,
             //tickInterval: 30 * 24 * 3600 * 1000
