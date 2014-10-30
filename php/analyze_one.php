@@ -52,7 +52,7 @@ if ($debug) {var_dump($result); echo '<br>';}
 if (!isset($result['Item']['collector_id']['S'])) {echo 'No device found'; exit;}
 
 // Manipulate the dates a bit
-$seen = array_merge($value['scan_on']["NS"], $value['inq_on']["NS"]);
+$seen = array_merge($result['scan_on']["NS"], $result['inq_on']["NS"]);
 $min_day = 0;
 $max_day = 0;
 foreach ($seen as $i => $v) {
