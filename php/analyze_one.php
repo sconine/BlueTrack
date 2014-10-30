@@ -112,7 +112,7 @@ $(function () {
             useHTML: true, 
             formatter: function() {
                 return 'Seen: ' + this.point.z + ' times<br>' +
-                        'At: ' + Highcharts.dateFormat('%m/%d/%y %l:%M%P', (this.point.x * 1000 + this.point.y * 1000 * 60 * 60));
+                        'At: ' + Highcharts.dateFormat('%a %m/%d/%y %l:%M%P', (this.point.x * 1000 + this.point.y * 1000 * 60 * 60));
             }
         },
         plotOptions: {
