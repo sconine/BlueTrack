@@ -94,7 +94,7 @@ foreach ($agg as $day => $hour_a) {
         }
     }
 }
-$b_data .= "{ showInLegend: false, data: [" . $data_set . "]}";
+$b_data = "{ showInLegend: false, data: [" . $data_set . "]}";
 
 ?>
 
