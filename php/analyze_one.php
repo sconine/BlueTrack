@@ -51,13 +51,9 @@ $result = $client->getItem(array(
 if ($debug) {var_dump($result); echo '<br>';}
 if (!isset($result['Item']['collector_id']['S'])) {echo 'No device found'; exit;}
 
-$c_name = 'Device Detail: ' . $result['Item']['mac_id']["S"] . ' known as: ';
-echo $c_name;
-$c_name .= str_replace("'", "\'", implode(',', $result['Item']['name']["SS"])) . ' type: ';
-echo $c_name;
+$c_name = 'Device detail: ' . $result['Item']['mac_id']["S"] . ' known as: <b>';
+$c_name .= str_replace("'", "\'", implode(',', $result['Item']['name']["SS"])) . '</b> type: ';
 $c_name .= isset($result['Item']['type']["S"]) ? $result['Item']['type']["S"] : 'X';
-
-echo $c_name;
 
 // Manipulate the dates a bit
 $seen = array();
