@@ -137,6 +137,13 @@ $(function () {
                 }
             }
         },
+        yAxis: {        
+            labels: {
+                formatter: function() {
+                    return Highcharts.dateFormat('%l:%M%P', this.value * 60*60*1000);
+                }
+            }
+        },
         series: [<?php echo $b_data; ?>]
     });
 });
