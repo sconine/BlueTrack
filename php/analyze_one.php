@@ -51,7 +51,7 @@ $result = $client->getItem(array(
 if ($debug) {var_dump($result); echo '<br>';}
 if (!isset($result['Item']['collector_id']['S'])) {echo 'No device found'; exit;}
 
-$name = 'Device Detail: ' . $result['Item']['mac_id']["S"] . ' known as: ' .
+$c_name = 'Device Detail: ' . $result['Item']['mac_id']["S"] . ' known as: ' .
         str_replace("'", "\'", implode(',', $result['Item']['name']["SS"])) . ' type: ' .
         isset($result['Item']['type']["S"]) ? $result['Item']['type']["S"] : 'X';
 
@@ -113,7 +113,7 @@ $(function () {
             zoomType: 'xy'
         },
         title: {
-            text: '<?php echo $name; ?>'
+            text: '<?php echo $c_name; ?>'
         },
         tooltip: {
             useHTML: true, 
