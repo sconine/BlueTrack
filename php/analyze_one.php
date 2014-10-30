@@ -114,7 +114,8 @@ $(function () {
         tooltip: {
             useHTML: true, 
             formatter: function() {
-                return 'Seen: ' + this.point.z + ' times';
+                return 'Seen: ' + this.point.z + ' times<br>' +
+                        'At: ' + Highcharts.dateFormat('%m/%d/%y %l:%M%P', this.point.x * 1000);
             }
         },
         plotOptions: {
@@ -132,10 +133,9 @@ $(function () {
                     fontFamily: 'Verdana, sans-serif'
                 },
                 formatter: function() {
-                    return Highcharts.dateFormat('%m/%d/%y', this.value);
+                    return Highcharts.dateFormat('%m/%d/%y %l:%M%P', this.value * 1000);
                 }
-            }//,
-            //tickInterval: 30 * 24 * 3600 * 1000
+            }
         },
         series: [<?php echo $b_data; ?>]
     });
