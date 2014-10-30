@@ -180,21 +180,15 @@ foreach ($top as $mac => $mct) {
     // For each device get the top day it's been seen and the top date
     $dowtot = 0;
     $doytot = 0;
-    foreach ($seen_dayofw[$mac] as $dow => $dcnt) {$dowtot = $dowtot + ($dow * $dcnt);}
-    foreach ($seen_hours[$mac] as $hrs => $dcnt) {
-        $doytot = $doytot + ($hrs * $dcnt);
-        //if ($mac == "5C:51:4F:4F:CC:BA") {echo "hrd = $hrs , count = $dcnt , totl = $doytot <br>\n";}
-    }
+    if (isset($seen_dayofw[$mac])) {foreach ($seen_dayofw[$mac] as $dow => $dcnt) {$dowtot = $dowtot + ($dow * $dcnt);}}
+    if (isset($seen_hours[$mac])) {foreach ($seen_hours[$mac] as $hrs => $dcnt) {$doytot = $doytot + ($hrs * $dcnt);}}
     $avg_dayofweek = round($dowtot/$mct,2);
     $avg_hr = round($doytot/$mct,2);
     $disp_hr = date("h:i a", round($avg_hr * 60 * 60));
     
-
     // Name series based on how recently these were seen
     $lsn = 0;
-    if ($last_seen[$mac] > (time() - (3600*24*7))) {
-        $lsn = strtotime(date("m/d/Y", $last_seen[$mac]));
-    }
+    if (isset($last_seen[$mac])) {if ($last_seen[$mac] > (time() - (3600*24*7))) {$lsn = strtotime(date("m/d/Y", $last_seen[$mac]));}}
     if (isset($series[$lsn])) { $series[$lsn] .= ", \n";} else {$series[$lsn] = '';}
     // Set an upper limit on the circle size
     $mctd = $mct;
