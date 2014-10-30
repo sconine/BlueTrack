@@ -51,6 +51,10 @@ $result = $client->getItem(array(
 if ($debug) {var_dump($result); echo '<br>';}
 if (!isset($result['Item']['collector_id']['S'])) {echo 'No device found'; exit;}
 
+$name = 'Device Detail: ' . $result['Item']['mac_id']["S"] . ' known as: ' .
+        str_replace("'", "\'", implode(',', $result['Item']['name']["SS"])) . ' type: ' .
+        isset($result['Item']['type']["S"]) ? $result['Item']['type']["S"] : 'X';
+
 // Manipulate the dates a bit
 $seen = array();
 if (is_array($result['Item']['scan_on']["NS"]) && is_array($result['Item']['inq_on']["NS"])) {
@@ -109,7 +113,7 @@ $(function () {
             zoomType: 'xy'
         },
         title: {
-            text: 'Device Detail'
+            text: '<?php echo $name; ?>'
         },
         tooltip: {
             useHTML: true, 
