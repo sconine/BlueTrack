@@ -88,7 +88,7 @@ foreach ($agg as $day => $hour_a) {
         foreach ($hour_a as $hour => $count) {
             if ($data_set != '') { $data_set .= ',';}
             $data_set .= "{"
-                    . "x: " . date("Y-m-d", $day)
+                    . "x: " . $day
                     . ", y: " . $hour
                     . ", z: " . $count . "}";
         }
