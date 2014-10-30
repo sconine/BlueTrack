@@ -173,6 +173,9 @@ while (1 == 1) {
 		}
 	}
 	$out = '';
+	
+	// Still buggy, but in the future might want to run a low energy device scan too via:
+	// sudo hcitool lescan & sleep 4;sudo kill $!
 
 	// Write data out after each run in case we re-boot
 	file_put_contents($file, json_encode($my_macs));
