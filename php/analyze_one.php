@@ -130,7 +130,7 @@ $(function () {
                     fontFamily: 'Verdana, sans-serif'
                 },
                 formatter: function() {
-                    return Highcharts.dateFormat('%m/%d/%y', this.value * 1000);
+                    return Highcharts.dateFormat('%a %m/%d/%y', this.value * 1000);
                 }
             }
         },
