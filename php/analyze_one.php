@@ -37,12 +37,7 @@ $pattern = '/^[a-zA-ZvV0-9,]+$/';
 if (preg_match($pattern, implode(",", $mac)) == 0) {$mac = '00:11:B1:08:97:3D';}
 if (preg_match($pattern, $collector_id) == 0) {$collector_id = 'b8:27:eb:3a:0b:aa';}
 
-
-$day_names = array("Mon", "Tues", "Wed", "Thurs", "Fri", "Sat", "Sun");
-$top = array();
-$show_minutes = array();
-$seen_hours = array();
-$seen_days = array();
+$agg = array();
 date_default_timezone_set('UTC');
 
 $result = $client->getItem(array(
@@ -56,163 +51,68 @@ $result = $client->getItem(array(
 if ($debug) {var_dump($result); echo '<br>';}
 if (!isset($result['Item']['collector_id']['S'])) {echo 'No device found'; exit;}
 
-
 // Manipulate the dates a bit
 $seen = array_merge($value['scan_on']["NS"], $value['inq_on']["NS"]);
-$seen_count = 0;
-$data_set = '';
+$min_day = 0;
+$max_day = 0;
 foreach ($seen as $i => $v) {
-    $seen_count++;
+    if ($v == 1) {next;}
     
     // put in EST
     $v = $v - (3600 * 5);
+    $day = strtotime(date("Y-m-d", $v));
     $hourofday = date("H", $v);
-    $dayofweek = date("N", $v);
 
-    // First aggregate by hour and day
-    
+    // Aggregate by hour and day
+    if (isset($agg[$day][$hourofday])) {$agg[$day][$hourofday]++;} else {$agg[$day][$hourofday] = 1;}
+    //if ($min_day ==0 || $min_day > $day) {$min_day = $day;}
+    //if ($max_day ==0 || $max_day < $day) {$max_day = $day;}
+}
 
-
+// Look at min and max days and fill in missing days
+//for ($i = 1; $i <= 10; $i = $i + (60*60*24)) {if (! isset($agg[$i])) {$agg[$i] = 1;}}
 
 // Now put in highcharts format
-    if ($data_set != '') { $data_set .= ',';}
-    $data_set .= "{"
-            . ", x: " . $avg_hr 
-            . ", y: " . $avg_dayofweek
-            . ", z: " . $mctd . "}";
-
-
-
-
-// Data for device count by day
-asort($by_day);
-$day_count = "series: [{name: 'Devices',data: [";
-$data = '';
-foreach ($by_day as $day => $mac) {
-    if ($data != '') {$data .= ',';}
-    $data .= count($by_day[$day]);
+$data_set = '';
+foreach ($agg as $day => $hour_a) {
+    
+    if (is_array($hour_a)) {
+        foreach ($hour_a as $hour => $count) {
+            if ($data_set != '') { $data_set .= ',';}
+            $data_set .= "{"
+                    . "x: " . date("Y-m-d", $day)
+                    . ", y: " . $hour
+                    . ", z: " . $count . "}";
+        }
+    }
 }
-$day_count .= $data . "]}]";
-
+$b_data .= "{ showInLegend: false, data: [" . $data_set . "]}";
 
 ?>
 
-
-<div id="bydevice" style="width: 100%;  height:600px;"></div>
-
-
+<div id="byday" style="width: 100%;  height:600px;"></div>
 
 <script>
+
 $(function () {
     $('#byday').highcharts({
-        chart: {
-            type: 'line'
-        },
-        title: {
-            text: 'Daily Devices'
-        },
-        xAxis: {
-            categories: ['Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat', 'Sun']
-        },
-        yAxis: {
-            title: {
-                text: 'Counts'
-            }
-        },
-        <?php
-        echo $day_count;
-        ?>
-    });
-});
-
-
-$(function () {
-    $('#byclass').highcharts({
-        chart: {
-            plotBackgroundColor: null,
-            plotBorderWidth: 1,//null,
-            plotShadow: false
-        },
-        title: {
-            text: 'Device Classes Seen'
-        },
-        tooltip: {
-            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
-        },
-        plotOptions: {
-            pie: {
-                allowPointSelect: true,
-                cursor: 'pointer',
-                dataLabels: {
-                    enabled: true,
-                    format: '<b>{point.name}</b>: {point.percentage:.1f} %',
-                    style: {
-                        color: (Highcharts.theme && Highcharts.theme.contrastTextColor) || 'black'
-                    }
-                }
-            }
-        },
-        series: [{
-            type: 'pie',
-            name: 'Class Share',
-            data: [
-            <?php
-            echo $class_data;
-            ?>
-            ]
-        }]
-    });
-});
-
-$(function () {
-    $('#bydevice').highcharts({
-
         chart: {
             type: 'bubble',
             zoomType: 'xy'
         },
-        yAxis: {
-            labels: {
-                enabled: true
-            },
-            categories: [' ', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun', ' ']
-        },
         title: {
-            text: 'Devices'
+            text: 'Device Detail'
         },
         tooltip: {
             useHTML: true, 
             formatter: function() {
-                return '<b>' + this.point.n + '</b><br>Seen: ' + this.point.t + ' times' +
-                    <?php
-                        echo($b_types);
-                    ?>
-                    ' <b>' + this.point.type + '</b>' +
-                    '<br>Avg Hour: ' + this.point.h + ', Avg Day: ' + this.point.d +
-                    '<br>MAC: ' + this.point.m + 
-                    '<br>First Seen: <b>' + this.point.f +
-                    '</b><br>Last Seen: <b>' + this.point.l + '</b>';
+                return 'Seen: ' + this.point.z + ' times';
             }
         },
         plotOptions: {
             bubble: {
-                dataLabels: {
-                    enabled: true,
-                    style: { textShadow: 'none', color: '#000000' },
-                    formatter: function() {
-                        if (this.point.n == 'n/a') {
-                            return this.point.type;
-                        } else {
-                            return '<b>(' + this.point.type + ')</b>';
-                        }
-                    }
-                },
-            
                 minSize:15,
                 maxSize:100
-                //minSize:'2%',
-                //maxSize:'50%'
-                
             }
         },
         series: [<?php echo $b_data; ?>]
