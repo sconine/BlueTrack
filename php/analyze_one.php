@@ -117,7 +117,7 @@ $(function () {
             useHTML: true, 
             formatter: function() {
                 return 'Seen: ' + this.point.z + ' times<br>' +
-                        'At: ' + Highcharts.dateFormat('%m/%d/%y %l:%M%P', this.point.x * 1000);
+                        'At: ' + Highcharts.dateFormat('%m/%d/%y %l:%M%P', (this.point.x * 1000 + this.point.y * 1000 * 60 * 60));
             }
         },
         plotOptions: {
@@ -135,7 +135,7 @@ $(function () {
                     fontFamily: 'Verdana, sans-serif'
                 },
                 formatter: function() {
-                    return Highcharts.dateFormat('%m/%d/%y %l:%M%P', this.value * 1000);
+                    return Highcharts.dateFormat('%m/%d/%y', this.value * 1000);
                 }
             }
         },
