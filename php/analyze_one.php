@@ -66,21 +66,16 @@ if (is_array($result['Item']['scan_on']["NS"]) && is_array($result['Item']['inq_
 $min_day = 0;
 $max_day = 0;
 foreach ($seen as $i => $v) {
-    if ($v == 1) {next;}
+    if ($v != 1) {
+        // put in EST
+        $v = $v - (3600 * 5);
+        $day = strtotime(date("Y-m-d", $v));
+        $hourofday = date("H", $v);
     
-    // put in EST
-    $v = $v - (3600 * 5);
-    $day = strtotime(date("Y-m-d", $v));
-    $hourofday = date("H", $v);
-
-    // Aggregate by hour and day
-    if (isset($agg[$day][$hourofday])) {$agg[$day][$hourofday]++;} else {$agg[$day][$hourofday] = 1;}
-    //if ($min_day ==0 || $min_day > $day) {$min_day = $day;}
-    //if ($max_day ==0 || $max_day < $day) {$max_day = $day;}
+        // Aggregate by hour and day
+        if (isset($agg[$day][$hourofday])) {$agg[$day][$hourofday]++;} else {$agg[$day][$hourofday] = 1;}
+    }
 }
-
-// Look at min and max days and fill in missing days
-//for ($i = 1; $i <= 10; $i = $i + (60*60*24)) {if (! isset($agg[$i])) {$agg[$i] = 1;}}
 
 // Now put in highcharts format
 $data_set = '';
