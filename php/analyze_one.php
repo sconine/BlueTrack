@@ -26,7 +26,7 @@ $client = $aws->get('DynamoDb');
 $tableName = "collector_data";
 
 // Setup filters (could take an array, but initial plan if for just one at a time)
-$mac = array();
+$mac = '';
 if(!empty($_REQUEST['mac'])) {$mac = $_REQUEST['mac'];}
 if (isset($_REQUEST['col'])) {$collector_id = $_REQUEST['col'];} else {$collector_id = 'b8:27:eb:3a:0b:aa';}
 
