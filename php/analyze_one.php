@@ -27,14 +27,12 @@ $tableName = "collector_data";
 
 // Setup filters (could take an array, but initial plan if for just one at a time)
 $mac = array();
-if(!empty($_REQUEST['mac'])) {
-    $mac = $_REQUEST['mac'];
-}
+if(!empty($_REQUEST['mac'])) {$mac = $_REQUEST['mac'];}
 if (isset($_REQUEST['col'])) {$collector_id = $_REQUEST['col'];} else {$collector_id = 'b8:27:eb:3a:0b:aa';}
 
 // Make sure they look safe
 $pattern = '/^[a-zA-ZvV0-9,]+$/';
-if (preg_match($pattern, implode(",", $mac)) == 0) {$mac = '00:11:B1:08:97:3D';}
+if (preg_match($pattern, $mac) == 0) {$mac = '00:11:B1:08:97:3D';}
 if (preg_match($pattern, $collector_id) == 0) {$collector_id = 'b8:27:eb:3a:0b:aa';}
 
 $agg = array();
