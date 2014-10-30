@@ -127,7 +127,7 @@ $(function () {
             type: 'datetime',
             labels: {
                 formatter: function() {
-                    var monthStr = Highcharts.dateFormat('%b', this.value);
+                    var monthStr = Highcharts.dateFormat('%D', this.value);
                     var firstLetter = monthStr.substring(0, 1)
                     return firstLetter;
                 }
