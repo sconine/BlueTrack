@@ -318,6 +318,7 @@ $(function () {
         tooltip: {
             useHTML: true, 
             formatter: function() {
+                var det = '   <a href="analyze_one.php?mac=' + encodeURIComponent(this.point.m) + '">details</a>';
                 return '<b>' + this.point.n + '</b><br>Seen: ' + this.point.t + ' times' +
                     <?php
                         echo($b_types);
@@ -326,7 +327,7 @@ $(function () {
                     '<br>Avg Hour: ' + this.point.h + ', Avg Day: ' + this.point.d +
                     '<br>MAC: ' + this.point.m + 
                     '<br>First Seen: <b>' + this.point.f +
-                    '</b><br>Last Seen: <b>' + this.point.l + '</b>';
+                    '</b><br>Last Seen: <b>' + this.point.l + '</b>' + det;
             }
         },
         plotOptions: {
@@ -376,30 +377,10 @@ function set_type(type, mac) {
 
 <?php
 //If there is no LastEvaluatedKey in the response, there are no more items matching this Scan invocation
-
 echo "<hr><b>Key Facts:</b><table><tr><td>Total Seen</td><td>$count</td></tr>";
 echo "<tr><td>Seen in Last Hour</td><td>" . count($last_hour) . "</td></tr>";
 echo "</table><br>";
 
-/*
-echo "<table><tr><td>name</td><td>count</td></tr>";
-arsort($last_hour);
-foreach ($last_hour as $mac => $count) {
-    echo "<tr><td>$name[$mac]</td><td>$count</td></tr>\n";
-}
-echo "</table><hr>Total List:<br>";
-echo "<table><tr><td>name</td><td>count</td><td>Days</td></tr>";
-arsort($top);
-foreach ($top as $mac => $count) {
-    echo "<tr><td>$name[$mac]</td><td>$count</td><td><table><tr><td>Day</td><td>Count</td></tr>\n";
-    krsort($seen_hourss[$mac]);
-    foreach ($seen_hourss[$mac] as $d => $c) {
-        echo "<tr><td>" . date("h:00 a", $d) . "</td><td>$c</td></tr>\n";
-    }
-    echo "</table></td></tr>\n";
-}
-echo "</table><br> There are <b>$count</b> Total!<br>";
-*/
 
 function ischecked($v, $c) {
     if (isset($c)) {
