@@ -180,6 +180,9 @@ foreach ($top as $mac => $mct) {
     if (isset($seen_hours[$mac])) {foreach ($seen_hours[$mac] as $hrs => $dcnt) {$doytot = $doytot + ($hrs * $dcnt);}}
     $avg_dayofweek = round($dowtot/$mct,2);
     $avg_hr = round($doytot/$mct,2);
+    if ($avg_dayofweek == 0) {$avg_dayofweek = 1;}
+    if ($avg_hr == 0) {$avg_hr = 1;}
+    
     $disp_hr = date("h:i a", round($avg_hr * 60 * 60));
     
     // Name series based on how recently these were seen
