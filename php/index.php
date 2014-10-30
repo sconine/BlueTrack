@@ -98,68 +98,60 @@ do {
         $seen = array_merge($value['scan_on']["NS"], $value['inq_on']["NS"]);
         $seen_count = 0;
         foreach ($seen as $i => $v) {
-            $seen_count++;
+            if ($v > 1) {
+                $seen_count++;
+                
+                // Keep track of ones we've seen in last hour
+                if ($v > (time() - 3600)) {
+                    if (isset($last_hour[$mac])) {$last_hour[$mac]++;}
+                    else {$last_hour[$mac] = 1;}
+                }
+                
+                // put in EST
+                $v = $v - (3600 * 5);
+    
+                $minute = strtotime(date("Y-m-d h:i a", $v));
+                $hour = strtotime(date("1990-01-01 h:00 a", $v));
+                $day = strtotime(date("Y-m-d", $v));
+                $hourofday = date("H", $v);
+                $dayofyear = date("z", $v);
+                $dayofweek = date("N", $v);
+                $dayofweek3 = date("N", $v);
+    
+                // Keep track of counts by day
+                if (isset($by_day[$dayofweek][$mac])) {$by_day[$dayofweek][$mac]++;}
+                else {$by_day[$dayofweek][$mac] = 1;}
+                
+                // Keep track of counts by class
+                $t_class = implode(',', $value['class']["SS"]);
+                if (isset($by_class[$t_class][$mac])) {$by_class[$t_class][$mac]++;}
+                else {$by_class[$t_class][$mac] = 1;}
+                
+                // Build data for bubble chart
+                if (isset($seen_dayofw[$mac][$dayofweek3])) {$seen_dayofw[$mac][$dayofweek3]++;}
+                else {$seen_dayofw[$mac][$dayofweek3] = 1;}
+                if (isset($seen_hours[$mac][$hourofday])) {$seen_hours[$mac][$hourofday]++;}
+                else {$seen_hours[$mac][$hourofday] = 1;}
+    
+                // Last Seen
+                if (isset($last_seen[$mac])) {
+                    if ($last_seen[$mac] < $v) {$last_seen[$mac] = $v;}
+                } else {
+                    $last_seen[$mac] = $v;
+                }
+    
+                // First Seen
+                if (isset($first_seen[$mac])) {
+                    if ($first_seen[$mac] > $v) {$first_seen[$mac] = $v;}
+                } else {
+                    $first_seen[$mac] = $v;
+                }
+            }  
             
-            // Keep track of ones we've seen in last hour
-            if ($v > (time() - 3600)) {
-                if (isset($last_hour[$mac])) {$last_hour[$mac]++;}
-                else {$last_hour[$mac] = 1;}
+            // create an array to use in the bubble chart if not filters
+            if ((in_array($dev_type[$mac], $type_f)) || empty($type_f)) {
+                $top[$mac] = $seen_count;
             }
-            
-            // put in EST
-            $v = $v - (3600 * 5);
-
-            $minute = strtotime(date("Y-m-d h:i a", $v));
-            $hour = strtotime(date("1990-01-01 h:00 a", $v));
-            $day = strtotime(date("Y-m-d", $v));
-            $hourofday = date("H", $v);
-            $dayofyear = date("z", $v);
-            $dayofweek = date("N", $v);
-            $dayofweek3 = date("N", $v);
-
-            // Keep track of counts by day
-            if (isset($by_day[$dayofweek][$mac])) {$by_day[$dayofweek][$mac]++;}
-            else {$by_day[$dayofweek][$mac] = 1;}
-            
-            // Keep track of counts by class
-            $t_class = implode(',', $value['class']["SS"]);
-            if (isset($by_class[$t_class][$mac])) {$by_class[$t_class][$mac]++;}
-            else {$by_class[$t_class][$mac] = 1;}
-            
-            // Build data for bubble chart
-            if (isset($seen_dayofw[$mac][$dayofweek3])) {$seen_dayofw[$mac][$dayofweek3]++;}
-            else {$seen_dayofw[$mac][$dayofweek3] = 1;}
-            if (isset($seen_hours[$mac][$hourofday])) {$seen_hours[$mac][$hourofday]++;}
-            else {$seen_hours[$mac][$hourofday] = 1;}
-
-            // Last Seen
-            if (isset($last_seen[$mac])) {
-                if ($last_seen[$mac] < $v) {$last_seen[$mac] = $v;}
-            } else {
-                $last_seen[$mac] = $v;
-            }
-
-            // First Seen
-            if (isset($first_seen[$mac])) {
-                if ($first_seen[$mac] > $v) {$first_seen[$mac] = $v;}
-            } else {
-                $first_seen[$mac] = $v;
-            }
-
-            // Stuff to show various tables
-            /*
-            if (isset($show_minutes[$mac][$minute])) {$show_minutes[$mac][$minute]++;}
-            else {$show_minutes[$mac][$minute] = 1;}
-            if (isset($seen_hourss[$mac][$hour])) {$seen_hourss[$mac][$hour]++;}
-            else {$seen_hourss[$mac][$hour] = 1;}
-            if (isset($seen_days[$mac][$day])) {$seen_days[$mac][$day]++;}
-            else {$seen_days[$mac][$day] = 1;}
-            */
-        }  
-        
-        // create an array to use in the bubble chart if not filters
-        if ((in_array($dev_type[$mac], $type_f)) || empty($type_f)) {
-            $top[$mac] = $seen_count;
         }
     }
 } while(isset($response['LastEvaluatedKey'])); 
