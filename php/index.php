@@ -93,13 +93,16 @@ do {
         $name[$mac] = implode(',', $value['name']["SS"]);
         $dev_type[$mac] = isset($value['type']["S"]) ? $value['type']["S"] : 'X';
         $type_list[$dev_type[$mac]] = 1;
-        
+        $last_seen[$mac] = 0;
+        $first_seen[$mac] = 0;
+                
+                
         // Manipulate the dates a bit
         $seen = array_merge($value['scan_on']["NS"], $value['inq_on']["NS"]);
         $seen_count = 0;
         foreach ($seen as $i => $v) {
+            $seen_count++;
             if ($v > 1) {
-                $seen_count++;
                 
                 // Keep track of ones we've seen in last hour
                 if ($v > (time() - 3600)) {
@@ -134,18 +137,11 @@ do {
                 else {$seen_hours[$mac][$hourofday] = 1;}
     
                 // Last Seen
-                if (isset($last_seen[$mac])) {
-                    if ($last_seen[$mac] < $v) {$last_seen[$mac] = $v;}
-                } else {
-                    $last_seen[$mac] = $v;
-                }
-    
+                if ($last_seen[$mac] < $v || $last_seen[$mac] == 0) {$last_seen[$mac] = $v;}
+
                 // First Seen
-                if (isset($first_seen[$mac])) {
-                    if ($first_seen[$mac] > $v) {$first_seen[$mac] = $v;}
-                } else {
-                    $first_seen[$mac] = $v;
-                }
+                if ($first_seen[$mac] > $v || $first_seen[$mac] == 0) {$first_seen[$mac] = $v;}
+
             }  
             
             // create an array to use in the bubble chart if not filters
