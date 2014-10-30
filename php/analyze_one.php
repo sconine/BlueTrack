@@ -10,7 +10,7 @@
 <?php
 
 // Load my configuration
-$debug = true;
+$debug = false;
 $datastring = file_get_contents('/usr/www/html/BlueTrack/master_config.json');
 if ($debug) {echo "datastring = $datastring <br>\n";}
 $config = json_decode($datastring, true);
@@ -127,12 +127,10 @@ $(function () {
             type: 'datetime',
             labels: {
                 formatter: function() {
-                    var monthStr = Highcharts.dateFormat('%D', this.value);
-                    var firstLetter = monthStr.substring(0, 1)
-                    return firstLetter;
+                    return Highcharts.dateFormat('%D', this.value);
                 }
-            },
-            tickInterval: 30 * 24 * 3600 * 1000
+            }//,
+            //tickInterval: 30 * 24 * 3600 * 1000
         },
         series: [<?php echo $b_data; ?>]
     });
