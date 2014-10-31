@@ -150,7 +150,7 @@ do {
             if ((in_array($dev_type[$mac], $type_f)) || empty($type_f)) {
                 // Do we want only multi day CODE HERE!!!
                 if (($multi_day_f && $first_seen[$mac] != $last_seen[$mac]) || ! $multi_day_f) {
-                    if (($day_count_f > 0 && ($last_seen[$mac] - $first_seen[$mac) >= ($day_count_f * 3600 * 24)) || $day_count_f > 0 == 0){
+                    if (($day_count_f > 0 && ($last_seen[$mac] - $first_seen[$mac]) >= ($day_count_f * 3600 * 24)) || $day_count_f > 0 == 0){
                         $top[$mac] = $seen_count;
                     }
                 }
