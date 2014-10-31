@@ -35,14 +35,17 @@ $tableName = "collector_data";
 
 // Setup filters
 $type_f = array();
-$multi_day = false;
-if(!empty($_REQUEST['multi_day'])) {$multi_day = true;}
+$multi_day_f = false;
+$day_count_f = 0;
+if(!empty($_REQUEST['day_count'])) {$day_count_f = $_REQUEST['day_count'];}
+if(!empty($_REQUEST['multi_day'])) {$multi_day_f = true;}
 if(!empty($_REQUEST['type'])) {$type_f = $_REQUEST['type'];}
 //var_dump($type_f);
 
 // Make sure they look safe
 $pattern = '/^[a-zA-ZvV0-9,]+$/';
 if (preg_match($pattern, implode(",", $type_f)) == 0) {$type_f = array();}
+if (!is_numeric($day_count_f)) {$day_count_f = 0;}
 //var_dump($type_f);
 
 //echo "<table><tr><td>mac_id</td><td>collector_id</td><td>name</td><td>clock_offset</td><td>class</td><td>inq_on</td><td>scan_on</td></tr>";
@@ -146,8 +149,10 @@ do {
             // create an array to use in the bubble chart if not filters
             if ((in_array($dev_type[$mac], $type_f)) || empty($type_f)) {
                 // Do we want only multi day CODE HERE!!!
-                if (($multi_day && $first_seen[$mac] != $last_seen[$mac]) || ! $multi_day) {
-                    $top[$mac] = $seen_count;
+                if (($multi_day_f && $first_seen[$mac] != $last_seen[$mac]) || ! $multi_day_f) {
+                    if (($day_count_f > 0 && ($last_seen[$mac] - $first_seen[$mac) >= ($day_count_f * 3600 * 24)) || $day_count_f > 0 == 0){
+                        $top[$mac] = $seen_count;
+                    }
                 }
             }
         }
@@ -382,12 +387,19 @@ function ischecked($v, $c) {
     return '';
 }
 
+function checkit($v) {
+    if ($v) {
+        return ' checked ';
+    }
+    return '';
+}
 
 ?>
 <form method="GET" action="index.php">
 <b>Device Type Key</b><br>
 <input type="hidden" name="bust" value="<?php echo time();?>"> 
-<input type="checkbox" name="multi_day" value="d" <?php echo ischecked('d', $multi_day);?>> Show Multi Day Devices Only<br>
+<input type="checkbox" name="multi_day" value="d" <?php echo checkit($multi_day_f);?>> Show Multi Day Devices Only
+<input type="text" name="day_count" size="4" value="<?php echo $day_count_f;?>"> Min Days seen<br>
 <input type="checkbox" name="type[]" value="M" <?php echo ischecked('M', $type_f);?>> M = Mobile Phone<br>
 <input type="checkbox" name="type[]" value="H" <?php echo ischecked('H', $type_f); ?>> H = Human<br>
 <input type="checkbox" name="type[]" value="V" <?php echo ischecked('V', $type_f); ?>> V = Vehicle<br>
