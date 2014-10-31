@@ -35,10 +35,9 @@ $tableName = "collector_data";
 
 // Setup filters
 $type_f = array();
-//var_dump($_REQUEST);
-if(!empty($_REQUEST['type'])) {
-    $type_f = $_REQUEST['type'];
-}
+$multi_day = false;
+if(!empty($_REQUEST['multi_day'])) {$multi_day = true;}
+if(!empty($_REQUEST['type'])) {$type_f = $_REQUEST['type'];}
 //var_dump($type_f);
 
 // Make sure they look safe
@@ -146,7 +145,10 @@ do {
             
             // create an array to use in the bubble chart if not filters
             if ((in_array($dev_type[$mac], $type_f)) || empty($type_f)) {
-                $top[$mac] = $seen_count;
+                // Do we want only multi day CODE HERE!!!
+                if (($multi_day && 2 > 1) || ! $multi_day) {
+                    $top[$mac] = $seen_count;
+                }
             }
         }
     }
