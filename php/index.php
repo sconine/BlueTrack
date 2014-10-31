@@ -136,17 +136,17 @@ do {
                 else {$seen_hours[$mac][$hourofday] = 1;}
     
                 // Last Seen
-                if ($last_seen[$mac] < $v || $last_seen[$mac] == 0) {$last_seen[$mac] = $v;}
+                if ($last_seen[$mac] < $v || $last_seen[$mac] == 0) {$last_seen[$mac] = strtotime(date("Y-m-d", $v));}
 
                 // First Seen
-                if ($first_seen[$mac] > $v || $first_seen[$mac] == 0) {$first_seen[$mac] = $v;}
+                if ($first_seen[$mac] > $v || $first_seen[$mac] == 0) {$first_seen[$mac] = strtotime(date("Y-m-d", $v));}
 
             }  
             
             // create an array to use in the bubble chart if not filters
             if ((in_array($dev_type[$mac], $type_f)) || empty($type_f)) {
                 // Do we want only multi day CODE HERE!!!
-                if (($multi_day && 2 > 1) || ! $multi_day) {
+                if (($multi_day && $first_seen[$mac] != $last_seen[$mac]) || ! $multi_day) {
                     $top[$mac] = $seen_count;
                 }
             }
@@ -387,6 +387,7 @@ function ischecked($v, $c) {
 <form method="GET" action="index.php">
 <b>Device Type Key</b><br>
 <input type="hidden" name="bust" value="<?php echo time();?>"> 
+<input type="checkbox" name="multi_day" value="d" <?php echo ischecked('d', $multi_day);?>> Show Multi Day Devices Only<br>
 <input type="checkbox" name="type[]" value="M" <?php echo ischecked('M', $type_f);?>> M = Mobile Phone<br>
 <input type="checkbox" name="type[]" value="H" <?php echo ischecked('H', $type_f); ?>> H = Human<br>
 <input type="checkbox" name="type[]" value="V" <?php echo ischecked('V', $type_f); ?>> V = Vehicle<br>
