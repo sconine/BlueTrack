@@ -2,7 +2,7 @@
 //
 // A very simple PHP example that sends a HTTP POST to a remote site
 //
-$mac = '00:22:58';
+$mac = '00-22-58';
 $ch = curl_init();
 
 curl_setopt($ch, CURLOPT_URL,"http://standards.ieee.org/cgi-bin/ouisearch");
@@ -17,11 +17,11 @@ curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 curl_setopt($ch,CURLOPT_CONNECTTIMEOUT ,3);
 curl_setopt($ch,CURLOPT_TIMEOUT, 20);
 $server_output = curl_exec ($ch);
-var_dump($server_output);
 curl_close ($ch);
 
 
 echo ' Hi Max!!!<br>';
+echo htmlentities($server_output);
 // further processing ....
 //if ($server_output == "OK") { ... } else { ... }
 
