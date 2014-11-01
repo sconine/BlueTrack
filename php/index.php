@@ -25,9 +25,9 @@ include 'index_include.php';
 				<form method="GET" action="index.php" class="form-horizontal">
 				<input type="hidden" name="bust" value="<?php echo time();?>"> 
 				<fieldset>
-					<legend>Device Type Key</legend>
+					<legend>Filter Devices</legend>
 					<div class="form-group">
-						<label for="filterForm" class="col-lg-2 control-label">Filter Devices</label>
+						<label for="filterForm" class="col-lg-2 control-label">Devices</label>
 						<div class="col-lg-10">
 							<input type="checkbox" name="multi_day" value="d" <?php echo checkit($multi_day_f);?>> Show Multi Day Devices Only
 							<input type="text" name="day_count" size="4" value="<?php echo $day_count_f;?>"> Min Days seen<br>
