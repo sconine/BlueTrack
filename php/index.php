@@ -512,7 +512,7 @@ function get_bt_class_info($hex) {
 	$min_sc = array();
 	echo "hex = $hex <br>\n";
 	echo "bin = ". base_convert($hex, 16, 2) . " <br>\n";
-	$bin_cd = str_split(base_convert($hex, 16, 2));
+	$bin_cd = array_reverse(str_split(base_convert($hex, 16, 2)));
 
 	//Major Service Class
 	if ($bin_cd[10]) {$msc = 'Limited Discoverable Mode';}
