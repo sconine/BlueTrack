@@ -19,8 +19,8 @@ curl_setopt($ch,CURLOPT_TIMEOUT, 20);
 $server_output = curl_exec ($ch);
 curl_close ($ch);
 
-$start = strpos(strtolower($server_output), '<pre>');
-$end = strpos(strtolower($server_output), '</pre>', $start);
+$start = strpos(strtolower($server_output), '<pre>' + 5);
+$end = strpos(strtolower($server_output), '</pre>', $start - 6);
 $data = $server_output;
 
 if ($start > 10 && $end > $start) {
