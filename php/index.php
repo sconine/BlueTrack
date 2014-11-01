@@ -508,22 +508,26 @@ function get_mac_info($mac) {
 function get_bt_class_info($hex) {
 	$mdc = '='; 
 	$mds_c = 0;
-	$msc = '';
+	$msc = array();
 	$min_sc = array();
+	$b = base_convert($hex, 16, 2);
+	$b = str_pad($b, 24, "0", STR_PAD_LEFT);
 	echo "hex = $hex <br>\n";
-	echo "bin = ". base_convert($hex, 16, 2) . " <br>\n";
-	$bin_cd = array_reverse(str_split(base_convert($hex, 16, 2)));
+	echo "bin = ". $b . " <br>\n";
+	$bin_cd = array_reverse(str_split($b));
+
+str_pad ( string $input , int $pad_length [, string $pad_string = " " [, int $pad_type = STR_PAD_RIGHT ]] )
 
 	//Major Service Class
-	if ($bin_cd[10]) {$msc = 'Limited Discoverable Mode';}
-	if ($bin_cd[7]) {$msc = 'Positioning (location identification';}
-	if ($bin_cd[6]) {$msc = 'Networking (LAN, Ad hoc etc)';}
-	if ($bin_cd[5]) {$msc = 'Rendering (printing, speaker etc)';}
-	if ($bin_cd[4]) {$msc = 'Capturing (scanner, microphone etc)';}
-	if ($bin_cd[3]) {$msc = 'Object Transfer (v-inbox, v-folder etc)';}
-	if ($bin_cd[2]) {$msc = 'Audio (speaker, microphone, headset service etc)';}
-	if ($bin_cd[1]) {$msc = 'Telephony (cordless telephony, modem, headset service etc)';}
-	if ($bin_cd[0]) {$msc = 'Information (WEB-server, WAP-server etc)';}
+	if ($bin_cd[10]) {$msc[] = 'Limited Discoverable Mode';}
+	if ($bin_cd[7]) {$msc[] = 'Positioning (location identification';}
+	if ($bin_cd[6]) {$msc[] = 'Networking (LAN, Ad hoc etc)';}
+	if ($bin_cd[5]) {$msc[] = 'Rendering (printing, speaker etc)';}
+	if ($bin_cd[4]) {$msc[] = 'Capturing (scanner, microphone etc)';}
+	if ($bin_cd[3]) {$msc[] = 'Object Transfer (v-inbox, v-folder etc)';}
+	if ($bin_cd[2]) {$msc[] = 'Audio (speaker, microphone, headset service etc)';}
+	if ($bin_cd[1]) {$msc[] = 'Telephony (cordless telephony, modem, headset service etc)';}
+	if ($bin_cd[0]) {$msc[] = 'Information (WEB-server, WAP-server etc)';}
 	
 	//Major Device Class
 	if ($bin_cd[11] && $bin_cd[12] && $bin_cd[13] && $bin_cd[14] && $bin_cd[15]) {$mdc = 'Uncategorized, specific device code not specified'; $mds_c = 8;}
@@ -619,7 +623,7 @@ function get_bt_class_info($hex) {
 	}
 
 
-	$to_ret = 'Device Class: ' . $mdc . ', Service: ' . $msc . ', Detail: ' . implode(', ', $min_sc);
+	$to_ret = 'Device Class: ' . $mdc . ', Service: ' . implode(', ', $msc) . ', Detail: ' . implode(', ', $min_sc);
 	echo "to_ret = $to_ret <br>\n";
 	return 	$to_ret;
 }
