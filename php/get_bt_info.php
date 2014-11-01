@@ -19,9 +19,13 @@ curl_setopt($ch,CURLOPT_TIMEOUT, 20);
 $server_output = curl_exec ($ch);
 curl_close ($ch);
 
+$start = strpos($server_output, '<pre>' + 5);
+$end = strpos($server_output, '</pre>');
+$data = substr($server_output, $start, $start - $end)
+
 
 echo ' Hi Max!!!<br>';
-echo htmlentities($server_output);
+echo $data;
 // further processing ....
 //if ($server_output == "OK") { ... } else { ... }
 
