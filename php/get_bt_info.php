@@ -19,12 +19,12 @@ curl_setopt($ch,CURLOPT_TIMEOUT, 20);
 $server_output = curl_exec ($ch);
 curl_close ($ch);
 
-$start = strpos(strtolower($server_output), '<pre>' + 5);
-$end = strpos(strtolower($server_output), '</pre>' - 6, $start);
+$start = strpos(strtolower($server_output), '<pre>');
+$end = strpos(strtolower($server_output), '</pre>', $start);
 $data = $server_output;
 
 if ($start > 10 && $end > $start) {
-            $data = substr($server_output, $start, $end - $start);
+            $data = substr($server_output, $start + 5, $end - $start - 6);
 } 
 
 
