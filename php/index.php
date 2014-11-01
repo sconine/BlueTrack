@@ -18,12 +18,12 @@
 	</div>
 	
 	<div class="row">
-		<div class="col-md-4">Put info about collectors here</div>
+		<div class="col-md-8">Put info about collectors here</div>
 		<div class="col-md-4"><div id="byclass"></div></div>
 	</div>
       
 	<div class="row">
-		<div id="bydevice"></div>
+		<div id="bydevice" style="height: 800px;></div>
 	</div>
 
 	<div class="row">
