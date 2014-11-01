@@ -10,6 +10,18 @@
 
 <meta charset="UTF-8"></head>
 <body>
+<div class="container">
+
+      <div class="page-header">
+        <h1>BlueTrack - Analyze</h1>
+        <p class="lead">A system to analyse data we've collected with a Bluetooth scanner into a Dynamo DB</p>
+      </div>
+
+      <div class="row">
+        <div class="col-md-4">.col-md-4</div>
+        <div class="col-md-4">.col-md-4</div>
+      </div>
+</div>
 
 <div style="width: 100%; display: table;">
     <div style="display: table-row">
