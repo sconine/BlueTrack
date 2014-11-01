@@ -512,8 +512,6 @@ function get_bt_class_info($hex) {
 	$min_sc = array();
 	$b = base_convert($hex, 16, 2);
 	$b = str_pad($b, 24, "0", STR_PAD_LEFT);
-	echo "hex = $hex <br>\n";
-	echo "bin = ". $b . " <br>\n";
 	$bin_cd = str_split($b);
 	
 	//Major Service Class
