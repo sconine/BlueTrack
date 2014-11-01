@@ -448,7 +448,7 @@ function checkit($v) {
 
 function get_mac_info($mac) {
     $mac = str_replace(':', '-', $mac);
-    $mac = substr(mac, 0, 8);
+    $mac = substr($mac, 0, 8);
     echo "mac = $mac <br>\n";
     
     $ch = curl_init();
