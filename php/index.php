@@ -449,7 +449,7 @@ function checkit($v) {
 function get_mac_info($mac) {
     $mac = str_replace(':', '-', $mac);
     $mac = substr($mac, 0, 8);
-    echo "mac = $mac <br>\n";
+    echo "retreiving mac = $mac <br>\n";
     
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL,"http://standards.ieee.org/cgi-bin/ouisearch");
