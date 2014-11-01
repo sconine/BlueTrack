@@ -19,7 +19,7 @@ curl_setopt($ch,CURLOPT_TIMEOUT, 20);
 $server_output = curl_exec ($ch);
 curl_close ($ch);
 
-$start = strpos(strtolower($server_output), '<pre>' + 5);
+$start = strpos(strtolower($server_output), '<pre>');
 $end = strpos(strtolower($server_output), '</pre>');
 $data = $server_output;
 
