@@ -1,6 +1,6 @@
 <?php
-include 'index_include.php';
 include 'functions.php';
+include 'index_include.php';
 ?>
 
 <html>
