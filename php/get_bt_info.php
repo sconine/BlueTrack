@@ -25,7 +25,7 @@ $data = $server_output;
 
 if ($start > 10 && $end > $start) {
             $data = substr($server_output, $start + 5, $end - $start - 6);
-            $start = strpos(strtolower($data), '</b>', $start);
+            $start = strpos(strtolower($data), '</b>');
             if ($start > 1 && $end > $start) {
                         $data = substr($data, $start + 4);
             }
