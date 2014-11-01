@@ -12,24 +12,25 @@
 <body>
 <div class="container">
 
-      <div class="page-header">
-        <h1>BlueTrack - Analyze</h1>
-        <p class="lead">A system to analyse data we've collected with a Bluetooth scanner into a Dynamo DB</p>
-      </div>
-
-      <div class="row">
-        <div class="col-md-4">.col-md-4</div>
-        <div class="col-md-4">.col-md-4</div>
-      </div>
-</div>
+	<div class="page-header">
+		<h1>BlueTrack - Analyze</h1>
+		<p class="lead">A system to analyse data we've collected with a Bluetooth scanner into a Dynamo DB</p>
+	</div>
+	
+	<div class="row">
+		<div class="col-md-4">Put info about collectors here</div>
+		<div class="col-md-4"><div id="byclass"></div></div>
+	</div>
+      
+	<div class="row">
+		<div id="bydevice" style="width: 100%;  height:600px;"></div>
+	</div>
 
 <div style="width: 100%; display: table;">
     <div style="display: table-row">
         <div id="byday" style="width: 400px;  height:400px; display: table-cell;"></div>
-        <div id="byclass" style="width: 400px;  height:400px; display: table-cell;"></div>
     </div>
 </div>
-<div id="bydevice" style="width: 100%;  height:600px;"></div>
 
 <?php
 
