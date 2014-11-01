@@ -123,7 +123,7 @@ do {
                 $value['mac_info']["S"] ='uknown';
             }
         }
-        $my_mac_info[$mac] = $value['mac_info']["S"];
+        $my_mac_info[$mac] = str_replace("\n", " ", $value['mac_info']["S"]);
                 
         // Manipulate the dates a bit
         $seen = array_merge($value['scan_on']["NS"], $value['inq_on']["NS"]);
