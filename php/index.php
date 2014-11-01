@@ -360,7 +360,7 @@ $(function () {
                     ?>
                     ' <b>' + this.point.type + '</b>' +
                     '<br>Avg Hour: ' + this.point.h + ', Avg Day: ' + this.point.d +
-                    '<br>Class Info: ' + this.point.c + 
+                    '<br>' + this.point.c + 
                     '<br>MAC: ' + this.point.m + 
                     '<br>MAC info: ' + this.point.i + 
                     '<br>First Seen: <b>' + this.point.f +
@@ -513,8 +513,7 @@ function get_bt_class_info($hex) {
 	echo "hex = $hex <br>\n";
 	echo "bin = ". base_convert($hex, 16, 2) . " <br>\n";
 	$bin_cd = str_split(base_convert($hex, 16, 2));
-	var_dump($bin_cd);
-	
+
 	//Major Service Class
 	if ($bin_cd[10]) {$msc = 'Limited Discoverable Mode';}
 	if ($bin_cd[7]) {$msc = 'Positioning (location identification';}
@@ -619,7 +618,10 @@ function get_bt_class_info($hex) {
 		if ($bin_cd[19]) {$min_sc[] = 'Controller';}
 	}
 
-	return 	'Device Class: ' . $mdc . ', Service: ' . $msc . ', Detail: ' . implode(', ', $min_sc);
+
+	$to_ret = 'Device Class: ' . $mdc . ', Service: ' . $msc . ', Detail: ' . implode(', ', $min_sc);
+	echo "to_ret = $to_ret <br>\n";
+	return 	$to_ret;
 }
 
 
