@@ -25,13 +25,17 @@ $data = $server_output;
 
 if ($start > 10 && $end > $start) {
             $data = substr($server_output, $start + 5, $end - $start - 6);
+            $start = strpos(strtolower($data), '</b>', $start);
+            if ($start > 1 && $end > $start) {
+                        $data = substr($data, $start + 4);
+            }
 } 
 
 
 echo "start: $start <br>\n";
 echo "end: $end <br><hr><hr>\n";
 //echo "server_output: $server_output <hr><hr><hr>\n";
-echo $data;
+echo '<pre>' . $data . '</pre>';
 // further processing ....
 //if ($server_output == "OK") { ... } else { ... }
 
