@@ -23,13 +23,12 @@
 	</div>
       
 	<div class="row">
-		<div id="bydevice" style="width: 100%;  height:600px;"></div>
+		<div id="bydevice"></div>
 	</div>
 
-<div style="width: 100%; display: table;">
-    <div style="display: table-row">
-        <div id="byday" style="width: 400px;  height:400px; display: table-cell;"></div>
-    </div>
+	<div class="row">
+		<div id="byday"></div>
+	</div>
 </div>
 
 <?php
