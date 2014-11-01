@@ -27,7 +27,6 @@ include 'index_include.php';
 				<fieldset>
 					<legend>Filter Devices</legend>
 					<div class="form-group">
-						<label for="filterForm" class="col-lg-2 control-label">Devices</label>
 						<div class="col-lg-10">
 							<input type="checkbox" name="multi_day" value="d" <?php echo checkit($multi_day_f);?>> Show Multi Day Devices Only
 							<input type="text" name="day_count" size="4" value="<?php echo $day_count_f;?>"> Min Days seen<br>
