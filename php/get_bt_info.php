@@ -17,6 +17,8 @@ curl_setopt($ch,CURLOPT_TIMEOUT, 20);
 $server_output = curl_exec ($ch);
 curl_close ($ch);
 
+
+echo ' Hi Max!!!<br>';
 echo $server_output;
 // further processing ....
 //if ($server_output == "OK") { ... } else { ... }
