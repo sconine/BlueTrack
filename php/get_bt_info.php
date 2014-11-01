@@ -33,7 +33,7 @@ if ($start > 10 && $end > $start) {
             $data = str_replace('(base 16)', '', $data);
             $cc = str_replace('-', '', $mac);
             $data = str_replace($cc, '', $data);
-            while (strpos($data, '  ') > 1) {
+            while (strpos($data, '  ')) {
                         $data = str_replace('  ', ' ', $data);
             }
 } 
