@@ -28,8 +28,8 @@ include 'index_include.php';
 					<legend>Filter Devices</legend>
 					<div class="form-group">
 						<div class="col-lg-10">
-							<input type="checkbox" name="multi_day" value="d" <?php echo checkit($multi_day_f);?>> Show Multi Day Devices Only
-							<input type="text" name="day_count" size="4" value="<?php echo $day_count_f;?>"> Min Days seen<br>
+							<input type="checkbox" name="multi_day" value="d" <?php echo checkit($multi_day_f);?>> Show Devices Seen
+							<input type="text" name="day_count" size="2" value="<?php echo $day_count_f;?>"> Days<br>
 							<input type="checkbox" name="type[]" value="M" <?php echo ischecked('M', $type_f);?>> M = Mobile Phone<br>
 							<input type="checkbox" name="type[]" value="H" <?php echo ischecked('H', $type_f); ?>> H = Human<br>
 							<input type="checkbox" name="type[]" value="V" <?php echo ischecked('V', $type_f); ?>> V = Vehicle<br>
@@ -52,7 +52,22 @@ include 'index_include.php';
 				</form>
 			</div>
 		</div>
-		<div class="col-md-4">Put info about collectors here</div>
+		<div class="col-md-4">
+			<div class="well bs-component">
+				<legend>Key Stats</legend>
+				<p>
+					Total Seen: <?php echo $count; ?><br>
+					Seen in last hour: <?php echo $count; ?>
+				</p>
+			</div>
+			<div class="well bs-component">
+				<legend>Collector Stats</legend>
+				<p>
+					Total Seen: 60<br>
+					Seen in last hour: count($last_hour)
+				</p>
+			</div>
+		</div>
 		<div class="col-md-4"><div id="byclass"></div></div>
 	</div>
       
@@ -63,17 +78,9 @@ include 'index_include.php';
 
 <?php
 include 'graph_js.js';
-
-//If there is no LastEvaluatedKey in the response, there are no more items matching this Scan invocation
-echo "<hr><b>Key Facts:</b><table><tr><td>Total Seen</td><td>$count</td></tr>";
-echo "<tr><td>Seen in Last Hour</td><td>" . count($last_hour) . "</td></tr>";
-echo "</table><br>";
 ?>
 
 
 </body>
 </html>
-
-
-
 
