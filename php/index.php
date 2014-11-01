@@ -514,12 +514,7 @@ function get_bt_class_info($hex) {
 	$b = str_pad($b, 24, "0", STR_PAD_LEFT);
 	echo "hex = $hex <br>\n";
 	echo "bin = ". $b . " <br>\n";
-	$bin_a = str_split($b);
-	foreach ($bin_a as $i => $v) {
-		if ($v == '1') {$bin_cd[] = true;}
-		else {$bin_cd[] = false;}
-	}
-	var_dump($bin_cd);
+	$bin_cd = str_split($b);
 if ($bin_cd[15]) {echo 'hi max!!!!!!';}
 	
 	
