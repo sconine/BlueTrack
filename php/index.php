@@ -70,6 +70,7 @@ $last_seen = array();
 $first_seen = array();
 $top = array();
 $names = array();
+$classes = array();
 $dev_type = array();
 $show_minutes = array();
 $seen_hours = array();
@@ -128,6 +129,14 @@ do {
         }
         $my_mac_info[$mac] = str_replace("\n", " ", $value['mac_info']["S"]);
         $my_mac_info[$mac] = str_replace("'", "\'", $my_mac_info[$mac]);
+
+        // Keep track of counts by class
+        $t_class = implode(',', $value['class']["SS"]);
+        if (isset($by_class[$t_class][$mac])) {$by_class[$t_class][$mac]++;}
+        else {$by_class[$t_class][$mac] = 1;}
+        
+        // Just pick the first class listed of this device
+        $classes[$mac] = $value['class']["SS"][0];
                 
         // Manipulate the dates a bit
         $seen = array_merge($value['scan_on']["NS"], $value['inq_on']["NS"]);
@@ -156,12 +165,7 @@ do {
                 // Keep track of counts by day
                 if (isset($by_day[$dayofweek][$mac])) {$by_day[$dayofweek][$mac]++;}
                 else {$by_day[$dayofweek][$mac] = 1;}
-                
-                // Keep track of counts by class
-                $t_class = implode(',', $value['class']["SS"]);
-                if (isset($by_class[$t_class][$mac])) {$by_class[$t_class][$mac]++;}
-                else {$by_class[$t_class][$mac] = 1;}
-                
+            
                 // Build data for bubble chart
                 if (isset($seen_dayofw[$mac][$dayofweek3])) {$seen_dayofw[$mac][$dayofweek3]++;}
                 else {$seen_dayofw[$mac][$dayofweek3] = 1;}
@@ -229,6 +233,13 @@ foreach ($top as $mac => $mct) {
     // Set an upper limit on the circle size
     $mctd = $mct;
     if ($mctd > 300) {$mctd = 300;}
+    
+    // Get infor about this class of device
+    $class_det = 'Unknown';
+    if ($classes[$mac] != 'n/a') {
+        $hex = str_replace("0x", "", $classes[$mac]);
+        $class_det = str_replace("'", "\'", get_bt_class_info($hex));
+    }
 
     $series[$lsn] .= "{n: '". str_replace("'", "\'", $name[$mac]) 
             . "', m: '" . $mac 
@@ -236,6 +247,7 @@ foreach ($top as $mac => $mct) {
             . "', f: '" . date("m/d/Y h:i a", $first_seen[$mac]) 
             . "', d: '" . $day_names[(round($avg_dayofweek) - 1)]
             . "', h: '" . $disp_hr 
+            . "', c: '" . $class_det
             . "', i: '" . $my_mac_info[$mac] 
             . "', type: '" . $dev_type[$mac] 
             . "', t: " . $mct 
@@ -348,6 +360,7 @@ $(function () {
                     ?>
                     ' <b>' + this.point.type + '</b>' +
                     '<br>Avg Hour: ' + this.point.h + ', Avg Day: ' + this.point.d +
+                    '<br>Class Info: ' + this.point.c + 
                     '<br>MAC: ' + this.point.m + 
                     '<br>MAC info: ' + this.point.i + 
                     '<br>First Seen: <b>' + this.point.f +
@@ -489,6 +502,124 @@ function get_mac_info($mac) {
     } 
     return '';
 }
+
+// Function to turn a bluetooth class code into an english description
+// not sure this is perfectly accurate, and up to date but works for my purposes
+function get_bt_class_info($hex) {
+	$mdc = '='; 
+	$mds_c = 0;
+	$msc = '';
+	$min_sc = array();
+	$bin_cd = str_split(base_convert($hex, 16, 2));
+	
+	//Major Service Class
+	if ($bin_cd[10]) {$msc = 'Limited Discoverable Mode';}
+	if ($bin_cd[7]) {$msc = 'Positioning (location identification';}
+	if ($bin_cd[6]) {$msc = 'Networking (LAN, Ad hoc etc)';}
+	if ($bin_cd[5]) {$msc = 'Rendering (printing, speaker etc)';}
+	if ($bin_cd[4]) {$msc = 'Capturing (scanner, microphone etc)';}
+	if ($bin_cd[3]) {$msc = 'Object Transfer (v-inbox, v-folder etc)';}
+	if ($bin_cd[2]) {$msc = 'Audio (speaker, microphone, headset service etc)';}
+	if ($bin_cd[1]) {$msc = 'Telephony (cordless telephony, modem, headset service etc)';}
+	if ($bin_cd[0]) {$msc = 'Information (WEB-server, WAP-server etc)';}
+	
+	//Major Device Class
+	if ($bin_cd[11] && cod_result[12] && cod_result[13] && cod_result[14] && cod_result[15]) {$mdc = 'Uncategorized, specific device code not specified'; $mds_c = 8;}
+	if ($bin_cd[13] && cod_result[14] && cod_result[15]) {$mdc = 'Wearable'; $mds_c = 1;}
+	if ($bin_cd[14] && cod_result[15]) {$mdc = 'LAN/Network Access point'; $mds_c = 3;}
+	if ($bin_cd[13] && cod_result[15]) {$mdc = 'Peripheral (mouse, joystick, keyboards etc)'; $mds_c = 5;}
+	if ($bin_cd[13] && cod_result[14]) {$mdc = 'Imaging (printing, scanner, camera, display etc)'; $mds_c = 6;}
+	if ($bin_cd[15]) {$mdc = 'Computer (desktop,notebook, PDA, organizers etc)'; $mds_c = 1;}
+	if ($bin_cd[14]) {$mdc = 'Phone (cellular, cordless, payphone, modem)'; $mds_c = 2;}
+	if ($bin_cd[13]) {$mdc = 'Audio/Video (headset, speaker, stereo, video display etc)'; $mds_c = 4;}
+	if ($bin_cd[12]) {$mdc = 'Toy'; $mds_c = 7;}
+	 
+	//Wearable
+	if ($mds_c == 1) {
+		if ($bin_cd[21] && $bin_cd[19]) {$min_sc[] = 'Palm sized PC/PDA';}
+		if ($bin_cd[20] && $bin_cd[19]) {$min_sc[] = 'Wearable computer (watch sized)';}
+		if ($bin_cd[21] && $bin_cd[20]) {$min_sc[] = 'Laptop';}
+		if ($bin_cd[21]) {$min_sc[] = 'Desktop workstation';}
+		if ($bin_cd[20]) {$min_sc[] = 'Server-class computer';}
+		if ($bin_cd[19]) {$min_sc[] = 'Handheld PC/PDA (clam shell)';}
+	}
+	//Phone
+	if ($mds_c == 2) {
+		if ($bin_cd[21] && cod_result[20]) {$min_sc[] = 'Smart phone';}
+		if ($bin_cd[21] && cod_result[19]) {$min_sc[] = 'Common ISDN Access';}
+		if ($bin_cd[21]) {$min_sc[] = 'Cellular';}
+		if ($bin_cd[20]) {$min_sc[] = 'Cordless';}
+		if ($bin_cd[19]) {$min_sc[] = 'Wired modem or voice gateway';}
+	}
+	//LAN/Network Access point
+	if ($mds_c == 3) {
+		if ($bin_cd[18] && cod_result[17] & cod_result[16]) {$min_sc[] = 'No service available';}
+		if ($bin_cd[18] && cod_result[17]) {$min_sc[] = '33 - 50% utilized';}
+		if ($bin_cd[18] && cod_result[16]) {$min_sc[] = '67 - 83% utilized';}
+		if ($bin_cd[17] && cod_result[16]) {$min_sc[] = '83 - 99% utilized';}
+		if ($bin_cd[16]) {$min_sc[] = '50 - 67% utilized';}
+		if ($bin_cd[18]) {$min_sc[] = '1 - 17% utilized';}
+		if ($bin_cd[17]) {$min_sc[] = '17 - 33% utilized';}
+	}
+	//Audio/Video
+	if ($mds_c == 4) {
+		if ($bin_cd[21] && cod_result[20] && cod_result[19] && cod_result[18]) {$min_sc[] = 'Video Display and Loudspeaker';}
+		if ($bin_cd[21] && cod_result[20] && cod_result[19]) {$min_sc[] = 'Portable Audio';}
+		if ($bin_cd[21] && cod_result[20] && cod_result[18]) {$min_sc[] = 'VCR';}
+		if ($bin_cd[21] && cod_result[19] && cod_result[18]) {$min_sc[] = 'Camcorder';}
+		if ($bin_cd[20] && cod_result[19] && cod_result[18]) {$min_sc[] = 'Video Monitor';}
+		if ($bin_cd[19] && cod_result[18]) {$min_sc[] = 'Video Camera';}
+		if ($bin_cd[20] && cod_result[17]) {$min_sc[] = 'Gaming/Toy';}
+		if ($bin_cd[21] && cod_result[19]) {$min_sc[] = 'Loudspeaker';}
+		if ($bin_cd[20] && cod_result[19]) {$min_sc[] = 'Headphones';}
+		if ($bin_cd[21] && cod_result[18]) {$min_sc[] = 'Set-top box';}
+		if ($bin_cd[20] && cod_result[18]) {$min_sc[] = 'HiFi Audio Device';}
+		if ($bin_cd[21]) {$min_sc[] = 'Wearable Headset Device';}
+		if ($bin_cd[20]) {$min_sc[] = 'Hands-free Device';}
+		if ($bin_cd[19]) {$min_sc[] = 'Microphone';}
+		if ($bin_cd[18]) {$min_sc[] = 'Car audio';}
+		if ($bin_cd[17]) {$min_sc[] = 'Video Conferencing';}
+	}
+	//Peripheral
+	if ($mds_c == 5) {
+		if ($bin_cd[21] && cod_result[19]) {$min_sc[] = 'Digitizer tablet';}
+		if ($bin_cd[20] && cod_result[19]) {$min_sc[] = 'Card Reader (e.g. SIM Card Reader)';}
+		if ($bin_cd[17] &&cod_result[16]) {$min_sc[] = 'Combo keyboard/pointing device';}
+		if ($bin_cd[21] && cod_result[20]) {$min_sc[] = 'Remote control';}
+		if ($bin_cd[17]) {$min_sc[] = 'Keyboard';}
+		if ($bin_cd[16]) {$min_sc[] = 'Pointing device';}
+		if ($bin_cd[21]) {$min_sc[] = 'Joystick';}
+		if ($bin_cd[20]) {$min_sc[] = 'Gamepad';}
+		if ($bin_cd[19]) {$min_sc[] = 'Sensing device';}
+	}
+	//Imaging
+	if ($mds_c == 6) {
+		if ($bin_cd[19]) {$min_sc[] = 'Display';}
+		if ($bin_cd[18]) {$min_sc[] = 'Camera';}
+		if ($bin_cd[17]) {$min_sc[] = 'Scanner';}
+		if ($bin_cd[16]) {$min_sc[] = 'Printer';}
+	}
+	//Toy
+	if ($mds_c == 7) {
+		if ($bin_cd[21] && cod_result[20]) {$min_sc[] = 'Jacket';}
+		if ($bin_cd[21] && cod_result[19]) {$min_sc[] = 'Glasses';}
+		if ($bin_cd[21]) {$min_sc[] = 'Wrist Watch';}
+		if ($bin_cd[20]) {$min_sc[] = 'Pager';}
+		if ($bin_cd[19]) {$min_sc[] = 'Helmet';}
+	}
+	//Uncategorized
+	if ($mds_c == 8) {
+		if ($bin_cd[21] && cod_result[20]) {$min_sc[] = 'Doll / Action Figure';}
+		if ($bin_cd[21] && cod_result[19]) {$min_sc[] = 'Game';}
+		if ($bin_cd[21]) {$min_sc[] = 'Robot';}
+		if ($bin_cd[20]) {$min_sc[] = 'Vehicle';}
+		if ($bin_cd[19]) {$min_sc[] = 'Controller';}
+	}
+
+	return 	'Device Class: ' . $mdc . ', Service: ' . $msc . ', Detail: ' . implode(', ', $min_sc);
+}
+
+
 
 ?>
 
