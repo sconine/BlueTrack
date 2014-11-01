@@ -3,6 +3,16 @@
 // A very simple PHP example that sends a HTTP POST to a remote site
 //
 $mac = 'C8-F7-33';
+if(!empty($_REQUEST['mac'])) {$mac = $_REQUEST['mac'];}
+// Make sure they look safe
+$pattern = '/^[a-zA-ZvV0-9,:]+$/';
+if (preg_match($pattern, $mac) == 0) {$mac = 'C8-F7-33';}
+else {
+            $mac = str_replace(':', '-', $mac);
+            $mac = substr(mac, 0, 8);
+}
+echo "mac = $mac <br>\n";
+
 $ch = curl_init();
 
 curl_setopt($ch, CURLOPT_URL,"http://standards.ieee.org/cgi-bin/ouisearch");
