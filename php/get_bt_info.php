@@ -20,7 +20,7 @@ $server_output = curl_exec ($ch);
 curl_close ($ch);
 
 $start = strpos(strtolower($server_output), '<pre>');
-$end = strpos(strtolower($server_output), '</pre>');
+$end = strpos(strtolower($server_output), '</pre>', $start);
 $data = $server_output;
 
 if ($start > 10 && $end > $start) {
@@ -29,7 +29,7 @@ if ($start > 10 && $end > $start) {
 
 
 echo "start: $start <br>\n";
-echo "end: $end <br>\n";
+echo "end: $end <br><hr><hr>\n";
 //echo "server_output: $server_output <hr><hr><hr>\n";
 echo $data;
 // further processing ....
