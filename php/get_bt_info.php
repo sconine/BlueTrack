@@ -5,12 +5,14 @@
 $mac = '00:22:58';
 $ch = curl_init();
 
-curl_setopt($ch, CURLOPT_URL,"http://http://standards.ieee.org/cgi-bin/ouisearch");
+curl_setopt($ch, CURLOPT_URL,"http://standards.ieee.org/cgi-bin/ouisearch");
 curl_setopt($ch, CURLOPT_POST, 1);
 curl_setopt($ch, CURLOPT_POSTFIELDS,
             "x=" . urlencode($mac) . "&submit2=" . urlencode('Search!'));
 
 // receive server response ...
+curl_setopt($ch, CURLOPT_FAILONERROR, true); 
+curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true); 
 curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 curl_setopt($ch,CURLOPT_CONNECTTIMEOUT ,3);
 curl_setopt($ch,CURLOPT_TIMEOUT, 20);
