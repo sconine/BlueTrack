@@ -33,7 +33,7 @@ if ($start > 10 && $end > $start) {
             $data = str_replace('(base 16)', '', $data);
             $cc = str_replace('-', '', $mac);
             $data = str_replace($cc, '', $data);
-            $data = preg_replace("/[\s^\n]{2,}/", "", $data);
+            $data = preg_replace("/[ \t]{2,}/", "", $data);
 } 
 
 echo "start: $start <br>\n";
