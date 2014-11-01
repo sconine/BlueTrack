@@ -15,11 +15,11 @@ curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 curl_setopt($ch,CURLOPT_CONNECTTIMEOUT ,3);
 curl_setopt($ch,CURLOPT_TIMEOUT, 20);
 $server_output = curl_exec ($ch);
+var_dump($server_output);
 curl_close ($ch);
 
 
 echo ' Hi Max!!!<br>';
-echo $server_output;
 // further processing ....
 //if ($server_output == "OK") { ... } else { ... }
 
