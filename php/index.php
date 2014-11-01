@@ -515,8 +515,6 @@ function get_bt_class_info($hex) {
 	echo "hex = $hex <br>\n";
 	echo "bin = ". $b . " <br>\n";
 	$bin_cd = str_split($b);
-if ($bin_cd[15]) {echo 'hi max!!!!!!';}
-	
 	
 	//Major Service Class
 	if ($bin_cd[10]) {$msc[] = 'Limited Discoverable Mode';}
@@ -623,7 +621,7 @@ if ($bin_cd[15]) {echo 'hi max!!!!!!';}
 	}
 
 
-	$to_ret = 'Device Class: ' . $mdc . ', Service: ' . implode(', ', $msc) . ', Detail: ' . implode(', ', $min_sc);
+	$to_ret = 'Device Class: ' . $mdc . '<br><br>Service:<br>' . implode('<br>', $msc) . '<br><br>Detail: ' . implode('<br>', $min_sc);
 	echo "to_ret = $to_ret <br>\n";
 	return 	$to_ret;
 }
