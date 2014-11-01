@@ -524,11 +524,11 @@ function get_bt_class_info($hex) {
 	if ($bin_cd[0]) {$msc = 'Information (WEB-server, WAP-server etc)';}
 	
 	//Major Device Class
-	if ($bin_cd[11] && cod_result[12] && cod_result[13] && cod_result[14] && cod_result[15]) {$mdc = 'Uncategorized, specific device code not specified'; $mds_c = 8;}
-	if ($bin_cd[13] && cod_result[14] && cod_result[15]) {$mdc = 'Wearable'; $mds_c = 1;}
-	if ($bin_cd[14] && cod_result[15]) {$mdc = 'LAN/Network Access point'; $mds_c = 3;}
-	if ($bin_cd[13] && cod_result[15]) {$mdc = 'Peripheral (mouse, joystick, keyboards etc)'; $mds_c = 5;}
-	if ($bin_cd[13] && cod_result[14]) {$mdc = 'Imaging (printing, scanner, camera, display etc)'; $mds_c = 6;}
+	if ($bin_cd[11] && $bin_cd[12] && $bin_cd[13] && $bin_cd[14] && $bin_cd[15]) {$mdc = 'Uncategorized, specific device code not specified'; $mds_c = 8;}
+	if ($bin_cd[13] && $bin_cd[14] && $bin_cd[15]) {$mdc = 'Wearable'; $mds_c = 1;}
+	if ($bin_cd[14] && $bin_cd[15]) {$mdc = 'LAN/Network Access point'; $mds_c = 3;}
+	if ($bin_cd[13] && $bin_cd[15]) {$mdc = 'Peripheral (mouse, joystick, keyboards etc)'; $mds_c = 5;}
+	if ($bin_cd[13] && $bin_cd[14]) {$mdc = 'Imaging (printing, scanner, camera, display etc)'; $mds_c = 6;}
 	if ($bin_cd[15]) {$mdc = 'Computer (desktop,notebook, PDA, organizers etc)'; $mds_c = 1;}
 	if ($bin_cd[14]) {$mdc = 'Phone (cellular, cordless, payphone, modem)'; $mds_c = 2;}
 	if ($bin_cd[13]) {$mdc = 'Audio/Video (headset, speaker, stereo, video display etc)'; $mds_c = 4;}
@@ -545,35 +545,35 @@ function get_bt_class_info($hex) {
 	}
 	//Phone
 	if ($mds_c == 2) {
-		if ($bin_cd[21] && cod_result[20]) {$min_sc[] = 'Smart phone';}
-		if ($bin_cd[21] && cod_result[19]) {$min_sc[] = 'Common ISDN Access';}
+		if ($bin_cd[21] && $bin_cd[20]) {$min_sc[] = 'Smart phone';}
+		if ($bin_cd[21] && $bin_cd[19]) {$min_sc[] = 'Common ISDN Access';}
 		if ($bin_cd[21]) {$min_sc[] = 'Cellular';}
 		if ($bin_cd[20]) {$min_sc[] = 'Cordless';}
 		if ($bin_cd[19]) {$min_sc[] = 'Wired modem or voice gateway';}
 	}
 	//LAN/Network Access point
 	if ($mds_c == 3) {
-		if ($bin_cd[18] && cod_result[17] & cod_result[16]) {$min_sc[] = 'No service available';}
-		if ($bin_cd[18] && cod_result[17]) {$min_sc[] = '33 - 50% utilized';}
-		if ($bin_cd[18] && cod_result[16]) {$min_sc[] = '67 - 83% utilized';}
-		if ($bin_cd[17] && cod_result[16]) {$min_sc[] = '83 - 99% utilized';}
+		if ($bin_cd[18] && $bin_cd[17] & $bin_cd[16]) {$min_sc[] = 'No service available';}
+		if ($bin_cd[18] && $bin_cd[17]) {$min_sc[] = '33 - 50% utilized';}
+		if ($bin_cd[18] && $bin_cd[16]) {$min_sc[] = '67 - 83% utilized';}
+		if ($bin_cd[17] && $bin_cd[16]) {$min_sc[] = '83 - 99% utilized';}
 		if ($bin_cd[16]) {$min_sc[] = '50 - 67% utilized';}
 		if ($bin_cd[18]) {$min_sc[] = '1 - 17% utilized';}
 		if ($bin_cd[17]) {$min_sc[] = '17 - 33% utilized';}
 	}
 	//Audio/Video
 	if ($mds_c == 4) {
-		if ($bin_cd[21] && cod_result[20] && cod_result[19] && cod_result[18]) {$min_sc[] = 'Video Display and Loudspeaker';}
-		if ($bin_cd[21] && cod_result[20] && cod_result[19]) {$min_sc[] = 'Portable Audio';}
-		if ($bin_cd[21] && cod_result[20] && cod_result[18]) {$min_sc[] = 'VCR';}
-		if ($bin_cd[21] && cod_result[19] && cod_result[18]) {$min_sc[] = 'Camcorder';}
-		if ($bin_cd[20] && cod_result[19] && cod_result[18]) {$min_sc[] = 'Video Monitor';}
-		if ($bin_cd[19] && cod_result[18]) {$min_sc[] = 'Video Camera';}
-		if ($bin_cd[20] && cod_result[17]) {$min_sc[] = 'Gaming/Toy';}
-		if ($bin_cd[21] && cod_result[19]) {$min_sc[] = 'Loudspeaker';}
-		if ($bin_cd[20] && cod_result[19]) {$min_sc[] = 'Headphones';}
-		if ($bin_cd[21] && cod_result[18]) {$min_sc[] = 'Set-top box';}
-		if ($bin_cd[20] && cod_result[18]) {$min_sc[] = 'HiFi Audio Device';}
+		if ($bin_cd[21] && $bin_cd[20] && $bin_cd[19] && $bin_cd[18]) {$min_sc[] = 'Video Display and Loudspeaker';}
+		if ($bin_cd[21] && $bin_cd[20] && $bin_cd[19]) {$min_sc[] = 'Portable Audio';}
+		if ($bin_cd[21] && $bin_cd[20] && $bin_cd[18]) {$min_sc[] = 'VCR';}
+		if ($bin_cd[21] && $bin_cd[19] && $bin_cd[18]) {$min_sc[] = 'Camcorder';}
+		if ($bin_cd[20] && $bin_cd[19] && $bin_cd[18]) {$min_sc[] = 'Video Monitor';}
+		if ($bin_cd[19] && $bin_cd[18]) {$min_sc[] = 'Video Camera';}
+		if ($bin_cd[20] && $bin_cd[17]) {$min_sc[] = 'Gaming/Toy';}
+		if ($bin_cd[21] && $bin_cd[19]) {$min_sc[] = 'Loudspeaker';}
+		if ($bin_cd[20] && $bin_cd[19]) {$min_sc[] = 'Headphones';}
+		if ($bin_cd[21] && $bin_cd[18]) {$min_sc[] = 'Set-top box';}
+		if ($bin_cd[20] && $bin_cd[18]) {$min_sc[] = 'HiFi Audio Device';}
 		if ($bin_cd[21]) {$min_sc[] = 'Wearable Headset Device';}
 		if ($bin_cd[20]) {$min_sc[] = 'Hands-free Device';}
 		if ($bin_cd[19]) {$min_sc[] = 'Microphone';}
@@ -582,10 +582,10 @@ function get_bt_class_info($hex) {
 	}
 	//Peripheral
 	if ($mds_c == 5) {
-		if ($bin_cd[21] && cod_result[19]) {$min_sc[] = 'Digitizer tablet';}
-		if ($bin_cd[20] && cod_result[19]) {$min_sc[] = 'Card Reader (e.g. SIM Card Reader)';}
-		if ($bin_cd[17] &&cod_result[16]) {$min_sc[] = 'Combo keyboard/pointing device';}
-		if ($bin_cd[21] && cod_result[20]) {$min_sc[] = 'Remote control';}
+		if ($bin_cd[21] && $bin_cd[19]) {$min_sc[] = 'Digitizer tablet';}
+		if ($bin_cd[20] && $bin_cd[19]) {$min_sc[] = 'Card Reader (e.g. SIM Card Reader)';}
+		if ($bin_cd[17] && $bin_cd[16]) {$min_sc[] = 'Combo keyboard/pointing device';}
+		if ($bin_cd[21] && $bin_cd[20]) {$min_sc[] = 'Remote control';}
 		if ($bin_cd[17]) {$min_sc[] = 'Keyboard';}
 		if ($bin_cd[16]) {$min_sc[] = 'Pointing device';}
 		if ($bin_cd[21]) {$min_sc[] = 'Joystick';}
@@ -601,16 +601,16 @@ function get_bt_class_info($hex) {
 	}
 	//Toy
 	if ($mds_c == 7) {
-		if ($bin_cd[21] && cod_result[20]) {$min_sc[] = 'Jacket';}
-		if ($bin_cd[21] && cod_result[19]) {$min_sc[] = 'Glasses';}
+		if ($bin_cd[21] && $bin_cd[20]) {$min_sc[] = 'Jacket';}
+		if ($bin_cd[21] && $bin_cd[19]) {$min_sc[] = 'Glasses';}
 		if ($bin_cd[21]) {$min_sc[] = 'Wrist Watch';}
 		if ($bin_cd[20]) {$min_sc[] = 'Pager';}
 		if ($bin_cd[19]) {$min_sc[] = 'Helmet';}
 	}
 	//Uncategorized
 	if ($mds_c == 8) {
-		if ($bin_cd[21] && cod_result[20]) {$min_sc[] = 'Doll / Action Figure';}
-		if ($bin_cd[21] && cod_result[19]) {$min_sc[] = 'Game';}
+		if ($bin_cd[21] && $bin_cd[20]) {$min_sc[] = 'Doll / Action Figure';}
+		if ($bin_cd[21] && $bin_cd[19]) {$min_sc[] = 'Game';}
 		if ($bin_cd[21]) {$min_sc[] = 'Robot';}
 		if ($bin_cd[20]) {$min_sc[] = 'Vehicle';}
 		if ($bin_cd[19]) {$min_sc[] = 'Controller';}
