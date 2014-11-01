@@ -506,7 +506,7 @@ function get_mac_info($mac) {
 // Function to turn a bluetooth class code into an english description
 // not sure this is perfectly accurate, and up to date but works for my purposes
 function get_bt_class_info($hex) {
-	$mdc = '='; 
+	$mdc = ''; 
 	$mds_c = 0;
 	$msc = array();
 	$min_sc = array();
@@ -514,8 +514,14 @@ function get_bt_class_info($hex) {
 	$b = str_pad($b, 24, "0", STR_PAD_LEFT);
 	echo "hex = $hex <br>\n";
 	echo "bin = ". $b . " <br>\n";
-	$bin_cd = array_reverse(str_split($b));
-
+	$bin_a = array_reverse(str_split($b));
+	foreach ($bin_a as $i => $v) {
+		if ($v == '1') {$bin_cd[] = true;}
+		else {$bin_cd[] = false;}
+	}
+if ($bin_cd[15]) {echo 'hi max!!!!!!';}
+	
+	
 	//Major Service Class
 	if ($bin_cd[10]) {$msc[] = 'Limited Discoverable Mode';}
 	if ($bin_cd[7]) {$msc[] = 'Positioning (location identification';}
