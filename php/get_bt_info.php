@@ -20,7 +20,7 @@ $server_output = curl_exec ($ch);
 curl_close ($ch);
 
 $start = strpos(strtolower($server_output), '<pre>' + 5);
-$end = strpos(strtolower($server_output), '</pre>', $start - 6);
+$end = strpos(strtolower($server_output), '</pre>' - 6, $start);
 $data = $server_output;
 
 if ($start > 10 && $end > $start) {
