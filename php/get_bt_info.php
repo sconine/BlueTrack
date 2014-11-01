@@ -21,10 +21,16 @@ curl_close ($ch);
 
 $start = strpos($server_output, '<pre>' + 5);
 $end = strpos($server_output, '</pre>');
-$data = substr($server_output, $start, $start - $end);
+$data = $server_output;
+
+if ($start > 10 && $end > $start) {
+            $data = substr($server_output, $start, $start - $end);
+} 
 
 
-echo 'Hi Max!!!<br>';
+echo "start: $start <br>\n";
+echo "end: $end <br>\n";
+echo "server_output: $server_output <hr><hr><hr>\n";
 echo $data;
 // further processing ....
 //if ($server_output == "OK") { ... } else { ... }
