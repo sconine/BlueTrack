@@ -4,6 +4,10 @@
 <script src="http://code.highcharts.com/highcharts.js"></script>
 <script src="http://code.highcharts.com/highcharts-more.js"></script>
 <script src="http://code.highcharts.com/modules/exporting.js"></script>
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap-theme.min.css">
+
 <meta charset="UTF-8"></head>
 <body>
 
@@ -132,7 +136,7 @@ do {
 
         // Keep track of counts by class
         $mdc = '';
-        $t_class = 'No Sent';
+        $t_class = '';
         foreach ($value['class']["SS"] as $cli => $cl) {
         	if ($cl != 'n/a') {
         		get_bt_class_info($cl, $mdc);
@@ -140,6 +144,7 @@ do {
         		$t_class .= $mdc;
         	}
         }
+        if ($t_class == '') {$t_class = 'Not Sent';}
         if (isset($by_class[$t_class][$mac])) {$by_class[$t_class][$mac]++;}
         else {$by_class[$t_class][$mac] = 1;}
         
