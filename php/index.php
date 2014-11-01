@@ -345,7 +345,7 @@ $(function () {
                     ' <b>' + this.point.type + '</b>' +
                     '<br>Avg Hour: ' + this.point.h + ', Avg Day: ' + this.point.d +
                     '<br>MAC: ' + this.point.m + 
-                    '<br>MAC info <pre>: ' + this.point.i + '</pre>' +
+                    '<br>MAC info: ' + this.point.i + 
                     '<br>First Seen: <b>' + this.point.f +
                     '</b><br>Last Seen: <b>' + this.point.l + '</b>' + det;
             }
