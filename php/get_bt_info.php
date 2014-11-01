@@ -29,6 +29,13 @@ if ($start > 10 && $end > $start) {
             if ($start > 1 && $end > $start) {
                         $data = substr($data, $start + 4);
             }
+            $data = str_replace('(hex)', '', $data);
+            $data = str_replace('(base 16)', '', $data);
+            $cc = str_replace('-', '', $mac);
+            $data = str_replace($cc, '', $data);
+            while (strpos($data, '  ') > 1) {
+                        $data = str_replace('  ', ' ', $data);
+            }
 } 
 
 
