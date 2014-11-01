@@ -2,7 +2,7 @@
 //
 // A very simple PHP example that sends a HTTP POST to a remote site
 //
-$mac = '00-22-58';
+$mac = 'C8-F7-33';
 $ch = curl_init();
 
 curl_setopt($ch, CURLOPT_URL,"http://standards.ieee.org/cgi-bin/ouisearch");
