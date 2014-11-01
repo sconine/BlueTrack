@@ -516,8 +516,6 @@ function get_bt_class_info($hex) {
 	echo "bin = ". $b . " <br>\n";
 	$bin_cd = array_reverse(str_split($b));
 
-str_pad ( string $input , int $pad_length [, string $pad_string = " " [, int $pad_type = STR_PAD_RIGHT ]] )
-
 	//Major Service Class
 	if ($bin_cd[10]) {$msc[] = 'Limited Discoverable Mode';}
 	if ($bin_cd[7]) {$msc[] = 'Positioning (location identification';}
