@@ -132,7 +132,7 @@ do {
 
         // Keep track of counts by class
         $mdc = '';
-        $t_class = '';
+        $t_class = 'No Sent';
         foreach ($value['class']["SS"] as $cli => $cl) {
         	if ($cl != 'n/a') {
         		get_bt_class_info($cl, $mdc);
