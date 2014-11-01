@@ -102,7 +102,7 @@ do {
         
         // Do we have mac registrant info if not get it and store it
         //if (! isset($value['mac_info']["S"])) {
-        if ($gc < 10 && $value['mac_info']["S"] == "HINERY COMPANY\n000033EGAN <b>MAC</b>HINERY COMPANY\nSOUTH ADAMSVILLE ROAD\nSOMMERVILLE NJ 08876\nUNITED STATES") {
+        if ($gc < 30 && $value['mac_info']["S"] == "HINERY COMPANY\n000033EGAN <b>MAC</b>HINERY COMPANY\nSOUTH ADAMSVILLE ROAD\nSOMMERVILLE NJ 08876\nUNITED STATES") {
             $mac_info = get_mac_info($mac);
             $gc++;
             
