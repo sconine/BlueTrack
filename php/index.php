@@ -92,12 +92,38 @@ do {
     foreach ($response['Items'] as $key => $value) {
         $count++;
         $mac = $value['mac_id']["S"];
+        $collector_id = $value['collector_id']["S"];
         $name[$mac] = implode(',', $value['name']["SS"]);
         $dev_type[$mac] = isset($value['type']["S"]) ? $value['type']["S"] : 'X';
         $type_list[$dev_type[$mac]] = 1;
         $last_seen[$mac] = 0;
         $first_seen[$mac] = 0;
+        
+        // Do we have mac registrant info if not get it and store it
+        if (! isset($value['mac_info']["S"])) {
+            $mac_info = get_mac_info($mac);
+            if ($mac_info != '') {
+                $result = $client->updateItem(array(
+                	'TableName' => 'collector_data',
+                	'Key' => array(
+                		'mac_id'      => array("S" => $mac),
+                		'collector_id'      => array("S" => $collector_id)
+                	),
+                	"AttributeUpdates" => array(
+                		"mac_info" => array(
+                			"Value" => array("S" => $mac_info),
+                			"Action" => "PUT"
+                		)
+                	),
+                	'ReturnValues' => "NONE"
+                ));
                 
+                $value['mac_info']["S"] = $mac_info;
+            } else {
+                $value['mac_info']["S"] ='uknown';
+            }
+        }
+        $my_mac_info[$mac] = $value['mac_info']["S"];
                 
         // Manipulate the dates a bit
         $seen = array_merge($value['scan_on']["NS"], $value['inq_on']["NS"]);
@@ -206,6 +232,7 @@ foreach ($top as $mac => $mct) {
             . "', f: '" . date("m/d/Y h:i a", $first_seen[$mac]) 
             . "', d: '" . $day_names[(round($avg_dayofweek) - 1)]
             . "', h: '" . $disp_hr 
+            . "', i: '" . $my_mac_info[$mac] 
             . "', type: '" . $dev_type[$mac] 
             . "', t: " . $mct 
             . ", x: " . $avg_hr 
@@ -318,6 +345,7 @@ $(function () {
                     ' <b>' + this.point.type + '</b>' +
                     '<br>Avg Hour: ' + this.point.h + ', Avg Day: ' + this.point.d +
                     '<br>MAC: ' + this.point.m + 
+                    '<br>MAC info <pre>: ' + this.point.i + '</pre>' +
                     '<br>First Seen: <b>' + this.point.f +
                     '</b><br>Last Seen: <b>' + this.point.l + '</b>' + det;
             }
@@ -414,3 +442,50 @@ function checkit($v) {
 </form>
 </body>
 </html>
+
+
+<?php
+
+function get_mac_info($mac) {
+    $mac = str_replace(':', '-', $mac);
+    $mac = substr(mac, 0, 8);
+    echo "mac = $mac <br>\n";
+    
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL,"http://standards.ieee.org/cgi-bin/ouisearch");
+    curl_setopt($ch, CURLOPT_POST, 1);
+    curl_setopt($ch, CURLOPT_POSTFIELDS,
+                "x=" . urlencode($mac) . "&submit2=" . urlencode('Search!'));
+    // receive server response ...
+    curl_setopt($ch, CURLOPT_FAILONERROR, true); 
+    curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true); 
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($ch,CURLOPT_CONNECTTIMEOUT ,3);
+    curl_setopt($ch,CURLOPT_TIMEOUT, 20);
+    $server_output = curl_exec ($ch);
+    curl_close ($ch);
+    
+    // Parse the output
+    $start = strpos(strtolower($server_output), '<pre>');
+    $end = strpos(strtolower($server_output), '</pre>', $start);
+    $data = $server_output;
+    
+    if ($start > 10 && $end > $start) {
+                $data = substr($server_output, $start + 5, $end - $start - 6);
+                $start = strpos(strtolower($data), '</b>');
+                if ($start > 1 && $end > $start) {
+                            $data = substr($data, $start + 4);
+                }
+                $data = str_replace('(hex)', '', $data);
+                $data = str_replace('(base 16)', '', $data);
+                $cc = str_replace('-', '', $mac);
+                $data = str_replace($cc, '', $data);
+                $data = preg_replace("/[ \t]{2,}/", "", $data);
+                return $data;
+    } 
+    return '';
+}
+
+?>
+
+
