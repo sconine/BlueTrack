@@ -33,7 +33,7 @@ if ($start > 10 && $end > $start) {
             $data = str_replace('(base 16)', '', $data);
             $cc = str_replace('-', '', $mac);
             $data = str_replace($cc, '', $data);
-            preg_replace("/\s{2,}/", "", $data);
+            preg_replace("/\s+/", "~", $data);
 } 
 
 
