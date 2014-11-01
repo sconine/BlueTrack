@@ -519,6 +519,7 @@ function get_bt_class_info($hex) {
 		if ($v == '1') {$bin_cd[] = true;}
 		else {$bin_cd[] = false;}
 	}
+	var_dump($bin_cd);
 if ($bin_cd[15]) {echo 'hi max!!!!!!';}
 	
 	
