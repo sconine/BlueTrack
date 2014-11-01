@@ -30,7 +30,7 @@ if ($start > 10 && $end > $start) {
 
 echo "start: $start <br>\n";
 echo "end: $end <br>\n";
-echo "server_output: $server_output <hr><hr><hr>\n";
+//echo "server_output: $server_output <hr><hr><hr>\n";
 echo $data;
 // further processing ....
 //if ($server_output == "OK") { ... } else { ... }
