@@ -86,7 +86,7 @@ $gc = 0;
 do {
     $request = array(
         "TableName" => $tableName,
-        "Limit" => 500
+        "Limit" => 20
     );
 
     // Add the ExclusiveStartKey if we got one back in the previous response
@@ -204,7 +204,7 @@ do {
             }
         }
     }
-} while(isset($response['LastEvaluatedKey'])); 
+} while(isset($response['LastEvaluatedKey']) && 0 == 1); 
 
 // Data for device count by day
 asort($by_day);
