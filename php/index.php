@@ -132,6 +132,7 @@ do {
 
         // Keep track of counts by class
         $mdc = '';
+        $t_class = '';
         foreach ($value['class']["SS"] as $cli => $cl) {
         	if ($cl != 'n/a') {
         		get_bt_class_info($cl, $mdc);
@@ -512,8 +513,9 @@ function get_mac_info($mac) {
 
 // Function to turn a bluetooth class code into an english description
 // not sure this is perfectly accurate, and up to date but works for my purposes
-function get_bt_class_info($hex, &$mdc) {
+function get_bt_class_info($hex, &$mdcs) {
 	$mdc = ''; 
+	$mdcs = ''; 
 	$mds_c = 0;
 	$msc = array();
 	$min_sc = array();
@@ -533,15 +535,15 @@ function get_bt_class_info($hex, &$mdc) {
 	if ($bin_cd[0]) {$msc[] = 'Information (WEB-server, WAP-server etc)';}
 	
 	//Major Device Class
-	if ($bin_cd[11] && $bin_cd[12] && $bin_cd[13] && $bin_cd[14] && $bin_cd[15]) {$mdc = 'Uncategorized, specific device code not specified'; $mds_c = 8;}
-	if ($bin_cd[13] && $bin_cd[14] && $bin_cd[15]) {$mdc = 'Wearable'; $mds_c = 1;}
-	if ($bin_cd[14] && $bin_cd[15]) {$mdc = 'LAN/Network Access point'; $mds_c = 3;}
-	if ($bin_cd[13] && $bin_cd[15]) {$mdc = 'Peripheral (mouse, joystick, keyboards etc)'; $mds_c = 5;}
-	if ($bin_cd[13] && $bin_cd[14]) {$mdc = 'Imaging (printing, scanner, camera, display etc)'; $mds_c = 6;}
-	if ($bin_cd[15]) {$mdc = 'Computer (desktop,notebook, PDA, organizers etc)'; $mds_c = 1;}
-	if ($bin_cd[14]) {$mdc = 'Phone (cellular, cordless, payphone, modem)'; $mds_c = 2;}
-	if ($bin_cd[13]) {$mdc = 'Audio/Video (headset, speaker, stereo, video display etc)'; $mds_c = 4;}
-	if ($bin_cd[12]) {$mdc = 'Toy'; $mds_c = 7;}
+	if ($bin_cd[11] && $bin_cd[12] && $bin_cd[13] && $bin_cd[14] && $bin_cd[15]) {$mdcs = 'Uncategorized';$mdc = 'Uncategorized, specific device code not specified'; $mds_c = 8;}
+	if ($bin_cd[13] && $bin_cd[14] && $bin_cd[15]) {$mdcs = 'Wearable';$mdc = 'Wearable'; $mds_c = 1;}
+	if ($bin_cd[14] && $bin_cd[15]) {$mdcs = 'LAN';$mdc = 'LAN/Network Access point'; $mds_c = 3;}
+	if ($bin_cd[13] && $bin_cd[15]) {$mdcs = 'Peripheral';$mdc = 'Peripheral (mouse, joystick, keyboards etc)'; $mds_c = 5;}
+	if ($bin_cd[13] && $bin_cd[14]) {$mdcs = 'Imaging';$mdc = 'Imaging (printing, scanner, camera, display etc)'; $mds_c = 6;}
+	if ($bin_cd[15]) {$mdcs = 'Computer';$mdc = 'Computer (desktop,notebook, PDA, organizers etc)'; $mds_c = 1;}
+	if ($bin_cd[14]) {$mdcs = 'Phone';$mdc = 'Phone (cellular, cordless, payphone, modem)'; $mds_c = 2;}
+	if ($bin_cd[13]) {$mdcs = 'Audio';$mdc = 'Audio/Video (headset, speaker, stereo, video display etc)'; $mds_c = 4;}
+	if ($bin_cd[12]) {$mdcs = 'Toy';$mdc = 'Toy'; $mds_c = 7;}
 
 	//Wearable
 	if ($mds_c == 1) {
