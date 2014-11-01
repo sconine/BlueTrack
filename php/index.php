@@ -131,7 +131,14 @@ do {
         $my_mac_info[$mac] = str_replace("'", "\'", $my_mac_info[$mac]);
 
         // Keep track of counts by class
-        $t_class = implode(',', $value['class']["SS"]);
+        $mdc = '';
+        foreach ($value['class']["SS"] as $cli => $cl) {
+        	if ($cl != 'n/a') {
+        		get_bt_class_info($cl, $mdc);
+        		if ($t_class != '') {$t_class .= ',';}
+        		$t_class .= $mdc;
+        	}
+        }
         if (isset($by_class[$t_class][$mac])) {$by_class[$t_class][$mac]++;}
         else {$by_class[$t_class][$mac] = 1;}
         
@@ -238,7 +245,7 @@ foreach ($top as $mac => $mct) {
     $class_det = 'Unknown';
     if ($classes[$mac] != 'n/a') {
         $hex = str_replace("0x", "", $classes[$mac]);
-        $class_det = str_replace("'", "\'", get_bt_class_info($hex));
+        $class_det = str_replace("'", "\'", get_bt_class_info($hex, $mdc));
     }
 
     $series[$lsn] .= "{n: '". str_replace("'", "\'", $name[$mac]) 
@@ -505,7 +512,7 @@ function get_mac_info($mac) {
 
 // Function to turn a bluetooth class code into an english description
 // not sure this is perfectly accurate, and up to date but works for my purposes
-function get_bt_class_info($hex) {
+function get_bt_class_info($hex, &$mdc) {
 	$mdc = ''; 
 	$mds_c = 0;
 	$msc = array();
@@ -619,7 +626,7 @@ function get_bt_class_info($hex) {
 	}
 
 
-	$to_ret = 'Device Class: ' . $mdc . '<br><br>Service:<br>' . implode('<br>', $msc) . '<br><br>Detail: ' . implode('<br>', $min_sc);
+	$to_ret = 'Device Class: ' . $mdc . '<br>Detail: ' . implode('<br>', $min_sc) . '<br><br>Services:<br>' . implode('<br>', $msc);
 	return 	$to_ret;
 }
 
