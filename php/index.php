@@ -47,7 +47,6 @@ include 'index_include.php';
 						<div class="col-lg-10 col-lg-offset-2">
 							<button class="btn btn-default">Cancel</button>
 							<button type="submit" class="btn btn-primary">Submit</button>
-							<input type="submit" name="update" value="update">
 						</div>
 					</div>					
 				</fieldset>
