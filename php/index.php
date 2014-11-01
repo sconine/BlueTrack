@@ -100,9 +100,10 @@ do {
         $first_seen[$mac] = 0;
         
         // Do we have mac registrant info if not get it and store it
-        if (! isset($value['mac_info']["S"])) {
+        //if (! isset($value['mac_info']["S"])) {
+        if ($count % 25 == 0) {
             $mac_info = get_mac_info($mac);
-            echo "mac_info = $mac_info <br>\n";
+
             if ($mac_info != '') {
                 $result = $client->updateItem(array(
                 	'TableName' => 'collector_data',
@@ -465,7 +466,7 @@ function get_mac_info($mac) {
     curl_setopt($ch,CURLOPT_TIMEOUT, 20);
     $server_output = curl_exec ($ch);
     curl_close ($ch);
-    echo "server_output = $server_output <hr>\n";
+
     // Parse the output
     $start = strpos(strtolower($server_output), '<pre>');
     $end = strpos(strtolower($server_output), '</pre>', $start);
