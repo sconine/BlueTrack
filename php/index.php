@@ -31,7 +31,7 @@ include 'functions.php';
 </div>
 
 <?php
-include graph_js.js
+include 'graph_js.js';
 
 //If there is no LastEvaluatedKey in the response, there are no more items matching this Scan invocation
 echo "<hr><b>Key Facts:</b><table><tr><td>Total Seen</td><td>$count</td></tr>";
