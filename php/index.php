@@ -101,7 +101,7 @@ do {
         
         // Do we have mac registrant info if not get it and store it
         //if (! isset($value['mac_info']["S"])) {
-        if ($count % 25 == 0) {
+        if ($count % 18 == 0) {
             $mac_info = get_mac_info($mac);
 
             if ($mac_info != '') {
