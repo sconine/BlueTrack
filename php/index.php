@@ -620,7 +620,6 @@ function get_bt_class_info($hex) {
 
 
 	$to_ret = 'Device Class: ' . $mdc . '<br><br>Service:<br>' . implode('<br>', $msc) . '<br><br>Detail: ' . implode('<br>', $min_sc);
-	echo "to_ret = $to_ret <br>\n";
 	return 	$to_ret;
 }
 
