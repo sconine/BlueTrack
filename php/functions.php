@@ -21,7 +21,7 @@ function checkit($v) {
     return '';
 }
 
-
+// these come from http://standards.ieee.org/develop/regauth/oui/public.html
 function get_mac_info($mac) {
     $mac = str_replace(':', '-', $mac);
     $mac = substr($mac, 0, 8);
