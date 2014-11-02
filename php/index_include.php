@@ -28,12 +28,16 @@ $day_count_f = 0;
 $col_id_f = array();
 $man_info_f = '';
 $name_f = '';
+$start_day_f = '';
+$end_day_f = '';
 if(!empty($_REQUEST['day_count'])) {$day_count_f = $_REQUEST['day_count'];}
 if(!empty($_REQUEST['multi_day'])) {$multi_day_f = true;}
 if(!empty($_REQUEST['type'])) {$type_f = $_REQUEST['type'];}
 if(!empty($_REQUEST['col_id'])) {$col_id_f = $_REQUEST['col_id'];}
 if(!empty($_REQUEST['man_info'])) {$man_info_f = $_REQUEST['man_info'];}
 if(!empty($_REQUEST['name'])) {$name_f = $_REQUEST['name'];}
+if(!empty($_REQUEST['start_day'])) {$start_day_f = $_REQUEST['start_day'];}
+if(!empty($_REQUEST['end_day'])) {$end_day_f = $_REQUEST['end_day'];}
 
 // Make sure they look safe
 $pattern = '/^[a-zA-ZvV0-9,]+$/';
