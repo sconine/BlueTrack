@@ -46,7 +46,6 @@ include 'index_include.php';
 					</div>
 					<div class="form-group">
 						<div class="col-lg-10 col-lg-offset-2">
-							<button class="btn btn-default">Cancel</button>
 							<button type="submit" class="btn btn-primary">Submit</button>
 						</div>
 					</div>					
