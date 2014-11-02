@@ -74,13 +74,13 @@ include 'index_include.php';
 				<p>
 				<?php
 					foreach ($collectors as $id => $v) {
-						$tip = str_pad('Checkins: ' . number_format($v['collector_checkin_count']), 40, "&nbsp;");
-						$tip .= str_pad('Last Seen: ' . date("Y-m-d h:i a", $v['collector_last_checkin']), 40, "&nbsp;");
+						$tip = str_pad('Checkins: ' . number_format($v['collector_checkin_count']), 40, " ");
+						$tip .= str_pad('Last Seen: ' . date("Y-m-d h:i a", $v['collector_last_checkin']), 40, " ");
 						$tip .= 'IP: ' . $v['collector_private_ip'];
 						echo '<button type="button" class="btn btn-default" ';
 						echo 'data-toggle="tooltip" data-placement="right" title="" ';
 						echo 'data-original-title="';
-						echo htmlentities($tip);
+						echo $tip;
 						echo '">' . $id . '</button>';
 	
 					}
