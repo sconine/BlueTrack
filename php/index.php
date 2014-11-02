@@ -72,7 +72,7 @@ include 'index_include.php';
 				<legend>Collector Stats</legend>
 				<p>
 				<?php
-					foreach ($collectors as $id = $v) {
+					foreach ($collectors as $id => $v) {
 						$tip = 'Active: ' . $v['collector_active'] . '<br>';
 						$tip .= 'Checkins: ' . $v['collector_checkin_count'] . '<br>';
 						$tip .= 'Last Seen: ' . $v['collector_last_checkin'] . '<br>';
