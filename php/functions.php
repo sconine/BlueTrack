@@ -3,15 +3,15 @@
 function create_select($name, $arr, $def, $multi, $size) {
 	$to_ret = '<select name="' . htmlentities($name) . '[]"' ;
 	if ($multi) {$to_ret .= ' multiple size="' . $size . '"';}
-	$to_ret =. ">\n";
+	$to_ret .= ">\n";
 	
 	if (!is_array($def)) {$def[] = $def;}
 	foreach ($arr as $i => $v) {
-		$to_ret =. '<option value="' . htmlentities($v) . '"';
-		if (in_array($v, $def)) {$to_ret =. ' selected ';}
-		$to_ret =. ">\n";
+		$to_ret .= '<option value="' . htmlentities($v) . '"';
+		if (in_array($v, $def)) {$to_ret .= ' selected ';}
+		$to_ret .= ">\n";
 	}
-	$to_ret =. "</select>\n";
+	$to_ret .= "</select>\n";
 	return $to_ret;
 }
 
