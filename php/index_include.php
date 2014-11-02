@@ -276,4 +276,32 @@ foreach ($series as $lsn => $lsn_data) {
     if ($lsn == 0) {$lsn = "More than 7 Days Ago";} else {$lsn = date("m/d/Y", $lsn);}
     $b_data .= "{ showInLegend: true, name: '". $lsn . "', data: [" . $lsn_data . "]}";
 }
+
+// Get details about devices
+// The Scan API is paginated. Issue the Scan request multiple times.
+$collectors = array();
+do {
+    $request = array(
+        "TableName" => 'collectors',
+        "Limit" => 60
+    );
+    // Add the ExclusiveStartKey if we got one back in the previous response
+    if(isset($response) && isset($response['LastEvaluatedKey'])) {
+        $request['ExclusiveStartKey'] = $response['LastEvaluatedKey'];
+    }
+    $response = $client->scan($request);
+    foreach ($response['Items'] as $key => $value) {
+        $id = $value['collector_id']["S"];
+        $collectors[$id]['collector_active'] = $value['collector_active']["S"];
+        $collectors[$id]['collector_checkin_count'] = $value['collector_checkin_count']["S"];
+        $collectors[$id]['collector_last_checkin'] = $value['collector_last_checkin']["S"];
+        $collectors[$id]['collector_private_ip'] = $value['collector_private_ip']["S"];
+        $collectors[$id]['collector_public_ip'] = $value['collector_public_ip']["S"];
+        $collectors[$id]['collector_storage'] = $value['collector_storage']["S"];
+    }
+
+} while(isset($response['LastEvaluatedKey']) && 0 == 1); 
+
+
+
 ?>
