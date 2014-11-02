@@ -74,10 +74,9 @@ include 'index_include.php';
 				<p>
 				<?php
 					foreach ($collectors as $id => $v) {
-						$tip = 'Checkins: ' . $v['collector_checkin_count'];
-						$tip .= ', Last Seen: ' . $v['collector_last_checkin'];
-						$tip .= ', IP: ' . $v['collector_private_ip'];
-
+						$tip = str_pad('Checkins: ' . number_format($v['collector_checkin_count']), 40, '&#160;');
+						$tip .= str_pad('Last Seen: ' . date("Y-m-d h:i a", $v['collector_last_checkin']), 40, '&#160;');
+						$tip .= 'IP: ' . $v['collector_private_ip'];
 						echo '<button type="button" class="btn btn-default" ';
 						echo 'data-toggle="tooltip" data-placement="right" title="" ';
 						echo 'data-original-title="';
