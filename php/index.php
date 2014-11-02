@@ -39,7 +39,7 @@ include 'index_include.php';
 							<?php 
 							$c = 1;
 							$cl1 = '';
-							$cl2 = '1''';
+							$cl2 = '';
 							foreach ($type_desc as $type => $desc) {
 								$col = '<input type="checkbox" name="type[]" value="' . $type .
 											 '" <?php echo ischecked(\'' . $type . 
