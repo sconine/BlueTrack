@@ -42,10 +42,10 @@ include 'index_include.php';
 							$cl2 = '';
 							foreach ($type_desc as $type => $desc) {
 								$col = '<input type="checkbox" name="type[]" value="' . $type .
-											 '" <?php echo ischecked(\'' . $type . 
-											 '\', $type_f);?>> ' . $type . ' = ' . $desc . '<br>';
-								if ($c % 2 == 0) {$cl2 = $col;}
-								else {$cl1 = $col;}
+											 '" ' . ischecked($type, $type_f) .
+											 '> ' . $type . ' = ' . $desc . '<br>';
+								if ($c % 2 == 0) {$cl2 .= $col;}
+								else {$cl1 .= $col;}
 							}
 							?>
 							<div class="col-md-4"><?php echo $cl1;?></div>
