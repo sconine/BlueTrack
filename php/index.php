@@ -35,16 +35,21 @@ include 'index_include.php';
 						<div class="col-lg-10">
 							<input type="checkbox" name="multi_day" value="d" <?php echo checkit($multi_day_f);?>> Show Devices Seen
 							<input type="text" name="day_count" size="2" value="<?php echo $day_count_f;?>"> Days<br>
-							<input type="checkbox" name="type[]" value="M" <?php echo ischecked('M', $type_f);?>> M = Mobile Phone<br>
-							<input type="checkbox" name="type[]" value="H" <?php echo ischecked('H', $type_f); ?>> H = Human<br>
-							<input type="checkbox" name="type[]" value="V" <?php echo ischecked('V', $type_f); ?>> V = Vehicle<br>
-							<input type="checkbox" name="type[]" value="A" <?php echo ischecked('A', $type_f); ?>> A = Apple Device<br>
-							<input type="checkbox" name="type[]" value="C" <?php echo ischecked('C', $type_f); ?>> C = Computer<br>
-							<input type="checkbox" name="type[]" value="G" <?php echo ischecked('G', $type_f); ?>> G = GPS<br>
-							<input type="checkbox" name="type[]" value="T" <?php echo ischecked('T', $type_f); ?>> T = TV Device<br>
-							<input type="checkbox" name="type[]" value="S" <?php echo ischecked('S', $type_f); ?>> S = Music Device<br>
-							<input type="checkbox" name="type[]" value="U" <?php echo ischecked('U', $type_f); ?>> U = Unknown<br>
-							<input type="checkbox" name="type[]" value="X" <?php echo ischecked('X', $type_f); ?>> X = Not Set<br>
+							
+							<?php 
+							$c = 1;
+							$cl1 = '';
+							$cl2 = '1''';
+							foreach ($type_desc as $type => $desc) {
+								$col = '<input type="checkbox" name="type[]" value="' . $type .
+											 '" <?php echo ischecked(\'' . $type . 
+											 '\', $type_f);?>> ' . $type . ' = ' . $desc . '<br>';
+								if ($c % 2 == 0) {$cl2 = $col;}
+								else {$cl1 = $col;}
+							}
+							?>
+							<div class="col-md-4"><?php echo $cl1;?></div>
+							<div class="col-md-4"><?php echo $cl2;?></div>
 						</div>
 					</div>
 					<div class="form-group">
