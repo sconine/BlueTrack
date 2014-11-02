@@ -280,6 +280,7 @@ foreach ($series as $lsn => $lsn_data) {
 // Get details about devices
 // The Scan API is paginated. Issue the Scan request multiple times.
 $collectors = array();
+unset($response);
 do {
     $request = array(
         "TableName" => 'collectors',
