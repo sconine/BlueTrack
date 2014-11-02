@@ -74,7 +74,7 @@ date_default_timezone_set('UTC');
 do {
     $request = array(
         "TableName" => $tableName,
-        "Limit" => 60
+        "Limit" => 500
     );
 
     // Add the ExclusiveStartKey if we got one back in the previous response
@@ -197,7 +197,7 @@ do {
         if ($t_last_seen < $last_seen[$mac] || $t_last_seen == 0) {$t_last_seen = strtotime(date("Y-m-d", $last_seen[$mac]));}
         $total_seen = $total_seen + $seen_count;
     }
-} while(isset($response['LastEvaluatedKey']) && 0 == 1); 
+} while(isset($response['LastEvaluatedKey'])); 
 
 // Data for device count by day
 asort($by_day);
