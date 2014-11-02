@@ -82,12 +82,11 @@ include 'index_include.php';
 						echo 'data-toggle="tooltip" data-placement="right" title="" ';
 						echo 'data-original-title="';
 						echo str_replace('  ', ' &#160;', $tip);
-						echo '">' . $id . '</button>';
+						echo '">' . $id . '</button><br>';
 	
 					}
 				?>
 				
-
 				</p>
 			</div>
 		</div>
