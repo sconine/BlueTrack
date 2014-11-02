@@ -74,15 +74,14 @@ include 'index_include.php';
 				<p>
 				<?php
 					foreach ($collectors as $id => $v) {
-						$tip = 'Active: ' . $v['collector_active'] ;
-						$tip .= 'Checkins: ' . $v['collector_checkin_count'];
-						$tip .= 'Last Seen: ' . $v['collector_last_checkin'];
-						$tip .= 'IP: ' . $v['collector_private_ip'];
+						$tip = 'Checkins: ' . $v['collector_checkin_count'];
+						$tip .= ', Last Seen: ' . $v['collector_last_checkin'];
+						$tip .= ', IP: ' . $v['collector_private_ip'];
 
 						echo '<button type="button" class="btn btn-default" ';
 						echo 'data-toggle="tooltip" data-placement="right" title="" ';
-						echo 'data-original-title="ffffffffff';
-						//echo $tip;
+						echo 'data-original-title="';
+						echo htmlentities($tip);
 						echo '">' . $id . '</button>';
 	
 					}
@@ -105,11 +104,7 @@ include 'graph_js.js';
 ?>
 
 <script>
-
-(function(){
-  $('.bs-component [data-toggle="tooltip"]').tooltip();
-})();
-
+(function(){$('.bs-component [data-toggle="tooltip"]').tooltip();})();
 </script>
 </body>
 </html>
