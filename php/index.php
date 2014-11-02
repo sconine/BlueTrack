@@ -55,8 +55,8 @@ include 'index_include.php';
 
 					<div class="form-group">
 						<div class="col-lg-12">
-							Between: <input type="text" id="datepicker" name="start_day" size="8" value="<?php echo $day_count_f;?>"> 
-							and <input type="text" id="datepicker" name="start_day" size="8" value="<?php echo $day_count_f;?>"> <br>
+							Seen Between: <input type="text" id="datepicker" name="start_day" size="8" value="<?php echo $day_count_f;?>"> 
+							and <input type="text" id="datepicker" name="end_day" size="8" value="<?php echo $day_count_f;?>"> <br>
 							Name Contains:&#160;&#160;&#160;&#160;&#160; <input type="text" name="name" size="18" value=""><br>
 							Mac Info Contains: <input type="text" name="man_info" size="18" value=""><br>
 							From Collector: &#160;&#160;&#160;&#160;&#160;&#160;<?php echo create_select('col_id', $col_select_list, $col_id_f, false, 0); ?><br>
