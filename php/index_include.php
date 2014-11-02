@@ -293,6 +293,7 @@ foreach ($series as $lsn => $lsn_data) {
 // Get details about devices
 // The Scan API is paginated. Issue the Scan request multiple times.
 $collectors = array();
+$col_select_list = array();
 unset($response);
 do {
     $request = array(
@@ -306,6 +307,7 @@ do {
     $response = $client->scan($request);
     foreach ($response['Items'] as $key => $value) {
         $id = $value['collector_id']["S"];
+        $col_select_list[$id] = $id; // If we give these a name change value to that for this select list array
         $collectors[$id]['collector_active'] = $value['collector_active']["N"];
         $collectors[$id]['collector_region_name'] = $value['collector_region_name']["S"];
         $collectors[$id]['collector_checkin_count'] = $value['collector_checkin_count']["N"];
@@ -316,6 +318,7 @@ do {
     }
 
 } while(isset($response['LastEvaluatedKey']) && 0 == 1); 
+
 
 
 
