@@ -25,9 +25,15 @@ $tableName = "collector_data";
 $type_f = array();
 $multi_day_f = false;
 $day_count_f = 0;
+$col_id_f = array();
+$man_info_f = '';
+$name_f = '';
 if(!empty($_REQUEST['day_count'])) {$day_count_f = $_REQUEST['day_count'];}
 if(!empty($_REQUEST['multi_day'])) {$multi_day_f = true;}
 if(!empty($_REQUEST['type'])) {$type_f = $_REQUEST['type'];}
+if(!empty($_REQUEST['col_id'])) {$col_id_f = $_REQUEST['col_id'];}
+if(!empty($_REQUEST['man_info'])) {$man_info_f = $_REQUEST['man_info'];}
+if(!empty($_REQUEST['name'])) {$name_f = $_REQUEST['name'];}
 
 // Make sure they look safe
 $pattern = '/^[a-zA-ZvV0-9,]+$/';
