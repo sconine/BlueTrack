@@ -35,9 +35,6 @@ include 'index_include.php';
 					<legend>Filter Devices</legend>
 					<div class="form-group">
 						<div class="col-lg-12">
-							<input type="checkbox" name="multi_day" value="d" <?php echo checkit($multi_day_f);?>> Show Devices Seen
-							<input type="text" id="datepicker" name="day_count" size="2" value="<?php echo $day_count_f;?>"> Days or More<br>
-							
 							<?php 
 							$c = 1;
 							$cl1 = '';
@@ -58,6 +55,8 @@ include 'index_include.php';
 
 					<div class="form-group">
 						<div class="col-lg-12">
+							Between: <input type="text" id="datepicker" name="start_day" size="8" value="<?php echo $day_count_f;?>"> 
+							and <input type="text" id="datepicker" name="start_day" size="8" value="<?php echo $day_count_f;?>"> <br>
 							Name Contains:&#160;&#160;&#160;&#160;&#160; <input type="text" name="name" size="18" value=""><br>
 							Mac Info Contains: <input type="text" name="man_info" size="18" value=""><br>
 							From Collector: &#160;&#160;&#160;&#160;&#160;&#160;<?php echo create_select('col_id', $col_select_list, $col_id_f, false, 0); ?><br>
