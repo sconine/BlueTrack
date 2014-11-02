@@ -9,6 +9,7 @@ include 'index_include.php';
 <script src="http://code.highcharts.com/highcharts.js"></script>
 <script src="http://code.highcharts.com/highcharts-more.js"></script>
 <script src="http://code.highcharts.com/modules/exporting.js"></script>
+<script src="../bootstrap/js/bootstrap.min.js"></script>
 
 <link rel="stylesheet" href="../css/bootstrap.min.css">
 <meta charset="UTF-8"></head>
