@@ -1,6 +1,6 @@
 <?php
 
-funciton create_select($name, $arr, $def, $multi, $size) {
+function create_select($name, $arr, $def, $multi, $size) {
 	$to_ret = '<select name="' . htmlentities($name) . '[]"' ;
 	if ($multi) {$to_ret .= ' multiple size="' . $size . '"';}
 	$to_ret =. ">\n";
