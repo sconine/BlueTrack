@@ -21,7 +21,7 @@ include 'index_include.php';
 <div class="container">
 	<div class="page-header">
 		<h1>BlueTrack - Analyze</h1>
-		<p class="lead">A system to analyse data we've collected with a Bluetooth scanner into a Dynamo DB</p>
+		<p class="lead">A system to analyze data we've collected with a Bluetooth scanner into a Dynamo DB</p>
 	</div>
 	
 	<div class="row">
