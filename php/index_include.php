@@ -46,15 +46,27 @@ $last_hour = array();
 $type_list = array();
 // Set some default ones
 $type_list['M'] = 1; // Mobile Phone
+$type_desc['M'] = 'Mobile Phone'; // Mobile Phone
 $type_list['H'] = 1; // Human
+$type_desc['H'] = 'Human'; // Human
 $type_list['V'] = 1; // Vehicle
+$type_desc['V'] = 'Vehicle'; // Vehicle
 $type_list['A'] = 1; // Apple Device
+$type_desc['A'] = 'Apple Device'; // Apple Device
 $type_list['C'] = 1; // Computer
+$type_desc['C'] = 'Computer'; // Computer
 $type_list['G'] = 1; // GPS
+$type_desc['G'] = 'GPS'; // GPS
 $type_list['T'] = 1; // TV Device
+$type_desc['T'] = 'TV Device'; // TV Device
+$type_list['P'] = 1; // Toy (play)
+$type_desc['P'] = 'Toy (play)'; // Toy (play)
 $type_list['S'] = 1; // Music Device
+$type_desc['S'] = 'Music Device'; // Music Device
 $type_list['U'] = 1; // Unknown
+$type_desc['U'] = 'Unknown'; // Unknown
 $type_list['X'] = 1; // Not Set
+$type_desc['X'] = 'Not Set'; // Not Set
 $by_day = array();
 $by_class = array();
 $last_seen = array();
@@ -91,6 +103,7 @@ do {
         $name[$mac] = implode(',', $value['name']["SS"]);
         $dev_type[$mac] = isset($value['type']["S"]) ? $value['type']["S"] : 'X';
         $type_list[$dev_type[$mac]] = 1;
+        if (!isset($type_desc[$dev_type[$mac]])) {$type_desc[$dev_type[$mac]]) = 'Not Defined';}
         $last_seen[$mac] = 0;
         $first_seen[$mac] = 0;
         
