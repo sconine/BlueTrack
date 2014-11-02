@@ -56,7 +56,7 @@ include 'index_include.php';
 
 					<div class="form-group">
 						<div class="col-lg-12">
-							Name Contains:&#160;&#160;&#160;&#160; <input type="text" name="name" size="16" value=""><br>
+							Name Contains:&#160;&#160;&#160;&#160;&#160; <input type="text" name="name" size="16" value=""><br>
 							Mac Info Contains: <input type="text" name="man_info" size="16" value=""><br>
 							From Collector: <?php echo create_select('col_id', $col_select_list, $col_id_f, false, 0); ?><br>
 						</div>
