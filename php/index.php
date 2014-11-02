@@ -56,15 +56,23 @@ include 'index_include.php';
 			<div class="well bs-component">
 				<legend>Key Stats</legend>
 				<p>
-					Total Seen: <?php echo $count; ?><br>
-					Seen in last hour: <?php echo $count; ?>
+					Total Devices: <?php echo $count; ?><br>
+					Total Scans: <?php echo $total_seen; ?><br>
+					Total Date Range: <?php echo date("Y-m-d", $t_first_seen); ?> to
+					<?php echo date("Y-m-d", $t_last_seen); ?><br>
+				</p>
+				<p>
+					Unique Devies in Last Hr: <?php echo count($last_hour); ?><br>
+					Displayed Devices: <?php echo $displayed_count; ?><br>
+					Displayed Date Range: <?php echo date("Y-m-d", $t_first_disp); ?> to
+					<?php echo date("Y-m-d", $t_last_disp); ?><br>
 				</p>
 			</div>
 			<div class="well bs-component">
 				<legend>Collector Stats</legend>
 				<p>
 					Total Seen: 60<br>
-					Seen in last hour: count($last_hour)
+					Seen in last hour: 
 				</p>
 			</div>
 		</div>
