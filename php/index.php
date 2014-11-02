@@ -94,7 +94,7 @@ include 'index_include.php';
 	</div>
       
 	<div class="row">
-		<div id="bydevice" style="height: 400px;"></div>
+		<div id="bydevice" style="height: 600px;"></div>
 	</div>
 </div>
 
