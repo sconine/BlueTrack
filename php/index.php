@@ -56,14 +56,14 @@ include 'index_include.php';
 			<div class="well bs-component">
 				<legend>Key Stats</legend>
 				<p>
-					Total Devices: <strong><?php echo $count; ?></strong><br>
-					Total Scans: <strong><?php echo $total_seen; ?></strong><br>
+					Total Devices: <strong><?php echo number_format($count); ?></strong><br>
+					Total Scans: <strong><?php echo number_format($total_seen); ?></strong><br>
 					Total Date Range: <strong><?php echo date("Y-m-d", $t_first_seen); ?></strong> to
 					<strong><?php echo date("Y-m-d", $t_last_seen); ?></strong><br>
 				</p>
 				<p>
-					Unique Devies in Last Hr: <strong><?php echo count($last_hour); ?></strong><br>
-					Displayed Devices: <strong><?php echo $displayed_count; ?></strong><br>
+					Unique Devies in Last Hr: <strong><?php echo number_format(count($last_hour)); ?></strong><br>
+					Displayed Devices: <strong><?php echo number_format($displayed_count); ?></strong><br>
 					Displayed Date Range: <strong><?php echo date("Y-m-d", $t_first_disp); ?></strong> to
 					<strong><?php echo date("Y-m-d", $t_last_disp); ?></strong><br>
 				</p>
@@ -71,7 +71,23 @@ include 'index_include.php';
 			<div class="well bs-component">
 				<legend>Collector Stats</legend>
 				<p>
-					Data...
+				<?php
+					foreach ($collectors as $id = $v) {
+						$tip = 'Active: ' . $v['collector_active'] . '<br>';
+						$tip .= 'Checkins: ' . $v['collector_checkin_count'] . '<br>';
+						$tip .= 'Last Seen: ' . $v['collector_last_checkin'] . '<br>';
+						$tip .= 'IP: ' . $v['collector_private_ip'] . '<br>';
+
+						echo '<button type="button" class="btn btn-default" ';
+						echo 'data-toggle="tooltip" data-placement="right" title="" ';
+						echo 'data-original-title="';
+						echo $tip;
+						echo '">' . $id . '</button>';
+	
+					}
+				?>
+				
+
 				</p>
 			</div>
 		</div>
