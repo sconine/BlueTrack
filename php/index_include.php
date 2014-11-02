@@ -293,12 +293,12 @@ do {
     $response = $client->scan($request);
     foreach ($response['Items'] as $key => $value) {
         $id = $value['collector_id']["S"];
-        $collectors[$id]['collector_active'] = $value['collector_active']["S"];
-        $collectors[$id]['collector_checkin_count'] = $value['collector_checkin_count']["S"];
-        $collectors[$id]['collector_last_checkin'] = $value['collector_last_checkin']["S"];
+        $collectors[$id]['collector_active'] = $value['collector_active']["N"];
+        $collectors[$id]['collector_checkin_count'] = $value['collector_checkin_count']["N"];
+        $collectors[$id]['collector_last_checkin'] = $value['collector_last_checkin']["N"];
         $collectors[$id]['collector_private_ip'] = $value['collector_private_ip']["S"];
         $collectors[$id]['collector_public_ip'] = $value['collector_public_ip']["S"];
-        $collectors[$id]['collector_storage'] = $value['collector_storage']["S"];
+        $collectors[$id]['collector_storage'] = $value['collector_storage']["N"];
     }
 
 } while(isset($response['LastEvaluatedKey']) && 0 == 1); 
