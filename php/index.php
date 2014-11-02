@@ -56,23 +56,22 @@ include 'index_include.php';
 			<div class="well bs-component">
 				<legend>Key Stats</legend>
 				<p>
-					Total Devices: <?php echo $count; ?><br>
-					Total Scans: <?php echo $total_seen; ?><br>
-					Total Date Range: <?php echo date("Y-m-d", $t_first_seen); ?> to
-					<?php echo date("Y-m-d", $t_last_seen); ?><br>
+					Total Devices: <strong><?php echo $count; ?></strong><br>
+					Total Scans: <strong><?php echo $total_seen; ?></strong><br>
+					Total Date Range: <strong><?php echo date("Y-m-d", $t_first_seen); ?></strong> to
+					<strong><?php echo date("Y-m-d", $t_last_seen); ?></strong><br>
 				</p>
 				<p>
-					Unique Devies in Last Hr: <?php echo count($last_hour); ?><br>
-					Displayed Devices: <?php echo $displayed_count; ?><br>
-					Displayed Date Range: <?php echo date("Y-m-d", $t_first_disp); ?> to
-					<?php echo date("Y-m-d", $t_last_disp); ?><br>
+					Unique Devies in Last Hr: <strong><?php echo count($last_hour); ?></strong><br>
+					Displayed Devices: <strong><?php echo $displayed_count; ?></strong><br>
+					Displayed Date Range: <strong><?php echo date("Y-m-d", $t_first_disp); ?></strong> to
+					<strong><?php echo date("Y-m-d", $t_last_disp); ?></strong><br>
 				</p>
 			</div>
 			<div class="well bs-component">
 				<legend>Collector Stats</legend>
 				<p>
-					Total Seen: 60<br>
-					Seen in last hour: 
+					Data...
 				</p>
 			</div>
 		</div>
