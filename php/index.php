@@ -34,7 +34,7 @@ include 'index_include.php';
 					<div class="form-group">
 						<div class="col-lg-12">
 							<input type="checkbox" name="multi_day" value="d" <?php echo checkit($multi_day_f);?>> Show Devices Seen
-							<input type="text" name="day_count" size="2" value="<?php echo $day_count_f;?>"> Days or More<br>
+							<input type="text" id="datepicker" name="day_count" size="2" value="<?php echo $day_count_f;?>"> Days or More<br>
 							
 							<?php 
 							$c = 1;
@@ -122,6 +122,8 @@ include 'graph_js.js';
 
 <script>
 (function(){$('.bs-component [data-toggle="tooltip"]').tooltip();})();
+$(function() {$( "#datepicker" ).datepicker();});
+
 </script>
 </body>
 </html>
