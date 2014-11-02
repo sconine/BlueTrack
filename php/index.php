@@ -80,7 +80,7 @@ include 'index_include.php';
 						echo '<button type="button" class="btn btn-default" ';
 						echo 'data-toggle="tooltip" data-placement="right" title="" ';
 						echo 'data-original-title="';
-						echo str_replace(' ', '&#160;', $tip);
+						echo str_replace('  ', ' &#160;', $tip);
 						echo '">' . $id . '</button>';
 	
 					}
