@@ -103,7 +103,7 @@ do {
         $name[$mac] = implode(',', $value['name']["SS"]);
         $dev_type[$mac] = isset($value['type']["S"]) ? $value['type']["S"] : 'X';
         $type_list[$dev_type[$mac]] = 1;
-        if (!isset($type_desc[$dev_type[$mac]])) {$type_desc[$dev_type[$mac]]) = 'Not Defined';}
+        if (!isset($type_desc[$dev_type[$mac]])) {$type_desc[$dev_type[$mac]] = 'Not Defined';}
         $last_seen[$mac] = 0;
         $first_seen[$mac] = 0;
         
