@@ -1,5 +1,9 @@
 
 <?php
+// Feature ideas:
+//  edit types easier and assign in a bale based on filtering on device major class and a substring of the manufacturer
+//  cache dynamodb data in a local file and retreive on demand
+
 
 // Load my configuration
 $debug = false;
@@ -24,16 +28,19 @@ $day_count_f = 0;
 if(!empty($_REQUEST['day_count'])) {$day_count_f = $_REQUEST['day_count'];}
 if(!empty($_REQUEST['multi_day'])) {$multi_day_f = true;}
 if(!empty($_REQUEST['type'])) {$type_f = $_REQUEST['type'];}
-//var_dump($type_f);
 
 // Make sure they look safe
 $pattern = '/^[a-zA-ZvV0-9,]+$/';
 if (preg_match($pattern, implode(",", $type_f)) == 0) {$type_f = array();}
 if (!is_numeric($day_count_f)) {$day_count_f = 0;}
-//var_dump($type_f);
 
-//echo "<table><tr><td>mac_id</td><td>collector_id</td><td>name</td><td>clock_offset</td><td>class</td><td>inq_on</td><td>scan_on</td></tr>";
 $count = 0;
+$displayed_count = 0;
+$total_seen = 0;
+$t_first_seen = 0;
+$t_first_disp = 0;
+$t_last_seen = 0;
+$t_last_disp = 0;
 $day_names = array("Mon", "Tues", "Wed", "Thurs", "Fri", "Sat", "Sun");
 $last_hour = array();
 $type_list = array();
@@ -54,13 +61,14 @@ $last_seen = array();
 $first_seen = array();
 $top = array();
 $names = array();
+$collectors = array();
 $classes = array();
 $dev_type = array();
 $show_minutes = array();
 $seen_hours = array();
 $seen_days = array();
-date_default_timezone_set('UTC');
 $gc = 0;
+date_default_timezone_set('UTC');
 
 // The Scan API is paginated. Issue the Scan request multiple times.
 do {
@@ -79,6 +87,7 @@ do {
         $count++;
         $mac = $value['mac_id']["S"];
         $collector_id = $value['collector_id']["S"];
+        $collectors[] = $collector_id;
         $name[$mac] = implode(',', $value['name']["SS"]);
         $dev_type[$mac] = isset($value['type']["S"]) ? $value['type']["S"] : 'X';
         $type_list[$dev_type[$mac]] = 1;
@@ -128,7 +137,7 @@ do {
         if (isset($by_class[$t_class][$mac])) {$by_class[$t_class][$mac]++;}
         else {$by_class[$t_class][$mac] = 1;}
         
-        // Just pick the first class listed of this device
+        // Just pick the first class listed of this device for the pie chart
         $classes[$mac] = $value['class']["SS"][0];
                 
         // Manipulate the dates a bit
@@ -137,7 +146,6 @@ do {
         foreach ($seen as $i => $v) {
             $seen_count++;
             if ($v > 1) {
-                
                 // Keep track of ones we've seen in last hour
                 if ($v > (time() - 3600)) {
                     if (isset($last_hour[$mac])) {$last_hour[$mac]++;}
@@ -170,19 +178,24 @@ do {
 
                 // First Seen
                 if ($first_seen[$mac] > $v || $first_seen[$mac] == 0) {$first_seen[$mac] = strtotime(date("Y-m-d", $v));}
-
             }  
-            
-            // create an array to use in the bubble chart if not filters
-            if ((in_array($dev_type[$mac], $type_f)) || empty($type_f)) {
-                // Do we want only multi day CODE HERE!!!
-                if (($multi_day_f && $first_seen[$mac] != $last_seen[$mac]) || !$multi_day_f) {
-                    if (($last_seen[$mac] - $first_seen[$mac]) >= ($day_count_f * 3600 * 24) || !$multi_day_f) {
-                        $top[$mac] = $seen_count;
-                    }
+        }
+        
+        // create an array to use in the bubble chart if not filters
+        if ((in_array($dev_type[$mac], $type_f)) || empty($type_f)) {
+            // Do we want only multi day CODE HERE!!!
+            if (($multi_day_f && $first_seen[$mac] != $last_seen[$mac]) || !$multi_day_f) {
+                if (($last_seen[$mac] - $first_seen[$mac]) >= ($day_count_f * 3600 * 24) || !$multi_day_f) {
+                    $top[$mac] = $seen_count;
+                    $displayed_count++;
+                    if ($t_first_disp > $first_seen[$mac] || $t_first_disp == 0) {$t_first_disp = strtotime(date("Y-m-d", $first_seen[$mac]));}
+                    if ($t_last_disp < $last_seen[$mac] || $t_last_disp == 0) {$t_last_disp = strtotime(date("Y-m-d", $last_seen[$mac]));}
                 }
             }
         }
+        if ($t_first_seen > $first_seen[$mac] || $t_first_seen == 0) {$t_first_seen = strtotime(date("Y-m-d", $first_seen[$mac]));}
+        if ($t_last_seen < $last_seen[$mac] || $t_last_seen == 0) {$t_last_seen = strtotime(date("Y-m-d", $last_seen[$mac]));}
+        $total_seen = $total_seen + $seen_count;
     }
 } while(isset($response['LastEvaluatedKey']) && 0 == 1); 
 
