@@ -70,19 +70,30 @@ include 'index_include.php';
 				</p>
 			</div>
 			<div class="well bs-component">
+<div class="bs-component">
+              <button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="left" title="" data-original-title="Tooltip on left">Left</button>
+
+              <button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="top" title="" data-original-title="Tooltip on top">Top</button>
+
+              <button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="bottom" title="" data-original-title="Tooltip on bottom">Bottom</button>
+
+              <button type="button" class="btn btn-default" data-toggle="tooltip" data-placement="right" title="" data-original-title="Tooltip on right">Right</button>
+            <div id="source-button" class="btn btn-primary btn-xs" style="display: none;">&lt; &gt;</div></div>
+          </div>			
+			
 				<legend>Collector Stats</legend>
 				<p>
 				<?php
 					foreach ($collectors as $id => $v) {
-						$tip = 'Active: ' . $v['collector_active'] . '<br>';
-						$tip .= 'Checkins: ' . $v['collector_checkin_count'] . '<br>';
-						$tip .= 'Last Seen: ' . $v['collector_last_checkin'] . '<br>';
-						$tip .= 'IP: ' . $v['collector_private_ip'] . '<br>';
+						$tip = 'Active: ' . $v['collector_active'] ;
+						$tip .= 'Checkins: ' . $v['collector_checkin_count'];
+						$tip .= 'Last Seen: ' . $v['collector_last_checkin'];
+						$tip .= 'IP: ' . $v['collector_private_ip'];
 
 						echo '<button type="button" class="btn btn-default" ';
 						echo 'data-toggle="tooltip" data-placement="right" title="" ';
-						echo 'data-original-title="';
-						echo $tip;
+						echo 'data-original-title="ffffffffff';
+						//echo $tip;
 						echo '">' . $id . '</button>';
 	
 					}
