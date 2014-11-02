@@ -104,7 +104,7 @@ include 'index_include.php';
 include 'graph_js.js';
 ?>
 
-
+<script src="http://bootswatch.com/assets/js/bootswatch.js"></script>
 </body>
 </html>
 
