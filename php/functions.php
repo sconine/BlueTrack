@@ -7,9 +7,9 @@ function create_select($name, $arr, $def, $multi, $size) {
 	
 	if (!is_array($def)) {$def[] = $def;}
 	foreach ($arr as $i => $v) {
-		$to_ret .= '<option value="' . htmlentities($v) . '"';
+		$to_ret .= '<option value="' . htmlentities($i) . '"';
 		if (in_array($v, $def)) {$to_ret .= ' selected ';}
-		$to_ret .= ">\n";
+		$to_ret .= ">" . htmlentities($v) . "</option>\n";
 	}
 	$to_ret .= "</select>\n";
 	return $to_ret;
