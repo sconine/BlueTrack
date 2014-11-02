@@ -104,7 +104,13 @@ include 'index_include.php';
 include 'graph_js.js';
 ?>
 
+<script>
 
+(function(){
+  $('.bs-component [data-toggle="tooltip"]').tooltip();
+})();
+
+</script>
 </body>
 </html>
 
