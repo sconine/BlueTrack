@@ -46,6 +46,7 @@ include 'index_include.php';
 											 '> ' . $type . ' = ' . $desc . '<br>';
 								if ($c % 2 == 0) {$cl2 .= $col;}
 								else {$cl1 .= $col;}
+								$c++;
 							}
 							?>
 							<div class="col-md-4"><?php echo $cl1;?></div>
