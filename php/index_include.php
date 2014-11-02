@@ -44,6 +44,40 @@ $pattern = '/^[a-zA-ZvV0-9,]+$/';
 if (preg_match($pattern, implode(",", $type_f)) == 0) {$type_f = array();}
 if (!is_numeric($day_count_f)) {$day_count_f = 0;}
 
+// Setup the scan and filters
+$request = array(
+    "TableName" => $tableName,
+    "Limit" => 500
+);
+
+/*
+$scan_filters = array();
+if (count($type_f) > 0) {
+    $scan_filters['type'] = array('AttributeValueList' => array(array('SS' => $type_f)),'ComparisonOperator' => 'CONTAINS');
+}
+if ($col_id_f != '') {
+    $scan_filters['collector_id'] = array('AttributeValueList' => array(array('SS' => $col_id_f)),'ComparisonOperator' => 'CONTAINS');
+}
+if ($man_info_f != '') {
+    $scan_filters['mac_info'] = array('AttributeValueList' => array(array('S' => $man_info_f)),'ComparisonOperator' => 'CONTAINS');
+}
+if ($name_f != '') {
+    $scan_filters['name'] = array('AttributeValueList' => array(array('S' => $name_f)),'ComparisonOperator' => 'CONTAINS');
+}          
+if ($start_day_f != '') {
+    $start_day_f = strtotime($start_day_f);
+    $scan_filters['seen'] = array('AttributeValueList' => array(array('N' => $start_day_f)),'ComparisonOperator' => 'GT');
+}   
+if ($end_day_f != '') {
+    $end_day_f = strtotime($end_day_f);
+    $scan_filters['seen'] = array('AttributeValueList' => array(array('N' => $end_day_f)),'ComparisonOperator' => 'LT');
+}   
+
+if (count($scan_filters) > 0) {
+    $request['ScanFilter'] = $scan_filters;
+}
+*/
+
 $count = 0;
 $displayed_count = 0;
 $total_seen = 0;
@@ -94,11 +128,6 @@ date_default_timezone_set('UTC');
 
 // The Scan API is paginated. Issue the Scan request multiple times.
 do {
-    $request = array(
-        "TableName" => $tableName,
-        "Limit" => 500
-    );
-
     // Add the ExclusiveStartKey if we got one back in the previous response
     if(isset($response) && isset($response['LastEvaluatedKey'])) {
         $request['ExclusiveStartKey'] = $response['LastEvaluatedKey'];
