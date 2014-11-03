@@ -61,8 +61,6 @@ if (count($type_f) > 0) {
     }
 }
 /*
-array(3) { ["TableName"]=> string(14) "collector_data" ["Limit"]=> int(500) ["ScanFilter"]=> array(1) { ["type"]=> array(2) { ["AttributeValueList"]=> array(2) { [0]=> array(1) { ["S"]=> string(1) "X" } [1]=> array(1) { ["S"]=> string(1) "S" } } ["ComparisonOperator"]=> string(2) "IN" } } }
-
 if ($col_id_f != '') {
     $scan_filters['collector_id'] = array('AttributeValueList' => array(array('SS' => $col_id_f)),'ComparisonOperator' => 'CONTAINS');
 }
@@ -85,7 +83,6 @@ if ($end_day_f != '') {
 if (count($scan_filters) > 0) {
     $request['ScanFilter'] = $scan_filters;
 }
-var_dump($request);
 
 $count = 0;
 $displayed_count = 0;
