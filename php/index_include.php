@@ -52,7 +52,7 @@ $request = array(
 
 $scan_filters = array();
 if (count($type_f) > 0) {
-    $scan_filters['type'] = array('AttributeValueList' => array(array('SS' => $type_f)),'ComparisonOperator' => 'CONTAINS');
+    $scan_filters['type'] = array('AttributeValueList' => array(array('SS' => $type_f)),'ComparisonOperator' => 'EQ');
 }
 /*
 if ($col_id_f != '') {
