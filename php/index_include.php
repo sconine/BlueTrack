@@ -54,7 +54,7 @@ $scan_filters = array();
 if (count($type_f) > 0) {
     foreach ($type_f as $i => $t) {$avl[] = array('S' => $t);}
     $scan_filters['type'] = array('AttributeValueList' => $avl,'ComparisonOperator' => 'IN');
-    $scan_filters['type'] = array('AttributeValueList' => array(array('S' => '')),'ComparisonOperator' => 'EQ');
+    $scan_filters['type'] = array('ComparisonOperator' => 'NULL');
 }
 /*
 array(3) { ["TableName"]=> string(14) "collector_data" ["Limit"]=> int(500) ["ScanFilter"]=> array(1) { ["type"]=> array(2) { ["AttributeValueList"]=> array(2) { [0]=> array(1) { ["S"]=> string(1) "X" } [1]=> array(1) { ["S"]=> string(1) "S" } } ["ComparisonOperator"]=> string(2) "IN" } } }
