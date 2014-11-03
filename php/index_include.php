@@ -47,7 +47,8 @@ if (!is_numeric($day_count_f)) {$day_count_f = 0;}
 // Setup the scan and filters
 $request = array(
     "TableName" => $tableName,
-    "Limit" => 500
+    "Limit" => 500,
+    "ConditionalOperator" => 'OR'
 );
 
 $scan_filters = array();
