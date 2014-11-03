@@ -52,7 +52,8 @@ $request = array(
 
 $scan_filters = array();
 if (count($type_f) > 0) {
-    $scan_filters['type'] = array('AttributeValueList' => array(array('SS' => $type_f)),'ComparisonOperator' => 'EQ');
+    foreach ($type_f as $i => $t) {$avl[] = array('S' => $t);}
+    $scan_filters['type'] = array('AttributeValueList' => array($avl),'ComparisonOperator' => 'IN');
 }
 /*
 if ($col_id_f != '') {
@@ -77,7 +78,7 @@ if ($end_day_f != '') {
 if (count($scan_filters) > 0) {
     $request['ScanFilter'] = $scan_filters;
 }
-
+var_dump($request);
 
 $count = 0;
 $displayed_count = 0;
