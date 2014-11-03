@@ -50,11 +50,11 @@ $request = array(
     "Limit" => 500
 );
 
-/*
 $scan_filters = array();
 if (count($type_f) > 0) {
     $scan_filters['type'] = array('AttributeValueList' => array(array('SS' => $type_f)),'ComparisonOperator' => 'CONTAINS');
 }
+/*
 if ($col_id_f != '') {
     $scan_filters['collector_id'] = array('AttributeValueList' => array(array('SS' => $col_id_f)),'ComparisonOperator' => 'CONTAINS');
 }
@@ -72,11 +72,12 @@ if ($end_day_f != '') {
     $end_day_f = strtotime($end_day_f);
     $scan_filters['seen'] = array('AttributeValueList' => array(array('N' => $end_day_f)),'ComparisonOperator' => 'LT');
 }   
+*/
 
 if (count($scan_filters) > 0) {
     $request['ScanFilter'] = $scan_filters;
 }
-*/
+
 
 $count = 0;
 $displayed_count = 0;
