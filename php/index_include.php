@@ -54,7 +54,7 @@ $scan_filters = array();
 if (count($type_f) > 0) {
     $avl = array();
     foreach ($type_f as $i => $t) {array_push($avl, array('S' => $t));}
-    $scan_filters['type'] = array('AttributeValueList' => array(array('S' => ''),array('S' => 'S')),'ComparisonOperator' => 'IN');
+    $scan_filters['type'] = array('AttributeValueList' => array(array('S' => 'X'),array('S' => 'S')),'ComparisonOperator' => 'IN');
     //$scan_filters['type'] = array('AttributeValueList' => array($avl),'ComparisonOperator' => 'IN');
 }
 /*
