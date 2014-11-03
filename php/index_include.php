@@ -52,8 +52,10 @@ $request = array(
 
 $scan_filters = array();
 if (count($type_f) > 0) {
-    foreach ($type_f as $i => $t) {$avl[] = array('S' => $t);}
-    $scan_filters['type'] = array('AttributeValueList' => array(array('S' => 'X'),array('S' => 'S')),'ComparisonOperator' => 'IN');
+    $avl = array();
+    foreach ($type_f as $i => $t) {array_push($avl, array('S' => $t));}
+    //$scan_filters['type'] = array('AttributeValueList' => array(array('S' => ''),array('S' => 'S')),'ComparisonOperator' => 'IN');
+    $scan_filters['type'] = array('AttributeValueList' => array($avl),'ComparisonOperator' => 'IN');
 }
 /*
 if ($col_id_f != '') {
