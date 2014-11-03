@@ -78,14 +78,14 @@ include 'index_include.php';
 				<p>
 					Total Devices: <strong><?php echo number_format($count); ?></strong><br>
 					Total Scans: <strong><?php echo number_format($total_seen); ?></strong><br>
-					Total Date Range: <strong><?php echo date("Y-m-d", $t_first_seen); ?></strong> to
-					<strong><?php echo date("Y-m-d", $t_last_seen); ?></strong><br>
+					Total Date Range: <strong><?php echo date("m-d-Y", $t_first_seen); ?></strong> to
+					<strong><?php echo date("m-d-Y", $t_last_seen); ?></strong><br>
 				</p>
 				<p>
 					Unique Devies in Last Hr: <strong><?php echo number_format(count($last_hour)); ?></strong><br>
 					Displayed Devices: <strong><?php echo number_format($displayed_count); ?></strong><br>
-					Displayed Date Range: <strong><?php echo date("Y-m-d", $t_first_disp); ?></strong> to
-					<strong><?php echo date("Y-m-d", $t_last_disp); ?></strong><br>
+					Displayed Date Range: <strong><?php echo date("m-d-Y", $t_first_disp); ?></strong> to
+					<strong><?php echo date("m-d-Y", $t_last_disp); ?></strong><br>
 				</p>
 			</div>
 			<div class="well bs-component">
@@ -94,7 +94,7 @@ include 'index_include.php';
 				<?php
 					foreach ($collectors as $id => $v) {
 						$tip = str_pad('Checkins: ' . number_format($v['collector_checkin_count']), 40, " ");
-						$tip .= str_pad('Last Seen: ' . date("Y-m-d h:i a", $v['collector_last_checkin']), 40, " ");
+						$tip .= str_pad('Last Seen: ' . date("m-d-Y h:i a", $v['collector_last_checkin']), 40, " ");
 						$tip .= str_pad('Region: ' . $v['collector_region_name'], 40, " ");
 						$tip .= 'IP: ' . $v['collector_private_ip'];
 						echo '<button type="button" class="btn btn-default" ';
