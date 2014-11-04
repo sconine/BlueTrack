@@ -53,8 +53,9 @@ $request = array(
 
 $scan_filters = array();
 if (count($type_f) > 0) {
+    $avl[] = array('NULL' => true);
     foreach ($type_f as $i => $t) {$avl[] = array('S' => $t);}
-    $scan_filters['type'] = array('AttributeValueList' => $avl,'ComparisonOperator' => 'IN or NULL');
+    $scan_filters['type'] = array('AttributeValueList' => $avl,'ComparisonOperator' => 'IN');
     // If we want to filter for X that's the only one we can do for type as far as I've figured out
     //if (in_array('X', $type_f)) {
     //    $scan_filters['type'] = array('ComparisonOperator' => 'NULL');
