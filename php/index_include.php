@@ -75,15 +75,18 @@ if ($man_info_f != '') {
     $scan_filters['mac_info'] = array('AttributeValueList' => array(array('S' => $man_info_f)),'ComparisonOperator' => 'CONTAINS');
 }
 
+/*
+// These 2 search sets which Dynamo doesn't do substrings or sub comparisons for in a scan
+// So we'll pull the above filters and filter the results
 if ($name_f != '') {
     $scan_filters['name'] = array('AttributeValueList' => array(array('S' => $name_f)),'ComparisonOperator' => 'CONTAINS');
 }          
-
 if ($start_day_f != '' && $end_day_f != '') {
     $start_day_s = strtotime($start_day_f);
     $end_day_s = strtotime($end_day_f);
     $scan_filters['scan_on'] = array('AttributeValueList' => array(array('N' => $start_day_s),array('N' => $end_day_s)),'ComparisonOperator' => 'BETWEEN');
 }   
+*/
 
 if (count($scan_filters) > 0) {
     $request['ScanFilter'] = $scan_filters;
@@ -146,17 +149,35 @@ do {
     $response = $client->scan($request);
 
     foreach ($response['Items'] as $key => $value) {
-        $count++;
         $mac = $value['mac_id']["S"];
         $collector_id = $value['collector_id']["S"];
         $collectors[] = $collector_id;
         $name[$mac] = implode(',', $value['name']["SS"]);
+        $seen = array_merge($value['scan_on']["NS"], $value['inq_on']["NS"]);
         $dev_type[$mac] = isset($value['type']["S"]) ? $value['type']["S"] : 'X';
         $type_list[$dev_type[$mac]] = 1;
         if (!isset($type_desc[$dev_type[$mac]])) {$type_desc[$dev_type[$mac]] = 'Not Defined';}
         $last_seen[$mac] = 0;
         $first_seen[$mac] = 0;
-        
+
+        // Apply filters
+        if ($name_f != '') {
+            if (strpos($name[$mac], $name_f) === false) {continue;}
+        }          
+        if ($start_day_f != '') {
+            $start_day_s = strtotime($start_day_f);
+            $pass = false;
+            foreach ($seen as $i => $v) {if ($v >= $start_day_s) {$pass = true;}
+            if (! $pass) {continue;}
+        }   
+        if ($end_day_f != '') {
+            $end_day_s = strtotime($end_day_f);
+            $pass = false;
+            foreach ($seen as $i => $v) {if ($v <= $end_day_f) {$pass = true;}
+            if (! $pass) {continue;}
+        }   
+        $count++;
+           
         // Do we have mac registrant info if not get it and store it
         if (! isset($value['mac_info']["S"])) {
             $mac_info = get_mac_info($mac);
@@ -204,7 +225,6 @@ do {
         $classes[$mac] = $value['class']["SS"][0];
                 
         // Manipulate the dates a bit
-        $seen = array_merge($value['scan_on']["NS"], $value['inq_on']["NS"]);
         $seen_count = 0;
         foreach ($seen as $i => $v) {
             $seen_count++;
@@ -245,17 +265,8 @@ do {
         }
         
         // create an array to use in the bubble chart if not filters
-        if ((in_array($dev_type[$mac], $type_f)) || empty($type_f)) {
-            // Do we want only multi day CODE HERE!!!
-            if (($multi_day_f && $first_seen[$mac] != $last_seen[$mac]) || !$multi_day_f) {
-                if (($last_seen[$mac] - $first_seen[$mac]) >= ($day_count_f * 3600 * 24) || !$multi_day_f) {
-                    $top[$mac] = $seen_count;
-                    $displayed_count++;
-                    if ($t_first_disp > $first_seen[$mac] || $t_first_disp == 0) {$t_first_disp = strtotime(date("Y-m-d", $first_seen[$mac]));}
-                    if ($t_last_disp < $last_seen[$mac] || $t_last_disp == 0) {$t_last_disp = strtotime(date("Y-m-d", $last_seen[$mac]));}
-                }
-            }
-        }
+        $top[$mac] = $seen_count;
+        $displayed_count++;
         if ($t_first_seen > $first_seen[$mac] || $t_first_seen == 0) {$t_first_seen = strtotime(date("Y-m-d", $first_seen[$mac]));}
         if ($t_last_seen < $last_seen[$mac] || $t_last_seen == 0) {$t_last_seen = strtotime(date("Y-m-d", $last_seen[$mac]));}
         $total_seen = $total_seen + $seen_count;
