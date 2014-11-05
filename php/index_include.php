@@ -91,7 +91,6 @@ if ($start_day_f != '' && $end_day_f != '') {
 if (count($scan_filters) > 0) {
     $request['ScanFilter'] = $scan_filters;
 }
-var_dump($request);
 
 $count = 0;
 $displayed_count = 0;
@@ -164,18 +163,18 @@ do {
         if ($name_f != '') {
             if (strpos($name[$mac], $name_f) === false) {continue;}
         }          
+        $pass_s = false;
         if ($start_day_f != '') {
             $start_day_s = strtotime($start_day_f);
-            $pass = false;
-            foreach ($seen as $i => $v) {if ($v >= $start_day_s) {$pass = true;}}
-            if (! $pass) {continue;}
-        }   
+            foreach ($seen as $i => $v) {if ($v >= $start_day_s) {$pass_s = true;}}
+        } else {$pass_s = true;}
+        $pass_e = false;
         if ($end_day_f != '') {
             $end_day_s = strtotime($end_day_f);
-            $pass = false;
-            foreach ($seen as $i => $v) {if ($v <= $end_day_f) {$pass = true;}}
-            if (! $pass) {continue;}
-        }   
+            foreach ($seen as $i => $v) {if ($v <= $end_day_f) {$pass_e = true;}}
+        }    else {$pass_e = true;}
+        if (! ($pass_s && pass_e)) {continue;}
+
         $count++;
            
         // Do we have mac registrant info if not get it and store it
