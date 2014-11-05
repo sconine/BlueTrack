@@ -167,13 +167,13 @@ do {
         if ($start_day_f != '') {
             $start_day_s = strtotime($start_day_f);
             $pass = false;
-            foreach ($seen as $i => $v) {if ($v >= $start_day_s) {$pass = true;}
+            foreach ($seen as $i => $v) {if ($v >= $start_day_s) {$pass = true;}}
             if (! $pass) {continue;}
         }   
         if ($end_day_f != '') {
             $end_day_s = strtotime($end_day_f);
             $pass = false;
-            foreach ($seen as $i => $v) {if ($v <= $end_day_f) {$pass = true;}
+            foreach ($seen as $i => $v) {if ($v <= $end_day_f) {$pass = true;}}
             if (! $pass) {continue;}
         }   
         $count++;
