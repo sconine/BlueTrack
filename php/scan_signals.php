@@ -199,65 +199,74 @@ while (1 == 1) {
 				if ($debug) {echo "class \n"; var_dump($class);}
 				if ($debug) {var_dump($inq_on);}
 				if ($debug) {var_dump($scan_on);}
+				$ec2_save = true;
+				try {
+					$result = $client->updateItem(array(
+						'TableName' => 'collector_data',
+						'Key' => array(
+							'mac_id'      => array("S" => $mac),
+							'collector_id'      => array("S" => $collector_id)
+						),
+						"AttributeUpdates" => array(
+							"name" => array(
+								"Value" => array("SS" => $name),
+								"Action" => "ADD"
+							),
+							"clock_offset" => array(
+								"Value" => array("SS" => $clock_offset),
+								"Action" => "ADD"
+							),
+							"class" => array(
+								"Value" => array("SS" => $class),
+								"Action" => "ADD"
+							),
+							"inq_on" => array(
+								"Value" => array("NS" => $inq_on),
+								"Action" => "ADD"
+							),
+							"scan_on" => array(
+								"Value" => array("NS" => $scan_on),
+								"Action" => "ADD"
+							)
+						),
+						'ReturnValues' => "NONE"
+					));
+				} catch (Exception $e) {
+					echo 'Caught exception: ',  $e->getMessage(), "\n";
+					$ec2_save = false;
+				}	
 				
-				$result = $client->updateItem(array(
-					'TableName' => 'collector_data',
-					'Key' => array(
-						'mac_id'      => array("S" => $mac),
-						'collector_id'      => array("S" => $collector_id)
-					),
-					"AttributeUpdates" => array(
-						"name" => array(
-							"Value" => array("SS" => $name),
-							"Action" => "ADD"
-						),
-						"clock_offset" => array(
-							"Value" => array("SS" => $clock_offset),
-							"Action" => "ADD"
-						),
-						"class" => array(
-							"Value" => array("SS" => $class),
-							"Action" => "ADD"
-						),
-						"inq_on" => array(
-							"Value" => array("NS" => $inq_on),
-							"Action" => "ADD"
-						),
-						"scan_on" => array(
-							"Value" => array("NS" => $scan_on),
-							"Action" => "ADD"
-						)
-					),
-					'ReturnValues' => "NONE"
-				));
-				
-				//Now that we've stored these values reset the counters so that we don't store again
-				//In the future might want to just unset($my_macs) since that way we'll 
-				//never run out of space or slow the process over time.  Would want to check
-				//that load to Ec2 was successful first though
-				$my_macs[$mac]['status'] = 'clean';
-				$my_macs[$mac]['inq_count'] = 0;
-				$my_macs[$mac]['scan_count'] = 0;
-				unset($my_macs[$mac]['inq_on']);
-				unset($my_macs[$mac]['scan_on']);
+				if ($ec2_save) {
+					//Now that we've stored these values reset the counters so that we don't store again
+					//In the future might want to just unset($my_macs) since that way we'll 
+					//never run out of space or slow the process over time.  
+					$my_macs[$mac]['status'] = 'clean';
+					$my_macs[$mac]['inq_count'] = 0;
+					$my_macs[$mac]['scan_count'] = 0;
+					unset($my_macs[$mac]['inq_on']);
+					unset($my_macs[$mac]['scan_on']);
+				}
 
 			}
 		}
 		
 		// update that this collector has called in
-		$result = $client->updateItem(array(
-		        'TableName' => 'collectors',
-		        'Key'       => array(
-		            'collector_id'   => array('S' => $collector_id),
-		            'collector_region_name'   => array('S' => $region_name)
-		        ),
-		        'AttributeUpdates' => array(
-		            'collector_last_checkin'    =>  array('Action' => 'PUT', 'Value' => array('N' => time())),
-		            'collector_checkin_count'    =>  array('Action' => 'ADD', 'Value' => array('N' => 1))
-		        )
-		));    
-		if ($debug) {echo "$collector_id in $region_name updated<br>\n";}
-		
+		try {
+			$result = $client->updateItem(array(
+			        'TableName' => 'collectors',
+			        'Key'       => array(
+			            'collector_id'   => array('S' => $collector_id),
+			            'collector_region_name'   => array('S' => $region_name)
+			        ),
+			        'AttributeUpdates' => array(
+			            'collector_last_checkin'    =>  array('Action' => 'PUT', 'Value' => array('N' => time())),
+			            'collector_checkin_count'    =>  array('Action' => 'ADD', 'Value' => array('N' => 1))
+			        )
+			));    
+			if ($debug) {echo "$collector_id in $region_name updated<br>\n";}
+		} catch (Exception $e) {
+			echo 'Caught exception: ',  $e->getMessage(), "\n";
+		}		
 	}
 
 	$lp_cnt++;
