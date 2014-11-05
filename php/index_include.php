@@ -11,6 +11,7 @@ $datastring = file_get_contents('/usr/www/html/BlueTrack/master_config.json');
 if ($debug) {echo "datastring = $datastring <br>\n";}
 $config = json_decode($datastring, true);
 if ($debug) {var_dump($config);}
+date_default_timezone_set('UTC');
 
 require '../vendor/autoload.php';
 use Aws\Common\Aws;
@@ -139,7 +140,6 @@ $show_minutes = array();
 $seen_hours = array();
 $seen_days = array();
 $gc = 0;
-date_default_timezone_set('UTC');
 
 // The Scan API is paginated. Issue the Scan request multiple times.
 do {
