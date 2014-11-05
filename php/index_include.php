@@ -79,16 +79,11 @@ if ($name_f != '') {
     $scan_filters['name'] = array('AttributeValueList' => array(array('S' => $name_f)),'ComparisonOperator' => 'CONTAINS');
 }          
 
-
-if ($start_day_f != '') {
-    $start_day_f = strtotime($start_day_f);
-    $scan_filters['scan_on'] = array('AttributeValueList' => array(array('N' => $start_day_f)),'ComparisonOperator' => 'GT');
+if ($start_day_f != '' && $end_day_f != '') {
+    $start_day_s = strtotime($start_day_f);
+    $end_day_s = strtotime($end_day_f);
+    $scan_filters['scan_on'] = array('AttributeValueList' => array(array('N' => $start_day_f),array('N' => $end_day_s)),'ComparisonOperator' => 'BETWEEN');
 }   
-if ($end_day_f != '') {
-    $end_day_f = strtotime($end_day_f);
-    $scan_filters['inq_on'] = array('AttributeValueList' => array(array('N' => $end_day_f)),'ComparisonOperator' => 'LT');
-}   
-
 
 if (count($scan_filters) > 0) {
     $request['ScanFilter'] = $scan_filters;
