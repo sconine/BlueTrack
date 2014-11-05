@@ -173,7 +173,7 @@ do {
             $end_day_s = strtotime($end_day_f);
             foreach ($seen as $i => $v) {if ($v <= $end_day_f) {$pass_e = true;}}
         }    else {$pass_e = true;}
-        if (! ($pass_s && pass_e)) {continue;}
+        if (! ($pass_s && $pass_e)) {continue;}
 
         $count++;
            
