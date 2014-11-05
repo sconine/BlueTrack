@@ -62,6 +62,7 @@ if (count($type_f) > 0) {
 }
 
 unset($avl);
+$avl = array();
 if (count($col_id_f) > 0) {
     foreach ($col_id_f as $i => $t) {if ($t != '') {$avl[] = array('S' => $t);}}
     if (count($avl) > 0) {
