@@ -170,7 +170,7 @@ do {
         } else {$pass_s = true;}
         $pass_e = false;
         if ($end_day_f != '') {
-            $end_day_s = strtotime($end_day_f);
+            $end_day_s = strtotime($end_day_f) + (3600 * 24); // make end of day
             foreach ($seen as $i => $v) {if ($v <= $end_day_f) {$pass_e = true;}}
         }    else {$pass_e = true;}
         if (! ($pass_s && $pass_e)) {continue;}
