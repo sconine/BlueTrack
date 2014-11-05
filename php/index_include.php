@@ -82,7 +82,7 @@ if ($name_f != '') {
 if ($start_day_f != '' && $end_day_f != '') {
     $start_day_s = strtotime($start_day_f);
     $end_day_s = strtotime($end_day_f);
-    $scan_filters['scan_on'] = array('AttributeValueList' => array(array('N' => $start_day_f),array('N' => $end_day_s)),'ComparisonOperator' => 'BETWEEN');
+    $scan_filters['scan_on'] = array('AttributeValueList' => array(array('N' => $start_day_s),array('N' => $end_day_s)),'ComparisonOperator' => 'BETWEEN');
 }   
 
 if (count($scan_filters) > 0) {
