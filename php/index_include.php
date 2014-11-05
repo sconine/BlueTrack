@@ -63,8 +63,10 @@ if (count($type_f) > 0) {
 
 unset($avl);
 if (count($col_id_f) > 0) {
-    foreach ($col_id_f as $i => $t) {$avl[] = array('S' => $t);}
-    $scan_filters['collector_id'] = array('AttributeValueList' => $avl,'ComparisonOperator' => 'IN');
+    foreach ($col_id_f as $i => $t) {if ($t != '') {$avl[] = array('S' => $t);}}
+    if (count($avl) > 0) {
+        $scan_filters['collector_id'] = array('AttributeValueList' => $avl,'ComparisonOperator' => 'IN');
+    }
 }
 
 if ($man_info_f != '') {
