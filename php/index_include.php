@@ -92,6 +92,7 @@ if ($end_day_f != '') {
 if (count($scan_filters) > 0) {
     $request['ScanFilter'] = $scan_filters;
 }
+var_dump($request);
 
 $count = 0;
 $displayed_count = 0;
