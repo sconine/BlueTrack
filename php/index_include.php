@@ -60,16 +60,22 @@ if (count($type_f) > 0) {
         $scan_filters['type'] = array('ComparisonOperator' => 'NULL');
     }
 }
-/*
-if ($col_id_f != '') {
-    $scan_filters['collector_id'] = array('AttributeValueList' => array(array('SS' => $col_id_f)),'ComparisonOperator' => 'CONTAINS');
+
+unset($avl[]);
+if (count($col_id_f) > 0) {
+    foreach ($col_id_f as $i => $t) {$avl[] = array('S' => $t);}
+    $scan_filters['collector_id'] = array('AttributeValueList' => $avl,'ComparisonOperator' => 'IN');
 }
+
 if ($man_info_f != '') {
     $scan_filters['mac_info'] = array('AttributeValueList' => array(array('S' => $man_info_f)),'ComparisonOperator' => 'CONTAINS');
 }
+
 if ($name_f != '') {
     $scan_filters['name'] = array('AttributeValueList' => array(array('S' => $name_f)),'ComparisonOperator' => 'CONTAINS');
 }          
+
+/*
 if ($start_day_f != '') {
     $start_day_f = strtotime($start_day_f);
     $scan_filters['seen'] = array('AttributeValueList' => array(array('N' => $start_day_f)),'ComparisonOperator' => 'GT');
