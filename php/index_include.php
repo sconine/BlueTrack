@@ -61,7 +61,7 @@ if (count($type_f) > 0) {
     }
 }
 
-unset($avl[]);
+unset($avl);
 if (count($col_id_f) > 0) {
     foreach ($col_id_f as $i => $t) {$avl[] = array('S' => $t);}
     $scan_filters['collector_id'] = array('AttributeValueList' => $avl,'ComparisonOperator' => 'IN');
