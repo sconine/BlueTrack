@@ -6,7 +6,12 @@ function create_select($name, $arr, $def, $multi, $size) {
 	$to_ret .= ">\n";
 	$to_ret .= '<option value="">Select One</option>' . "\n";
 	
-	if (!is_array($def)) {$def[] = $def;}
+	if (!is_array($def)) {
+		$t = $def;
+		unset($def);
+		$def = array();
+		$def[] = $t;
+	}
 	foreach ($arr as $i => $v) {
 		$to_ret .= '<option value="' . htmlentities($i) . '"';
 		if (in_array($v, $def)) {$to_ret .= ' selected ';}
