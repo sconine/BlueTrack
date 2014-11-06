@@ -22,7 +22,7 @@ $time = time();
 
 // TODO: move known devices to the config file
 $known_dev = array("D8:A2:5E:88:3C:68", "70:F1:A1:67:5B:10");
-require '../vendor/autoload.php';
+require '/home/pi/BlueTrack/vendor/autoload.php';
 use Aws\Common\Aws;
 
 // This might be running disconnected fom the internet 
