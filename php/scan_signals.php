@@ -13,25 +13,6 @@ if ($debug) {echo "Opening: $file\n";}
 $f = file_get_contents($file);
 $my_macs = json_decode($f, true);
 $lp_cnt = 0;
-
-// TODO: move known devices to the config file
-$known_dev = array("D8:A2:5E:88:3C:68", "70:F1:A1:67:5B:10");
-
-require '../vendor/autoload.php';
-
-use Aws\Common\Aws;
-
-// You'll need to edit this with your config file
-// make sure you specify the correct region as dynamo is region specific
-$aws = Aws::factory('/home/pi/BlueTrack/php/amazon_config.json');
-$client = $aws->get('DynamoDb');
-
-// Make sure the dynamo tables exists assumes $client is defined
-include 'dynamo_tables.php';
-
-// ok we've got tables, see what we were sent
-if ($debug) {echo "Current Tables Exist<br>\n";}
-$created_region = false;
 $region_name = isset($config['region'] ) ? $config['region']  : 'Default';
 $collector_id = gethostmacaddr();
 $collector_private_ip = gethostbyname(trim(`hostname --all-ip-addresses`));
@@ -39,100 +20,124 @@ $collector_public_ip = isset($config['public_ip'] ) ? $config['public_ip']  : '9
 $collector_storage = 0;
 $time = time();
 
-// have we seen this region
-if ($debug) {echo "Looking up region: $region_name<br>\n";}
-$result = $client->getItem(array(
-    'ConsistentRead' => true,
-    'TableName' => 'collector_regions',
-    'Key'       => array(
-        'region_name'   => array('S' => $region_name)
-    )
-));
-if ($debug) {var_dump($result); echo '<br>';}
+// TODO: move known devices to the config file
+$known_dev = array("D8:A2:5E:88:3C:68", "70:F1:A1:67:5B:10");
+require '../vendor/autoload.php';
+use Aws\Common\Aws;
 
-if (!isset($result['Item']['region_name']['S'])) {
-    // Add this region
-    if ($debug) {echo "$region_name not found, adding region now<br>\n";}
-    $result = $client->putItem(array(
-        'TableName' => 'collector_regions',
-        'Item' => $client->formatAttributes(array(
-            'region_name'      => $region_name,
-            'region_active'    => true,
-            'region_collector_list'   => array($collector_id)
-        )),
-        'ReturnConsumedCapacity' => 'TOTAL'
-    ));
-    $created_region = true;
-    if ($debug) {echo "$region_name added<br>\n";}
-} else {
-    if ($debug) {echo "$region_name found!<br>\n";}
-}
-
-// have we seen this collector
-if ($debug) {echo "Looking up collector: $collector_id in $region_name<br>\n";}
-$result = $client->getItem(array(
-    'ConsistentRead' => true,
-    'TableName' => 'collectors',
-    'Key'       => array(
-        'collector_id'   => array('S' => $collector_id),
-        'collector_region_name'   => array('S' => $region_name)
-    )
-));
-if ($debug) {var_dump($result); echo '<br>';}
-
-if (!isset($result['Item']['collector_id']['S'])) {
-    // Add this collector
-    if ($debug) {echo "$collector_id in $region_name not found, adding collector now<br>\n";}
-    $result = $client->putItem(array(
-        'TableName' => 'collectors',
-        'Item' => $client->formatAttributes(array(
-            'collector_id'      => $collector_id,
-            'collector_region_name'    => $region_name,
-            'collector_private_ip'    => $collector_private_ip,
-            'collector_public_ip'    => $collector_public_ip,
-            'collector_last_checkin'    => $time,
-            'collector_active'    => 1,
-            'collector_storage' => $collector_storage
-        )),
-        'ReturnConsumedCapacity' => 'TOTAL'
-    ));
-     if ($debug) {echo "$collector_id in $region_name added<br>\n";}
-   
-    // Make sure to push this collector onto the region collector list if we didn't just create the region
-    if (!$created_region) {
-        if ($debug) {echo "$collector_id in $region_name adding to region list<br>\n";}
-        $result = $client->updateItem(array(
-            'TableName' => 'collector_regions',
-            'Key'       => array(
-                'region_name'   => array('S' => $collector_name)
-            ),
-            'AttributeUpdates' => array(
-                'region_collector_list'   => array('Action' => 'ADD', 'Value' => array('SS' => array($screen_id)))
-            )
-        ));
-        if ($debug) {echo "$collector_id in $region_name pushed onto region list<br>\n";}
-    }
-
-} else {
-    // Update the collector_last_checkin and IP values for this collector
-    if ($debug) {echo "$collector_id in $region_name found!<br>\n";}
-    $result = $client->updateItem(array(
-        'TableName' => 'collectors',
-        'Key'       => array(
-            'collector_id'   => array('S' => $collector_id),
-            'collector_region_name'   => array('S' => $region_name)
-        ),
-        'AttributeUpdates' => array(
-            'collector_private_ip'    =>  array('Action' => 'PUT', 'Value' => array('S' => $collector_private_ip)),
-            'collector_public_ip'    =>  array('Action' => 'PUT', 'Value' => array('S' => $collector_public_ip)),
-            'collector_last_checkin'    =>  array('Action' => 'PUT', 'Value' => array('N' => $time)),
-            'collector_storage'    =>  array('Action' => 'PUT', 'Value' => array('N' => $collector_storage))
-        )
-    ));    
-    if ($debug) {echo "$collector_id in $region_name updated<br>\n";}
-
-}
-
+// This might be running disconnected fom the internet 
+$online = true;
+try {
+	// You'll need to edit this with your config file
+	// make sure you specify the correct region as dynamo is region specific
+	$aws = Aws::factory('/home/pi/BlueTrack/php/amazon_config.json');
+	$client = $aws->get('DynamoDb');
+	
+	// Make sure the dynamo tables exists assumes $client is defined
+	include 'dynamo_tables.php';
+	
+	// ok we've got tables, see what we were sent
+	if ($debug) {echo "Current Tables Exist<br>\n";}
+	$created_region = false;
+	
+	// have we seen this region
+	if ($debug) {echo "Looking up region: $region_name<br>\n";}
+	$result = $client->getItem(array(
+	    'ConsistentRead' => true,
+	    'TableName' => 'collector_regions',
+	    'Key'       => array(
+	        'region_name'   => array('S' => $region_name)
+	    )
+	));
+	if ($debug) {var_dump($result); echo '<br>';}
+	
+	if (!isset($result['Item']['region_name']['S'])) {
+	    // Add this region
+	    if ($debug) {echo "$region_name not found, adding region now<br>\n";}
+	    $result = $client->putItem(array(
+	        'TableName' => 'collector_regions',
+	        'Item' => $client->formatAttributes(array(
+	            'region_name'      => $region_name,
+	            'region_active'    => true,
+	            'region_collector_list'   => array($collector_id)
+	        )),
+	        'ReturnConsumedCapacity' => 'TOTAL'
+	    ));
+	    $created_region = true;
+	    if ($debug) {echo "$region_name added<br>\n";}
+	} else {
+	    if ($debug) {echo "$region_name found!<br>\n";}
+	}
+	
+	// have we seen this collector
+	if ($debug) {echo "Looking up collector: $collector_id in $region_name<br>\n";}
+	$result = $client->getItem(array(
+	    'ConsistentRead' => true,
+	    'TableName' => 'collectors',
+	    'Key'       => array(
+	        'collector_id'   => array('S' => $collector_id),
+	        'collector_region_name'   => array('S' => $region_name)
+	    )
+	));
+	if ($debug) {var_dump($result); echo '<br>';}
+	
+	if (!isset($result['Item']['collector_id']['S'])) {
+	    // Add this collector
+	    if ($debug) {echo "$collector_id in $region_name not found, adding collector now<br>\n";}
+	    $result = $client->putItem(array(
+	        'TableName' => 'collectors',
+	        'Item' => $client->formatAttributes(array(
+	            'collector_id'      => $collector_id,
+	            'collector_region_name'    => $region_name,
+	            'collector_private_ip'    => $collector_private_ip,
+	            'collector_public_ip'    => $collector_public_ip,
+	            'collector_last_checkin'    => $time,
+	            'collector_active'    => 1,
+	            'collector_storage' => $collector_storage
+	        )),
+	        'ReturnConsumedCapacity' => 'TOTAL'
+	    ));
+	     if ($debug) {echo "$collector_id in $region_name added<br>\n";}
+	   
+	    // Make sure to push this collector onto the region collector list if we didn't just create the region
+	    if (!$created_region) {
+	        if ($debug) {echo "$collector_id in $region_name adding to region list<br>\n";}
+	        $result = $client->updateItem(array(
+	            'TableName' => 'collector_regions',
+	            'Key'       => array(
+	                'region_name'   => array('S' => $collector_name)
+	            ),
+	            'AttributeUpdates' => array(
+	                'region_collector_list'   => array('Action' => 'ADD', 'Value' => array('SS' => array($screen_id)))
+	            )
+	        ));
+	        if ($debug) {echo "$collector_id in $region_name pushed onto region list<br>\n";}
+	    }
+	
+	} else {
+	    // Update the collector_last_checkin and IP values for this collector
+	    if ($debug) {echo "$collector_id in $region_name found!<br>\n";}
+	    $result = $client->updateItem(array(
+	        'TableName' => 'collectors',
+	        'Key'       => array(
+	            'collector_id'   => array('S' => $collector_id),
+	            'collector_region_name'   => array('S' => $region_name)
+	        ),
+	        'AttributeUpdates' => array(
+	            'collector_private_ip'    =>  array('Action' => 'PUT', 'Value' => array('S' => $collector_private_ip)),
+	            'collector_public_ip'    =>  array('Action' => 'PUT', 'Value' => array('S' => $collector_public_ip)),
+	            'collector_last_checkin'    =>  array('Action' => 'PUT', 'Value' => array('N' => $time)),
+	            'collector_storage'    =>  array('Action' => 'PUT', 'Value' => array('N' => $collector_storage))
+	        )
+	    ));    
+	    if ($debug) {echo "$collector_id in $region_name updated<br>\n";}
+	
+	}
+} catch (Exception $e) {
+	echo 'Caught exception: ',  $e->getMessage(), "\n";
+	$online = false;
+}	
+	
 
 // Now start running hci tool in a loop and loading data it sees to Dynamo
 
@@ -146,6 +151,7 @@ while (1 == 1) {
 			// don't bother saving well known devices
 			if (!(in_array($d[1], $known_dev))) {
 				$my_macs[$d[1]]['status'] = 'dirty';
+				if (! isset($d[2])) {$d[2] = 'n/a';}
 				$my_macs[$d[1]]['name'] = str_replace("\u2019", "'", $d[2]);
 				if (isset($my_macs[$d[1]]['scan_count'])) {$my_macs[$d[1]]['scan_count']++;} 
 				else {$my_macs[$d[1]]['scan_count'] = 1;}
@@ -180,8 +186,8 @@ while (1 == 1) {
 	// Write data out after each run in case we re-boot
 	file_put_contents($file, json_encode($my_macs));
 	
-	// every 60th run connect to EC2 and save our data
-	if (($lp_cnt % 800 == 0 && $lp_cnt > 0)) {
+	// every 800th run connect to EC2 and save our data
+	if ($lp_cnt % 800 == 0 && $lp_cnt > 0 && $online) {
         	if ($debug) {echo "$lp_cnt loops - dumping data to Dynamo\n";}
 		foreach ($my_macs as $mac => $farray) {
 			// See if data has changed since we saved it last
@@ -251,22 +257,24 @@ while (1 == 1) {
 		}
 		
 		// update that this collector has called in
-		try {
-			$result = $client->updateItem(array(
-			        'TableName' => 'collectors',
-			        'Key'       => array(
-			            'collector_id'   => array('S' => $collector_id),
-			            'collector_region_name'   => array('S' => $region_name)
-			        ),
-			        'AttributeUpdates' => array(
-			            'collector_last_checkin'    =>  array('Action' => 'PUT', 'Value' => array('N' => time())),
-			            'collector_checkin_count'    =>  array('Action' => 'ADD', 'Value' => array('N' => 1))
-			        )
-			));    
-			if ($debug) {echo "$collector_id in $region_name updated<br>\n";}
-		} catch (Exception $e) {
-			echo 'Caught exception: ',  $e->getMessage(), "\n";
-		}		
+		if ($online) {
+			try {
+				$result = $client->updateItem(array(
+				        'TableName' => 'collectors',
+				        'Key'       => array(
+				            'collector_id'   => array('S' => $collector_id),
+				            'collector_region_name'   => array('S' => $region_name)
+				        ),
+				        'AttributeUpdates' => array(
+				            'collector_last_checkin'    =>  array('Action' => 'PUT', 'Value' => array('N' => time())),
+				            'collector_checkin_count'    =>  array('Action' => 'ADD', 'Value' => array('N' => 1))
+				        )
+				));    
+				if ($debug) {echo "$collector_id in $region_name updated<br>\n";}
+			} catch (Exception $e) {
+				echo 'Caught exception: ',  $e->getMessage(), "\n";
+			}
+		}
 	}
 
 	$lp_cnt++;
