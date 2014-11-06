@@ -277,9 +277,10 @@ do {
         echo $total_count_f . ' total_count_f <br>';
         if ($day_count_f > 0) {if (count($seen_days[$mac]) < $day_count_f) {$skip_it = true;}}
         if ($total_count_f > 0) {if ($seen_count < $total_count_f) {$skip_it = true;}}
-        if ($ship_it) {echo 'skip_it is true <br>';} else {echo 'skip_it is false <br>';}
+        if ($skip_it) {echo 'skip_it is true <br>';} else {echo 'skip_it is false <br>';}
 
         if (! $skip_it) {
+            if ($skip_it) {echo 'Addint to TOP! <br>';}
             // create an array to use in the bubble chart if not filters
             $top[$mac] = $seen_count;
             $displayed_count++;
