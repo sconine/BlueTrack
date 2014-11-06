@@ -280,7 +280,7 @@ do {
         if ($skip_it) {echo 'skip_it is true <br>';} else {echo 'skip_it is false <br>';}
 
         if (! $skip_it) {
-            if ($skip_it) {echo 'Addint to TOP! <br>';}
+            echo 'Addint to TOP! <br>';
             // create an array to use in the bubble chart if not filters
             $top[$mac] = $seen_count;
             $displayed_count++;
