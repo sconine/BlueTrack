@@ -273,7 +273,6 @@ do {
         $skip_it = false;
         if ($day_count_f > 0) {if (count($seen_days[$mac]) < $day_count_f) {$skip_it = true;}}
         if ($total_count_f > 0) {if ($seen_count < $total_count_f) {$skip_it = true;}}
-        if ($skip_it) {echo 'skip_it is true <br>';} else {echo 'skip_it is false <br>';}
 
         if (! $skip_it) {
             // create an array to use in the bubble chart if not filters
