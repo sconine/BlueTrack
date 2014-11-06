@@ -29,14 +29,16 @@ $day_count_f = 0;
 $col_id_f = array();
 $man_info_f = '';
 $name_f = '';
+$total_count_f = '';
 $start_day_f = '';
 $end_day_f = '';
-if(!empty($_REQUEST['day_count'])) {$day_count_f = $_REQUEST['day_count'];}
 if(!empty($_REQUEST['multi_day'])) {$multi_day_f = true;}
 if(!empty($_REQUEST['type'])) {$type_f = $_REQUEST['type'];}
 if(!empty($_REQUEST['col_id'])) {$col_id_f = $_REQUEST['col_id'];}
 if(!empty($_REQUEST['man_info'])) {$man_info_f = $_REQUEST['man_info'];}
 if(!empty($_REQUEST['name'])) {$name_f = $_REQUEST['name'];}
+if(!empty($_REQUEST['total_count'])) {$total_count_f = $_REQUEST['total_count'];}
+if(!empty($_REQUEST['day_count'])) {$day_count_f = $_REQUEST['day_count'];}
 if(!empty($_REQUEST['start_day'])) {$start_day_f = $_REQUEST['start_day'];}
 if(!empty($_REQUEST['end_day'])) {$end_day_f = $_REQUEST['end_day'];}
 
@@ -44,6 +46,7 @@ if(!empty($_REQUEST['end_day'])) {$end_day_f = $_REQUEST['end_day'];}
 $pattern = '/^[a-zA-ZvV0-9,]+$/';
 if (preg_match($pattern, implode(",", $type_f)) == 0) {$type_f = array();}
 if (!is_numeric($day_count_f)) {$day_count_f = 0;}
+if (!is_numeric($total_count_f)) {$total_count_f = 0;}
 
 // Setup the scan and filters
 $request = array(
@@ -250,6 +253,7 @@ do {
                 // Keep track of counts by day
                 if (isset($by_day[$dayofweek][$mac])) {$by_day[$dayofweek][$mac]++;}
                 else {$by_day[$dayofweek][$mac] = 1;}
+                $seen_days[$mac][$day] = 1;
             
                 // Build data for bubble chart
                 if (isset($seen_dayofw[$mac][$dayofweek3])) {$seen_dayofw[$mac][$dayofweek3]++;}
@@ -265,24 +269,21 @@ do {
             }  
         }
         
-        // create an array to use in the bubble chart if not filters
-        $top[$mac] = $seen_count;
-        $displayed_count++;
-        if ($t_first_seen > $first_seen[$mac] || $t_first_seen == 0) {$t_first_seen = strtotime(date("Y-m-d", $first_seen[$mac]));}
-        if ($t_last_seen < $last_seen[$mac] || $t_last_seen == 0) {$t_last_seen = strtotime(date("Y-m-d", $last_seen[$mac]));}
-        $total_seen = $total_seen + $seen_count;
+        // See if there are filters applied
+        $skip_it = false;
+        if ($day_count_f > 0) {if (count($seen_days[$mac]) < $day_count_f) {$skip_it = true;}}
+        if ($total_count_f > 0) {if ($seen_count) < $total_count_f) {$skip_it = true;}}
+        
+        if (! $ship_it) {
+            // create an array to use in the bubble chart if not filters
+            $top[$mac] = $seen_count;
+            $displayed_count++;
+            if ($t_first_seen > $first_seen[$mac] || $t_first_seen == 0) {$t_first_seen = strtotime(date("Y-m-d", $first_seen[$mac]));}
+            if ($t_last_seen < $last_seen[$mac] || $t_last_seen == 0) {$t_last_seen = strtotime(date("Y-m-d", $last_seen[$mac]));}
+            $total_seen = $total_seen + $seen_count;
+        }
     }
 } while(isset($response['LastEvaluatedKey'])); 
-
-// Data for device count by day
-asort($by_day);
-$day_count = "series: [{name: 'Devices',data: [";
-$data = '';
-foreach ($by_day as $day => $mac) {
-    if ($data != '') {$data .= ',';}
-    $data .= count($by_day[$day]);
-}
-$day_count .= $data . "]}]";
 
 // Data for class share pie chart
 $class_data = '';
