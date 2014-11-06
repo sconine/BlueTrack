@@ -56,7 +56,7 @@ include 'index_include.php';
 					<div class="form-group">
 						<div class="col-lg-12">
 							Seen Between: <input type="text" id="datepickers" name="start_day" size="8" value="<?php echo $start_day_f;?>"> 
-							and <input type="text" id="datepickere" name="end_day" size="8" value="<?php echo $end_day_f;?>"> <br>
+							Seen: <?php echo create_select('days_seen', range(0, 12), $days_seen_f, false, 0); ?> different days<br>
 							Name Contains:&#160;&#160;&#160;&#160;&#160; <input type="text" name="name" size="18" value="<?php echo htmlentities($name_f);?>"><br>
 							Mac Info Contains: <input type="text" name="man_info" size="18" value="<?php echo htmlentities($man_info_f);?>"><br>
 							From Collector: &#160;&#160;&#160;&#160;&#160;&#160;<?php echo create_select('col_id', $col_select_list, $col_id_f, false, 0); ?><br>
