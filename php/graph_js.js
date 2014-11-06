@@ -1,29 +1,6 @@
 
 <script>
 $(function () {
-    $('#byday').highcharts({
-        chart: {
-            type: 'line'
-        },
-        title: {
-            text: 'Daily Devices'
-        },
-        xAxis: {
-            categories: ['Mon', 'Tues', 'Wed', 'Thurs', 'Fri', 'Sat', 'Sun']
-        },
-        yAxis: {
-            title: {
-                text: 'Counts'
-            }
-        },
-        <?php
-        echo $day_count;
-        ?>
-    });
-});
-
-
-$(function () {
     $('#byclass').highcharts({
         chart: {
             plotBackgroundColor: null,
