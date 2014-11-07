@@ -4,5 +4,5 @@
     "public_ip": "99.99.99.99",
     "my_key" : "put a string you want to use for token verification here, should be long and unique",
     "log_folder": "/home/pi/BlueTrack/data/",
-    "master_server": "amazon_url_goes_here",
+    "master_server": "amazon_url_goes_here"
 }
