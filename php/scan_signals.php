@@ -105,10 +105,10 @@ try {
 	        $result = $client->updateItem(array(
 	            'TableName' => 'collector_regions',
 	            'Key'       => array(
-	                'region_name'   => array('S' => $collector_name)
+	                'region_name'   => array('S' => $region_name)
 	            ),
 	            'AttributeUpdates' => array(
-	                'region_collector_list'   => array('Action' => 'ADD', 'Value' => array('SS' => array($screen_id)))
+	                'region_collector_list'   => array('Action' => 'ADD', 'Value' => array('SS' => array($collector_id)))
 	            )
 	        ));
 	        if ($debug) {echo "$collector_id in $region_name pushed onto region list<br>\n";}
