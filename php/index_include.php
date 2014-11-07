@@ -373,7 +373,7 @@ do {
         $col_select_list[$id] = $id; // If we give these a name change value to that for this select list array
         $collectors[$id]['collector_active'] = $value['collector_active']["N"];
         $collectors[$id]['collector_region_name'] = $value['collector_region_name']["S"];
-        $collectors[$id]['collector_checkin_count'] = $value['collector_checkin_count']["N"];
+        $collectors[$id]['collector_checkin_count'] = isset($value['collector_checkin_count']["N"]) ? $value['collector_checkin_count']["N"] : 0;;
         $collectors[$id]['collector_last_checkin'] = $value['collector_last_checkin']["N"];
         $collectors[$id]['collector_private_ip'] = $value['collector_private_ip']["S"];
         $collectors[$id]['collector_public_ip'] = $value['collector_public_ip']["S"];
