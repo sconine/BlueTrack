@@ -1,9 +1,7 @@
 
 <?php
 // Feature ideas:
-//  edit types easier and assign in a bale based on filtering on device major class and a substring of the manufacturer
 //  cache dynamodb data in a local file and retreive on demand
-
 
 // Load my configuration
 $debug = false;
@@ -48,7 +46,7 @@ if (preg_match($pattern, implode(",", $type_f)) == 0) {$type_f = array();}
 if (!is_numeric($day_count_f)) {$day_count_f = 0;}
 if (!is_numeric($total_count_f)) {$total_count_f = 0;}
 
-// Setup the scan and filters
+// Setup the scan with filters
 $request = array(
     "TableName" => $tableName,
     //"ConditionalOperator" => 'OR',
@@ -132,8 +130,10 @@ $seen_days = array();
 $full_data = array();
 $unified_data = array();
 
+//////////////////////////////////////////////////////////////////////
 // The Scan API is paginated. Issue the Scan request multiple times.
 // first scan through the table and put the data in a structure by mac and collector_id (de-dup collectors)
+//////////////////////////////////////////////////////////////////////
 do {
     // Add the ExclusiveStartKey if we got one back in the previous response
     if(isset($response) && isset($response['LastEvaluatedKey'])) {
@@ -152,7 +152,9 @@ do {
     }
 } while(isset($response['LastEvaluatedKey'])); 
 
-// now go through and clean up the data 
+//////////////////////////////////////////////////////////////////////
+// now go through and clean up the data  and aggregate by mac id
+//////////////////////////////////////////////////////////////////////
 foreach ($full_data as $mac => $collectors) {
     $type = 'X';
     $name = 'n/a';
@@ -199,8 +201,8 @@ foreach ($full_data as $mac => $collectors) {
 
     // get deailed class info
     $class_detail = '';
-	if ($class != 'n/a') {get_bt_class_info($class, $class_detail);}
-	if ($class_detai == '') {$class_detai = 'Not Sent';}
+    if ($class != 'n/a') {get_bt_class_info($class, $class_detail);}
+    if ($class_detai == '') {$class_detai = 'Not Sent';}
 
     $unified_data[$mac]['name'] = $name;
     $unified_data[$mac]['class'] = $class;
@@ -213,6 +215,7 @@ foreach ($full_data as $mac => $collectors) {
 
 //////////////////////////////////////////////////////////////////////
 // now for through and filter and analyze each device seen
+//////////////////////////////////////////////////////////////////////
 foreach ($unified_data as $mac => $value) {
     $name[$mac] = $value['name'];
     $dev_type[$mac] = $value['type'];
