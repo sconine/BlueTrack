@@ -195,7 +195,7 @@ foreach ($full_data as $mac => $collectors) {
     if ($mac_info == 'n/a') {$mac_info = get_mac_info($mac);}
     if (count($has_na) > 0 && $mac_info != 'n/a') {
         foreach ($has_na as $i => $collector_id) {
-            update_mac_info($client, $mac, $collector_id, $mac_info)
+            update_mac_info($client, $mac, $collector_id, $mac_info);
         }
     }
 
