@@ -1,5 +1,34 @@
 <?php
 
+function format_mac_info($mac_info) {
+    $mac_info = str_replace("\n", " ", $mac_info);
+    $mac_info = str_replace("'", "\'", mac_info);
+    return mac_info;
+}
+  
+function update_mac_info($mac, $collector_id, &$client) {
+        $mac_info = get_mac_info($mac);
+	if ($mac_info != '') {
+		$result = $client->updateItem(array(
+				'TableName' => 'collector_data',
+				'Key' => array(
+					'mac_id'      => array("S" => $mac),
+					'collector_id'      => array("S" => $collector_id)
+				),
+				"AttributeUpdates" => array(
+				"mac_info" => array(
+					"Value" => array("S" => $mac_info),
+					"Action" => "PUT"
+				)
+			),
+			'ReturnValues' => "NONE"
+		));
+	} else {
+		$mac_info ='uknown';
+	}
+}
+
+
 function update_type(&$client, $mac, $collector_id, $type) {
 	$result = $client->updateItem(array(
 		'TableName' => 'collector_data',
