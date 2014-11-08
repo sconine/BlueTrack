@@ -220,6 +220,8 @@ foreach ($unified_data as $mac => $value) {
     $name[$mac] = $value['name'];
     $dev_type[$mac] = $value['type'];
     $classes[$mac] = $value['class'];
+    $my_mac_info[$mac] = $value['mac_info'];
+    $my_collectors[$mac] = implode(', ', $value['collectors']);
     $seen = $value['seen'];
     $type_list[$dev_type[$mac]] = 1;
     if (!isset($type_desc[$dev_type[$mac]])) {$type_desc[$dev_type[$mac]] = 'Not Defined';}
@@ -344,6 +346,7 @@ foreach ($top as $mac => $mct) {
             . "', d: '" . $day_names[(round($avg_dayofweek) - 1)]
             . "', h: '" . $disp_hr 
             . "', c: '" . $class_det
+            . "', w: '" . $my_collectors[$mac]
             . "', i: '" . $my_mac_info[$mac] 
             . "', type: '" . $dev_type[$mac] 
             . "', t: " . $mct 
