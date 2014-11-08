@@ -166,9 +166,8 @@ foreach ($full_data as $mac => $collectors) {
     $has_x = array();
     $has_na = array();
     $full_seen = array();
-echo "<hr>";
+
     foreach ($collectors as $collector_id => $v) {
-echo "collector_id: $collector_id  - ";
         $collect[] = $collector_id;
         if ($v['type'] != 'X') {$type = $v['type'];}
         else {$has_x[] = $collector_id;}
@@ -207,9 +206,6 @@ echo "collector_id: $collector_id  - ";
     $class_detail = '';
     if ($class != 'n/a') {get_bt_class_info($class, $class_detail);}
     if ($class_detail == '') {$class_detail = 'Not Sent';}
-
-echo "<hr> $d_name <br>";
-var_dump($collect);
 
     $unified_data[$mac]['name'] = $d_name;
     $unified_data[$mac]['class'] = $class;
