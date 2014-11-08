@@ -6,7 +6,7 @@ function format_mac_info($mac_info) {
     return mac_info;
 }
   
-function update_mac_info($mac, $collector_id, &$client) {
+function update_mac_info($mac, $collector_id, $mac_info, &$client) {
 	$result = $client->updateItem(array(
 			'TableName' => 'collector_data',
 			'Key' => array(
