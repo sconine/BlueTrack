@@ -7,25 +7,21 @@ function format_mac_info($mac_info) {
 }
   
 function update_mac_info($mac, $collector_id, &$client) {
-        $mac_info = get_mac_info($mac);
-	if ($mac_info != '') {
-		$result = $client->updateItem(array(
-				'TableName' => 'collector_data',
-				'Key' => array(
-					'mac_id'      => array("S" => $mac),
-					'collector_id'      => array("S" => $collector_id)
-				),
-				"AttributeUpdates" => array(
-				"mac_info" => array(
-					"Value" => array("S" => $mac_info),
-					"Action" => "PUT"
-				)
+	$result = $client->updateItem(array(
+			'TableName' => 'collector_data',
+			'Key' => array(
+				'mac_id'      => array("S" => $mac),
+				'collector_id'      => array("S" => $collector_id)
 			),
-			'ReturnValues' => "NONE"
-		));
-	} else {
-		$mac_info ='uknown';
-	}
+			"AttributeUpdates" => array(
+			"mac_info" => array(
+				"Value" => array("S" => $mac_info),
+				"Action" => "PUT"
+			)
+		),
+		'ReturnValues' => "NONE"
+	));
+	return true;
 }
 
 
