@@ -24,6 +24,7 @@ $tableName = "collector_data";
 $type_f = array();
 $multi_day_f = false;
 $day_count_f = 0;
+$col_count_f = 0
 $col_id_f = array();
 $man_info_f = '';
 $name_f = '';
@@ -37,6 +38,7 @@ if(!empty($_REQUEST['man_info'])) {$man_info_f = $_REQUEST['man_info'];}
 if(!empty($_REQUEST['name'])) {$name_f = $_REQUEST['name'];}
 if(!empty($_REQUEST['total_count'])) {$total_count_f = $_REQUEST['total_count'];}
 if(!empty($_REQUEST['day_count'])) {$day_count_f = $_REQUEST['day_count'][0];}
+if(!empty($_REQUEST['col_count'])) {$col_count_f = $_REQUEST['col_count'][0];}
 if(!empty($_REQUEST['start_day'])) {$start_day_f = $_REQUEST['start_day'];}
 if(!empty($_REQUEST['end_day'])) {$end_day_f = $_REQUEST['end_day'];}
 
@@ -44,6 +46,7 @@ if(!empty($_REQUEST['end_day'])) {$end_day_f = $_REQUEST['end_day'];}
 $pattern = '/^[a-zA-ZvV0-9,]+$/';
 if (preg_match($pattern, implode(",", $type_f)) == 0) {$type_f = array();}
 if (!is_numeric($day_count_f)) {$day_count_f = 0;}
+if (!is_numeric($col_count_f)) {$col_count_f = 0;}
 if (!is_numeric($total_count_f)) {$total_count_f = 0;}
 
 // Setup the scan with filters
@@ -242,6 +245,7 @@ foreach ($unified_data as $mac => $value) {
         foreach ($seen as $i => $v) {if ($v <= $end_day_f) {$pass_e = true;}}
     }    else {$pass_e = true;}
     if (! ($pass_s && $pass_e)) {continue;}
+    if (count($value['collectors']) < $col_count_f) {continue;}
     $count++;
        
     // Keep track of counts by class
