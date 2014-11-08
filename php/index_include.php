@@ -78,19 +78,6 @@ if ($man_info_f != '') {
     $scan_filters['mac_info'] = array('AttributeValueList' => array(array('S' => $man_info_f)),'ComparisonOperator' => 'CONTAINS');
 }
 
-/*
-// These 2 search sets which Dynamo doesn't do substrings or sub comparisons for in a scan
-// So we'll pull the above filters and filter the results
-if ($name_f != '') {
-    $scan_filters['name'] = array('AttributeValueList' => array(array('S' => $name_f)),'ComparisonOperator' => 'CONTAINS');
-}          
-if ($start_day_f != '' && $end_day_f != '') {
-    $start_day_s = strtotime($start_day_f);
-    $end_day_s = strtotime($end_day_f);
-    $scan_filters['scan_on'] = array('AttributeValueList' => array(array('N' => $start_day_s),array('N' => $end_day_s)),'ComparisonOperator' => 'BETWEEN');
-}   
-*/
-
 if (count($scan_filters) > 0) {
     $request['ScanFilter'] = $scan_filters;
 }
@@ -159,6 +146,7 @@ do {
         $mac = $value['mac_id']["S"];
         $collector_id = $value['collector_id']["S"];
         $full_data[$mac][$collector_id]['name'] = $value['name']["SS"];
+        $full_data[$mac][$collector_id]['class'] = $value['class']["SS"];
         $full_data[$mac][$collector_id]['seen'] = array_merge($value['scan_on']["NS"], $value['inq_on']["NS"]);
         $full_data[$mac][$collector_id]['type'] = isset($value['type']["S"]) ? $value['type']["S"] : 'X';
     }
@@ -168,32 +156,40 @@ do {
 foreach ($full_data as $mac => $collectors) {
     $type = 'X';
     $name = 'n/a';
+    $class = 'n/a';
+    $collect = array();
     $has_x = array();
+    $full_seen = array();
     foreach ($collector as $collector_id => $v) {
+        $collect[] = $collector_id;
         if ($v['type'] != 'X') {$type = $v['type'];}
         else {$has_x[] = $collector_id;}
+        $full_seen = array_merge($full_seen, $v['seen']);
         
-        foreach ($v['type'] as $i => $n) {
+        foreach ($v['name'] as $i => $n) {
             if ($n != 'n/a') {
-                if ($name != 'n/a') {$name .= ',';}
-                else {$name = '';}
+                if ($name != 'n/a') {$name .= ', ';}else {$name = '';}
                 $name .= $n;
             }
         }
+        
+        // For class we'll just store one that was not n/a
+        foreach ($v['class'] as $i => $n) {if ($n != 'n/a') {$class = $n;}}
     }
     
     // See if we need to sync type across collectors
     if (count($has_x) > 0 && $type != 'X') {
         foreach ($has_x as $i => $collector_id) {
-            update_type($client, $mac, $collector_id, $type );
+            update_type($client, $mac, $collector_id, $type);
         }
     }
     
-    $unified_data[$mac]['name'] = name here;
+    $unified_data[$mac]['name'] = $name;
+    $unified_data[$mac]['class'] = $class;
     $unified_data[$mac]['type'] = $type;
-    
-    
+    $unified_data[$mac]['seen'] = $full_seen;
 }
+
     foreach ($response['Items'] as $key => $value) {
         $mac = $value['mac_id']["S"];
         $collector_id = $value['collector_id']["S"];
