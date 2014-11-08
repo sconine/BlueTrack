@@ -58,6 +58,7 @@ include 'index_include.php';
 							Seen Between: <input type="text" id="datepickers" name="start_day" size="8" value="<?php echo $start_day_f;?>"> 
 							and <input type="text" id="datepickere" name="end_day" size="8" value="<?php echo $end_day_f;?>"> <br>
 							Seen: <?php echo create_select('day_count', range(0, 50), $day_count_f, false, 0); ?> different days<br>
+							Seen at: <?php echo create_select('col_count', range(0, 50), $col_count_f, false, 0); ?> different collectors<br>
 							Name Contains:&#160;&#160;&#160;&#160;&#160; <input type="text" name="name" size="18" value="<?php echo htmlentities($name_f);?>"><br>
 							Mac Info Contains: <input type="text" name="man_info" size="18" value="<?php echo htmlentities($man_info_f);?>"><br>
 							Count Greater Than: <input type="text" name="total_count" size="8" value="<?php echo htmlentities($total_count_f);?>"><br>
