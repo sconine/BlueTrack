@@ -125,7 +125,7 @@ function get_mac_info($mac) {
                 $data = preg_replace("/[ \t]{2,}/", "", $data);
                 return $data;
     } 
-    return '';
+    return 'n/a';
 }
 
 // Function to turn a bluetooth class code into an english description
