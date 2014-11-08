@@ -142,16 +142,58 @@ $dev_type = array();
 $show_minutes = array();
 $seen_hours = array();
 $seen_days = array();
+$full_data = array();
+$unified_data = array();
 $gc = 0;
 
 // The Scan API is paginated. Issue the Scan request multiple times.
+// first scan through the table and put the data in a structure by mac and collector_id (de-dup collectors)
 do {
     // Add the ExclusiveStartKey if we got one back in the previous response
     if(isset($response) && isset($response['LastEvaluatedKey'])) {
         $request['ExclusiveStartKey'] = $response['LastEvaluatedKey'];
     }
     $response = $client->scan($request);
+    
+    foreach ($response['Items'] as $key => $value) {
+        $mac = $value['mac_id']["S"];
+        $collector_id = $value['collector_id']["S"];
+        $full_data[$mac][$collector_id]['name'] = $value['name']["SS"];
+        $full_data[$mac][$collector_id]['seen'] = array_merge($value['scan_on']["NS"], $value['inq_on']["NS"]);
+        $full_data[$mac][$collector_id]['type'] = isset($value['type']["S"]) ? $value['type']["S"] : 'X';
+    }
+} while(isset($response['LastEvaluatedKey'])); 
 
+// now go through and clean up the data 
+foreach ($full_data as $mac => $collectors) {
+    $type = 'X';
+    $name = 'n/a';
+    $has_x = array();
+    foreach ($collector as $collector_id => $v) {
+        if ($v['type'] != 'X') {$type = $v['type'];}
+        else {$has_x[] = $collector_id;}
+        
+        foreach ($v['type'] as $i => $n) {
+            if ($n != 'n/a') {
+                if ($name != 'n/a') {$name .= ',';}
+                else {$name = '';}
+                $name .= $n;
+            }
+        }
+    }
+    
+    // See if we need to sync type across collectors
+    if (count($has_x) > 0 && $type != 'X') {
+        foreach ($has_x as $i => $collector_id) {
+            update_type($client, $mac, $collector_id, $type );
+        }
+    }
+    
+    $unified_data[$mac]['name'] = name here;
+    $unified_data[$mac]['type'] = $type;
+    
+    
+}
     foreach ($response['Items'] as $key => $value) {
         $mac = $value['mac_id']["S"];
         $collector_id = $value['collector_id']["S"];
@@ -283,7 +325,6 @@ do {
             $total_seen = $total_seen + $seen_count;
         }
     }
-} while(isset($response['LastEvaluatedKey'])); 
 
 // Data for class share pie chart
 $class_data = '';
