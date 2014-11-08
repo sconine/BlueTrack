@@ -160,9 +160,9 @@ do {
 //////////////////////////////////////////////////////////////////////
 foreach ($full_data as $mac => $collectors) {
     $type = 'X';
-    $d_name = 'n/a';
     $class = 'n/a';
     $mac_info = 'n/a';
+    $d_name = array();
     $collect = array();
     $has_x = array();
     $has_na = array();
@@ -177,16 +177,14 @@ foreach ($full_data as $mac => $collectors) {
         $full_seen = array_merge($full_seen, $v['seen']);
         
         // Save all names
-        foreach ($v['name'] as $i => $n) {
-            if ($n != 'n/a') {
-                if ($d_name != 'n/a') {$d_name .= ', ';} else {$d_name = '';}
-                $d_name .= $n;
-            }
-        }
+        foreach ($v['name'] as $i => $n) {if ($n != 'n/a') {$d_name[] = $n;}}
         
         // For class we'll just store one that was not n/a
         foreach ($v['class'] as $i => $n) {if ($n != 'n/a') {$class = $n;}}
     }
+    
+    // Pick unique names
+    $d_name = array_unique($d_name);
     
     // See if we need to sync type across collectors
     if (count($has_x) > 0 && $type != 'X') {
@@ -208,7 +206,7 @@ foreach ($full_data as $mac => $collectors) {
     if ($class != 'n/a') {get_bt_class_info($class, $class_detail);}
     if ($class_detail == '') {$class_detail = 'Not Sent';}
 
-    $unified_data[$mac]['name'] = $d_name;
+    $unified_data[$mac]['name'] = implode(', ', $d_name);
     $unified_data[$mac]['class'] = $class;
     $unified_data[$mac]['class_detail'] = $class_detail;
     $unified_data[$mac]['mac_info'] = format_mac_info($mac_info);
