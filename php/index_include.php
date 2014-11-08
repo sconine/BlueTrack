@@ -131,7 +131,6 @@ $seen_hours = array();
 $seen_days = array();
 $full_data = array();
 $unified_data = array();
-$gc = 0;
 
 // The Scan API is paginated. Issue the Scan request multiple times.
 // first scan through the table and put the data in a structure by mac and collector_id (de-dup collectors)
@@ -147,6 +146,7 @@ do {
         $collector_id = $value['collector_id']["S"];
         $full_data[$mac][$collector_id]['name'] = $value['name']["SS"];
         $full_data[$mac][$collector_id]['class'] = $value['class']["SS"];
+        $full_data[$mac][$collector_id]['mac_info'] = isset($value['mac_info']["S"]) ? $value['mac_info']["S"] : 'n/a';
         $full_data[$mac][$collector_id]['seen'] = array_merge($value['scan_on']["NS"], $value['inq_on']["NS"]);
         $full_data[$mac][$collector_id]['type'] = isset($value['type']["S"]) ? $value['type']["S"] : 'X';
     }
@@ -157,15 +157,20 @@ foreach ($full_data as $mac => $collectors) {
     $type = 'X';
     $name = 'n/a';
     $class = 'n/a';
+    $mac_info = 'n/a';
     $collect = array();
     $has_x = array();
+    $has_na = array();
     $full_seen = array();
     foreach ($collector as $collector_id => $v) {
         $collect[] = $collector_id;
         if ($v['type'] != 'X') {$type = $v['type'];}
         else {$has_x[] = $collector_id;}
+        if ($v['mac_info'] != 'n/a') {$mac_info = $v['mac_info'];}
+        else {$has_na[] = $collector_id;}
         $full_seen = array_merge($full_seen, $v['seen']);
         
+        // Save all names
         foreach ($v['name'] as $i => $n) {
             if ($n != 'n/a') {
                 if ($name != 'n/a') {$name .= ', ';}else {$name = '';}
@@ -183,144 +188,113 @@ foreach ($full_data as $mac => $collectors) {
             update_type($client, $mac, $collector_id, $type);
         }
     }
-    
+
+    // See if we need to sync mac_info across collectors
+    if ($mac_info == 'n/a') {$mac_info = get_mac_info($mac);}
+    if (count($has_na) > 0 && $mac_info != 'n/a') {
+        foreach ($has_na as $i => $collector_id) {
+            update_mac_info($client, $mac, $collector_id, $mac_info)
+        }
+    }
+
+    // get deailed class info
+    $class_detail = '';
+	if ($class != 'n/a') {get_bt_class_info($class, $class_detail);}
+	if ($class_detai == '') {$class_detai = 'Not Sent';}
+
     $unified_data[$mac]['name'] = $name;
     $unified_data[$mac]['class'] = $class;
+    $unified_data[$mac]['class_detail'] = $class_detail;
+    $unified_data[$mac]['mac_info'] = format_mac_info($mac_info);
+    $unified_data[$mac]['collectors'] = $collect;
     $unified_data[$mac]['type'] = $type;
     $unified_data[$mac]['seen'] = $full_seen;
 }
 
-    foreach ($response['Items'] as $key => $value) {
-        $mac = $value['mac_id']["S"];
-        $collector_id = $value['collector_id']["S"];
-        $collectors[] = $collector_id;
-        $name[$mac] = implode(',', $value['name']["SS"]);
-        $seen = array_merge($value['scan_on']["NS"], $value['inq_on']["NS"]);
-        $dev_type[$mac] = isset($value['type']["S"]) ? $value['type']["S"] : 'X';
-        $type_list[$dev_type[$mac]] = 1;
-        if (!isset($type_desc[$dev_type[$mac]])) {$type_desc[$dev_type[$mac]] = 'Not Defined';}
-        $last_seen[$mac] = 0;
-        $first_seen[$mac] = 0;
+//////////////////////////////////////////////////////////////////////
+// now for through and filter and analyze each device seen
+foreach ($unified_data as $mac => $value) {
+    $name[$mac] = $value['name'];
+    $dev_type[$mac] = $value['type'];
+    $classes[$mac] = $value['class'];
+    $seen = $value['seen'];
+    $type_list[$dev_type[$mac]] = 1;
+    if (!isset($type_desc[$dev_type[$mac]])) {$type_desc[$dev_type[$mac]] = 'Not Defined';}
+    $last_seen[$mac] = 0;
+    $first_seen[$mac] = 0;
 
-        // Apply filters
-        if ($name_f != '') {
-            if (strpos(strtolower($name[$mac]), strtolower($name_f)) === false) {continue;}
-        }          
-        $pass_s = false;
-        if ($start_day_f != '') {
-            $start_day_s = strtotime($start_day_f);
-            foreach ($seen as $i => $v) {if ($v >= $start_day_s) {$pass_s = true;}}
-        } else {$pass_s = true;}
-        $pass_e = false;
-        if ($end_day_f != '') {
-            $end_day_s = strtotime($end_day_f) + (3600 * 24); // make end of day
-            foreach ($seen as $i => $v) {if ($v <= $end_day_f) {$pass_e = true;}}
-        }    else {$pass_e = true;}
-        if (! ($pass_s && $pass_e)) {continue;}
-
-        $count++;
-           
-        // Do we have mac registrant info if not get it and store it
-        if (! isset($value['mac_info']["S"])) {
-            $mac_info = get_mac_info($mac);
-            $gc++;
-            
-            if ($mac_info != '') {
-                $result = $client->updateItem(array(
-                	'TableName' => 'collector_data',
-                	'Key' => array(
-                		'mac_id'      => array("S" => $mac),
-                		'collector_id'      => array("S" => $collector_id)
-                	),
-                	"AttributeUpdates" => array(
-                		"mac_info" => array(
-                			"Value" => array("S" => $mac_info),
-                			"Action" => "PUT"
-                		)
-                	),
-                	'ReturnValues' => "NONE"
-                ));
-                
-                $value['mac_info']["S"] = $mac_info;
-            } else {
-                $value['mac_info']["S"] ='uknown';
+    // Apply filters
+    if ($name_f != '') {if (strpos(strtolower($name[$mac]), strtolower($name_f)) === false) {continue;}}          
+    $pass_s = false;
+    if ($start_day_f != '') {
+        $start_day_s = strtotime($start_day_f);
+        foreach ($seen as $i => $v) {if ($v >= $start_day_s) {$pass_s = true;}}
+    } else {$pass_s = true;}
+    $pass_e = false;
+    if ($end_day_f != '') {
+        $end_day_s = strtotime($end_day_f) + (3600 * 24); // make end of day
+        foreach ($seen as $i => $v) {if ($v <= $end_day_f) {$pass_e = true;}}
+    }    else {$pass_e = true;}
+    if (! ($pass_s && $pass_e)) {continue;}
+    $count++;
+       
+    // Keep track of counts by class
+    if (isset($by_class[$value['class_detail']][$mac])) {$by_class[$value['class_detail']][$mac]++;}
+    else {$by_class[$value['class_detail']][$mac] = 1;}
+    
+    // Manipulate the dates a bit
+    $seen_count = 0;
+    foreach ($seen as $i => $v) {
+        $seen_count++;
+        if ($v > 1) {
+            // Keep track of ones we've seen in last hour
+            if ($v > (time() - 3600)) {
+                if (isset($last_hour[$mac])) {$last_hour[$mac]++;}
+                else {$last_hour[$mac] = 1;}
             }
-        }
-        $my_mac_info[$mac] = str_replace("\n", " ", $value['mac_info']["S"]);
-        $my_mac_info[$mac] = str_replace("'", "\'", $my_mac_info[$mac]);
-
-        // Keep track of counts by class
-        $mdc = '';
-        $t_class = '';
-        foreach ($value['class']["SS"] as $cli => $cl) {
-        	if ($cl != 'n/a') {
-        		get_bt_class_info($cl, $mdc);
-        		if ($t_class != '') {$t_class .= ',';}
-        		$t_class .= $mdc;
-        	}
-        }
-        if ($t_class == '') {$t_class = 'Not Sent';}
-        if (isset($by_class[$t_class][$mac])) {$by_class[$t_class][$mac]++;}
-        else {$by_class[$t_class][$mac] = 1;}
-        
-        // Just pick the first class listed of this device for the pie chart
-        $classes[$mac] = $value['class']["SS"][0];
-                
-        // Manipulate the dates a bit
-        $seen_count = 0;
-        foreach ($seen as $i => $v) {
-            $seen_count++;
-            if ($v > 1) {
-                // Keep track of ones we've seen in last hour
-                if ($v > (time() - 3600)) {
-                    if (isset($last_hour[$mac])) {$last_hour[$mac]++;}
-                    else {$last_hour[$mac] = 1;}
-                }
-                
-                // put in EST
-                $v = $v - (3600 * 5);
-    
-                $minute = strtotime(date("Y-m-d h:i a", $v));
-                $hour = strtotime(date("1990-01-01 h:00 a", $v));
-                $day = strtotime(date("Y-m-d", $v));
-                $hourofday = date("H", $v);
-                $dayofyear = date("z", $v);
-                $dayofweek = date("N", $v);
-                $dayofweek3 = date("N", $v);
-    
-                // Keep track of counts by day
-                if (isset($by_day[$dayofweek][$mac])) {$by_day[$dayofweek][$mac]++;}
-                else {$by_day[$dayofweek][$mac] = 1;}
-                $seen_days[$mac][$day] = 1;
             
-                // Build data for bubble chart
-                if (isset($seen_dayofw[$mac][$dayofweek3])) {$seen_dayofw[$mac][$dayofweek3]++;}
-                else {$seen_dayofw[$mac][$dayofweek3] = 1;}
-                if (isset($seen_hours[$mac][$hourofday])) {$seen_hours[$mac][$hourofday]++;}
-                else {$seen_hours[$mac][$hourofday] = 1;}
-    
-                // Last Seen
-                if ($last_seen[$mac] < $v || $last_seen[$mac] == 0) {$last_seen[$mac] = strtotime(date("Y-m-d", $v));}
+            // put in EST
+            $v = $v - (3600 * 5);
+            $minute = strtotime(date("Y-m-d h:i a", $v));
+            $hour = strtotime(date("1990-01-01 h:00 a", $v));
+            $day = strtotime(date("Y-m-d", $v));
+            $hourofday = date("H", $v);
+            $dayofweek = date("N", $v);
+            $dayofweek3 = date("N", $v);
 
-                // First Seen
-                if ($first_seen[$mac] > $v || $first_seen[$mac] == 0) {$first_seen[$mac] = strtotime(date("Y-m-d", $v));}
-            }  
-        }
+            // Keep track of counts by day
+            if (isset($by_day[$dayofweek][$mac])) {$by_day[$dayofweek][$mac]++;}
+            else {$by_day[$dayofweek][$mac] = 1;}
+            $seen_days[$mac][$day] = 1;
         
-        // See if there are filters applied
-        $skip_it = false;
-        if ($day_count_f > 0) {if (!isset($seen_days[$mac]) || count($seen_days[$mac]) < $day_count_f) {$skip_it = true;}}
-        if ($total_count_f > 0) {if ($seen_count < $total_count_f) {$skip_it = true;}}
+            // Build data for bubble chart
+            if (isset($seen_dayofw[$mac][$dayofweek3])) {$seen_dayofw[$mac][$dayofweek3]++;}
+            else {$seen_dayofw[$mac][$dayofweek3] = 1;}
+            if (isset($seen_hours[$mac][$hourofday])) {$seen_hours[$mac][$hourofday]++;}
+            else {$seen_hours[$mac][$hourofday] = 1;}
 
-        if (! $skip_it) {
-            // create an array to use in the bubble chart if not filters
-            $top[$mac] = $seen_count;
-            $displayed_count++;
-            if ($t_first_seen > $first_seen[$mac] || $t_first_seen == 0) {$t_first_seen = strtotime(date("Y-m-d", $first_seen[$mac]));}
-            if ($t_last_seen < $last_seen[$mac] || $t_last_seen == 0) {$t_last_seen = strtotime(date("Y-m-d", $last_seen[$mac]));}
-            $total_seen = $total_seen + $seen_count;
-        }
+            // Last Seen
+            if ($last_seen[$mac] < $v || $last_seen[$mac] == 0) {$last_seen[$mac] = strtotime(date("Y-m-d", $v));}
+
+            // First Seen
+            if ($first_seen[$mac] > $v || $first_seen[$mac] == 0) {$first_seen[$mac] = strtotime(date("Y-m-d", $v));}
+        }  
     }
+    
+    // See if there are filters applied
+    $skip_it = false;
+    if ($day_count_f > 0) {if (!isset($seen_days[$mac]) || count($seen_days[$mac]) < $day_count_f) {$skip_it = true;}}
+    if ($total_count_f > 0) {if ($seen_count < $total_count_f) {$skip_it = true;}}
+
+    if (! $skip_it) {
+        // create an array to use in the bubble chart if not filters
+        $top[$mac] = $seen_count;
+        $displayed_count++;
+        if ($t_first_seen > $first_seen[$mac] || $t_first_seen == 0) {$t_first_seen = strtotime(date("Y-m-d", $first_seen[$mac]));}
+        if ($t_last_seen < $last_seen[$mac] || $t_last_seen == 0) {$t_last_seen = strtotime(date("Y-m-d", $last_seen[$mac]));}
+        $total_seen = $total_seen + $seen_count;
+    }
+}
 
 // Data for class share pie chart
 $class_data = '';
