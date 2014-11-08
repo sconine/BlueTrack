@@ -157,7 +157,7 @@ do {
 //////////////////////////////////////////////////////////////////////
 foreach ($full_data as $mac => $collectors) {
     $type = 'X';
-    $name = 'n/a';
+    $d_name = 'n/a';
     $class = 'n/a';
     $mac_info = 'n/a';
     $collect = array();
@@ -175,9 +175,8 @@ foreach ($full_data as $mac => $collectors) {
         // Save all names
         foreach ($v['name'] as $i => $n) {
             if ($n != 'n/a') {
-                if ($name != 'n/a') {$name .= ', ';} else {$name = '';}
-                $name .= $n;
-                echo "$name name<br>\n";
+                if ($d_name != 'n/a') {$d_name .= ', ';} else {$d_name = '';}
+                $d_name .= $n;
             }
         }
         
@@ -204,9 +203,8 @@ foreach ($full_data as $mac => $collectors) {
     $class_detail = '';
     if ($class != 'n/a') {get_bt_class_info($class, $class_detail);}
     if ($class_detail == '') {$class_detail = 'Not Sent';}
-                echo "$name 2name<br>\n";
 
-    $unified_data[$mac]['name'] = $name;
+    $unified_data[$mac]['name'] = $d_name;
     $unified_data[$mac]['class'] = $class;
     $unified_data[$mac]['class_detail'] = $class_detail;
     $unified_data[$mac]['mac_info'] = format_mac_info($mac_info);
@@ -219,7 +217,7 @@ foreach ($full_data as $mac => $collectors) {
 // now for through and filter and analyze each device seen
 //////////////////////////////////////////////////////////////////////
 foreach ($unified_data as $mac => $value) {
-    $name[$mac] = $value['name'];
+    $names[$mac] = $value['name'];
     $dev_type[$mac] = $value['type'];
     $classes[$mac] = $value['class'];
     $my_mac_info[$mac] = $value['mac_info'];
@@ -303,6 +301,8 @@ foreach ($unified_data as $mac => $value) {
     }
 }
 
+var_dump(names);
+
 // Data for class share pie chart
 $class_data = '';
 foreach ($by_class as $class => $mac) {
@@ -341,7 +341,7 @@ foreach ($top as $mac => $mct) {
         $class_det = str_replace("'", "\'", get_bt_class_info($hex, $mdc));
     }
 
-    $series[$lsn] .= "{n: '". str_replace("'", "\'", $name[$mac]) 
+    $series[$lsn] .= "{n: '". str_replace("'", "\'", $names[$mac]) 
             . "', m: '" . $mac 
             . "', l: '" . date("m/d/Y h:i a", $last_seen[$mac]) 
             . "', f: '" . date("m/d/Y h:i a", $first_seen[$mac]) 
