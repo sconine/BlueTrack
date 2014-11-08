@@ -2,8 +2,8 @@
 
 function format_mac_info($mac_info) {
     $mac_info = str_replace("\n", " ", $mac_info);
-    $mac_info = str_replace("'", "\'", mac_info);
-    return mac_info;
+    $mac_info = str_replace("'", "\'", $mac_info);
+    return $mac_info;
 }
   
 function update_mac_info(&$client, $mac, $collector_id, $mac_info) {
