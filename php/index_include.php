@@ -175,8 +175,9 @@ foreach ($full_data as $mac => $collectors) {
         // Save all names
         foreach ($v['name'] as $i => $n) {
             if ($n != 'n/a') {
-                if ($name != 'n/a') {$name .= ', ';}else {$name = '';}
+                if ($name != 'n/a') {$name .= ', ';} else {$name = '';}
                 $name .= $n;
+                echo "$name name<br>\n";
             }
         }
         
@@ -203,6 +204,7 @@ foreach ($full_data as $mac => $collectors) {
     $class_detail = '';
     if ($class != 'n/a') {get_bt_class_info($class, $class_detail);}
     if ($class_detail == '') {$class_detail = 'Not Sent';}
+                echo "$name 2name<br>\n";
 
     $unified_data[$mac]['name'] = $name;
     $unified_data[$mac]['class'] = $class;
