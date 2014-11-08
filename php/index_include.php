@@ -204,6 +204,9 @@ foreach ($full_data as $mac => $collectors) {
     if ($class != 'n/a') {get_bt_class_info($class, $class_detail);}
     if ($class_detail == '') {$class_detail = 'Not Sent';}
 
+echo '<hr> $d_name <br>';
+var_dump($collect);
+
     $unified_data[$mac]['name'] = $d_name;
     $unified_data[$mac]['class'] = $class;
     $unified_data[$mac]['class_detail'] = $class_detail;
@@ -300,8 +303,6 @@ foreach ($unified_data as $mac => $value) {
         $total_seen = $total_seen + $seen_count;
     }
 }
-
-var_dump(names);
 
 // Data for class share pie chart
 $class_data = '';
