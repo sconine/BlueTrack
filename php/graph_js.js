@@ -97,9 +97,9 @@ $(function () {
     });
 });
 
-function set_type(type, mac) {
+function set_type(type, mac, col) {
     //alert('set type: ' + type + ' for mac: ' + mac);
-    var url = "set_type.php?type=" + encodeURIComponent(type) + "&mac=" + encodeURIComponent(mac);
+    var url = "set_type.php?type=" + encodeURIComponent(type) + "&mac=" + encodeURIComponent(mac) + "&col=" + encodeURIComponent(col);
     var jqxhr = $.ajax( url )
       .done(function(data) {
         alert( data + 'set type: ' + type + ' for mac: ' + mac);
