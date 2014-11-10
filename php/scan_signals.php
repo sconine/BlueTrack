@@ -197,8 +197,10 @@ while (1 == 1) {
 				$name = array(!empty($farray['name']) ? $farray['name'] : 'n/a');
 				$clock_offset = array(!empty($farray['clock offset']) ? $farray['clock offset'] : 'n/a');
 				$class = array(!empty($farray['class']) ? $farray['class'] : 'n/a');
-				if (isset($farray['inq_on'])) {if (is_array($farray['inq_on'])) {$inq_on = array_keys($farray['inq_on']);} else {$inq_on = array(1);}} else {$inq_on = array(1);}
-				if (isset($farray['scan_on'])) {if (is_array($farray['scan_on'])) {$scan_on = array_keys($farray['scan_on']);} else {$scan_on = array(1);}} else {$inq_on = array(1);}
+				$inq_on = array(1);
+				$scan_on = array(1);
+				if (isset($farray['inq_on'])) {if (is_array($farray['inq_on'])) {$inq_on = array_keys($farray['inq_on']);}}
+				if (isset($farray['scan_on'])) {if (is_array($farray['scan_on'])) {$scan_on = array_keys($farray['scan_on']);}}
 				if ($debug) {echo "mac = $mac \n";}
 				if ($debug) {echo "name \n"; var_dump($name);}
 				if ($debug) {echo "clock_offset \n"; var_dump($clock_offset);}
@@ -207,7 +209,7 @@ while (1 == 1) {
 				if ($debug) {var_dump($scan_on);}
 				$ec2_save = true;
 				try {
-					$result = $client->updateItem(array(
+					$to_update = array(
 						'TableName' => 'collector_data',
 						'Key' => array(
 							'mac_id'      => array("S" => $mac),
@@ -236,9 +238,11 @@ while (1 == 1) {
 							)
 						),
 						'ReturnValues' => "NONE"
-					));
+					);
+					$result = $client->updateItem($to_update);
 				} catch (Exception $e) {
 					echo 'Caught exception: ',  $e->getMessage(), "\n";
+					var_dump($to_update);
 					$ec2_save = false;
 				}	
 				
