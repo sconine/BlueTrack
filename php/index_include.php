@@ -242,7 +242,7 @@ foreach ($unified_data as $mac => $value) {
     $pass_e = false;
     if ($end_day_f != '') {
         $end_day_s = strtotime($end_day_f) + (3600 * 24); // make end of day
-        foreach ($seen as $i => $v) {if ($v <= $end_day_f) {$pass_e = true; echo '222PASSSSSSS';} else {echo "2FAIL $v - $end_day_f <hr>";}}
+        foreach ($seen as $i => $v) {if ($v <= $end_day_s) {$pass_e = true; echo '222PASSSSSSS';} else {echo "2FAIL $v - $end_day_s <hr>";}}
     }    else {$pass_e = true;}
     echo "<hr>$start_day_f = $start_day_s <br>";
     echo "<hr>$end_day_f = $end_day_s <br>";
