@@ -237,12 +237,12 @@ foreach ($unified_data as $mac => $value) {
 
     if ($start_day_f != '') {
         $start_day_s = strtotime($start_day_f);
-        foreach ($seen as $i => $v) {if ($v >= $start_day_s) {$pass_s = true;}}
+        foreach ($seen as $i => $v) {if ($v >= $start_day_s) {$pass_s = true; echo '111PASSSSSSS';} else {echo "1FAIL$v - $start_day_s <hr>";}}
     } else {$pass_s = true;}
     $pass_e = false;
     if ($end_day_f != '') {
         $end_day_s = strtotime($end_day_f) + (3600 * 24); // make end of day
-        foreach ($seen as $i => $v) {if ($v <= $end_day_f) {$pass_e = true;}}
+        foreach ($seen as $i => $v) {if ($v <= $end_day_f) {$pass_e = true; echo '222PASSSSSSS';} else {echo "2FAIL $v - $end_day_f <hr>";}}
     }    else {$pass_e = true;}
     echo "<hr>$start_day_f = $start_day_s <br>";
     echo "<hr>$end_day_f = $end_day_s <br>";
