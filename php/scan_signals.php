@@ -194,9 +194,9 @@ while (1 == 1) {
 			$fstatus = isset($farray['status']) ? $farray['status'] : 'dirty';
 			if ($fstatus == 'dirty') {
 				if ($debug) {echo "farray ------\n"; var_dump($farray);}
-				$name = array(isset($farray['name']) ? $farray['name'] : 'n/a');
-				$clock_offset = array(isset($farray['clock offset']) ? $farray['clock offset'] : 'n/a');
-				$class = array(isset($farray['class']) ? $farray['class'] : 'n/a');
+				$name = array(!empty($farray['name']) ? $farray['name'] : 'n/a');
+				$clock_offset = array(!empty($farray['clock offset']) ? $farray['clock offset'] : 'n/a');
+				$class = array(!empty($farray['class']) ? $farray['class'] : 'n/a');
 				if (isset($farray['inq_on'])) {if (is_array($farray['inq_on'])) {$inq_on = array_keys($farray['inq_on']);} else {$inq_on = array(1);}} else {$inq_on = array(1);}
 				if (isset($farray['scan_on'])) {if (is_array($farray['scan_on'])) {$scan_on = array_keys($farray['scan_on']);} else {$scan_on = array(1);}} else {$inq_on = array(1);}
 				if ($debug) {echo "mac = $mac \n";}
