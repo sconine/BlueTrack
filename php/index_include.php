@@ -147,10 +147,10 @@ do {
     foreach ($response['Items'] as $key => $value) {
         $mac = $value['mac_id']["S"];
         $collector_id = $value['collector_id']["S"];
-        $full_data[$mac][$collector_id]['name'] = $value['name']["SS"];
-        $full_data[$mac][$collector_id]['class'] = $value['class']["SS"];
+        $full_data[$mac][$collector_id]['name'] = isset($value['name']["SS"];) ? $value['name']["SS"] : 'n/a';
+        $full_data[$mac][$collector_id]['class'] = isset($value['class']["SS"]) ? $value['class']["SS"] : 'n/a';
         $full_data[$mac][$collector_id]['mac_info'] = isset($value['mac_info']["S"]) ? $value['mac_info']["S"] : 'n/a';
-        $full_data[$mac][$collector_id]['seen'] = array_merge($value['scan_on']["NS"], $value['inq_on']["NS"]);
+        $full_data[$mac][$collector_id]['seen'] = array_merge(isset($value['scan_on']["NS"]) ? $value['scan_on']["NS"] : array(), isset($value['scan_on']["NS"]) ? $value['scan_on']["NS"] : array());
         $full_data[$mac][$collector_id]['type'] = isset($value['type']["S"]) ? $value['type']["S"] : 'X';
     }
 } while(isset($response['LastEvaluatedKey'])); 
