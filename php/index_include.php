@@ -154,7 +154,7 @@ do {
         $full_data[$mac][$collector_id]['type'] = isset($value['type']["S"]) ? $value['type']["S"] : 'X';
     }
 } while(isset($response['LastEvaluatedKey'])); 
-
+var_dump($full_data);
 //////////////////////////////////////////////////////////////////////
 // now go through and clean up the data  and aggregate by mac id
 //////////////////////////////////////////////////////////////////////
