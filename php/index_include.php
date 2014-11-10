@@ -244,10 +244,14 @@ foreach ($unified_data as $mac => $value) {
         $end_day_s = strtotime($end_day_f) + (3600 * 24); // make end of day
         foreach ($seen as $i => $v) {if ($v <= $end_day_f) {$pass_e = true;}}
     }    else {$pass_e = true;}
+    echo "<hr>$start_day_f = $start_day_s <br>";
+    echo "<hr>$end_day_f = $end_day_s <br>";
+
     if (! ($pass_s && $pass_e)) {continue;}
     if (count($value['collectors']) < $col_count_f) {continue;}
     $count++;
-       
+    echo "<hr>ffffmfklkefnljkdsnflsdnflsdknfsldkfnsdlkfnsdlknf <br>";
+
     // Keep track of counts by class
     if (isset($by_class[$value['class_detail']][$mac])) {$by_class[$value['class_detail']][$mac]++;}
     else {$by_class[$value['class_detail']][$mac] = 1;}
