@@ -154,7 +154,7 @@ do {
         $full_data[$mac][$collector_id]['type'] = isset($value['type']["S"]) ? $value['type']["S"] : 'X';
     }
 } while(isset($response['LastEvaluatedKey'])); 
-var_dump($full_data);
+
 //////////////////////////////////////////////////////////////////////
 // now go through and clean up the data  and aggregate by mac id
 //////////////////////////////////////////////////////////////////////
@@ -233,6 +233,8 @@ foreach ($unified_data as $mac => $value) {
     // Apply filters
     if ($name_f != '') {if (strpos(strtolower($name[$mac]), strtolower($name_f)) === false) {continue;}}          
     $pass_s = false;
+    var_dump($seen);
+
     if ($start_day_f != '') {
         $start_day_s = strtotime($start_day_f);
         foreach ($seen as $i => $v) {if ($v >= $start_day_s) {$pass_s = true;}}
