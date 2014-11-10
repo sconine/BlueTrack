@@ -233,24 +233,20 @@ foreach ($unified_data as $mac => $value) {
     // Apply filters
     if ($name_f != '') {if (strpos(strtolower($name[$mac]), strtolower($name_f)) === false) {continue;}}          
     $pass_s = false;
-    var_dump($seen);
 
     if ($start_day_f != '') {
         $start_day_s = strtotime($start_day_f);
-        foreach ($seen as $i => $v) {if ($v >= $start_day_s) {$pass_s = true; echo '111PASSSSSSS';} else {echo "1FAIL$v - $start_day_s <hr>";}}
+        foreach ($seen as $i => $v) {if ($v >= $start_day_s) {$pass_s = true;}}
     } else {$pass_s = true;}
     $pass_e = false;
     if ($end_day_f != '') {
         $end_day_s = strtotime($end_day_f) + (3600 * 24); // make end of day
-        foreach ($seen as $i => $v) {if ($v <= $end_day_s) {$pass_e = true; echo '222PASSSSSSS';} else {echo "2FAIL $v - $end_day_s <hr>";}}
+        foreach ($seen as $i => $v) {if ($v <= $end_day_s) {$pass_e = true;}}
     }    else {$pass_e = true;}
-    echo "<hr>$start_day_f = $start_day_s <br>";
-    echo "<hr>$end_day_f = $end_day_s <br>";
 
     if (! ($pass_s && $pass_e)) {continue;}
     if (count($value['collectors']) < $col_count_f) {continue;}
     $count++;
-    echo "<hr>ffffmfklkefnljkdsnflsdnflsdknfsldkfnsdlkfnsdlknf <br>";
 
     // Keep track of counts by class
     if (isset($by_class[$value['class_detail']][$mac])) {$by_class[$value['class_detail']][$mac]++;}
