@@ -187,7 +187,7 @@ while (1 == 1) {
 	file_put_contents($file, json_encode($my_macs));
 	
 	// every 800th run connect to EC2 and save our data
-	if ($lp_cnt % 200 == 0 && $lp_cnt > 0 && $online) {
+	if ($lp_cnt % 4 == 0 && $lp_cnt > 0 && $online) {
         	if ($debug) {echo "$lp_cnt loops - dumping data to Dynamo\n";}
 		foreach ($my_macs as $mac => $farray) {
 			// See if data has changed since we saved it last
@@ -207,6 +207,20 @@ while (1 == 1) {
 				if ($debug) {echo "class \n"; var_dump($class);}
 				if ($debug) {var_dump($inq_on);}
 				if ($debug) {var_dump($scan_on);}
+				
+				// If scan_on and inq_on arrays get too big you can't send them to EC2
+				$ecs_limit = 800;
+				unset($inq_on_next_time);
+				unset($scan_on_next_time);
+				if (count($inq_on)) > $ecs_limit) {
+					$inq_on_next_time = array_slice($inq_on, $ecs_limit);
+					$inq_on = array_slice($inq_on, 0, $ecs_limit);
+				}				
+				if (count($scan_on)) > $ecs_limit) {
+					$scan_on_next_time = array_slice($scan_on, $ecs_limit);
+					$scan_on = array_slice($scan_on, 0, $ecs_limit);
+				}
+				
 				$ec2_save = true;
 				try {
 					$to_update = array(
@@ -247,14 +261,25 @@ while (1 == 1) {
 				}	
 				
 				if ($ec2_save) {
-					//Now that we've stored these values reset the counters so that we don't store again
-					//In the future might want to just unset($my_macs) since that way we'll 
-					//never run out of space or slow the process over time.  
-					$my_macs[$mac]['status'] = 'clean';
-					$my_macs[$mac]['inq_count'] = 0;
-					$my_macs[$mac]['scan_count'] = 0;
-					unset($my_macs[$mac]['inq_on']);
-					unset($my_macs[$mac]['scan_on']);
+					// If arrays got too large save in batches
+					if (isset($inq_on_next_time) || isset($scan_on_next_time) ) {
+						if (isset($inq_on_next_time)) {
+							foreach ($inq_on_next_time as $c => $t) {$my_macs[$mac]['inq_on'][$t] = 'y';}
+						} else {unset($my_macs[$mac]['inq_on']);}
+						
+						if (isset($scan_on_next_time)) {
+							foreach ($scan_on_next_time as $c => $t) {$my_macs[$mac]['scan_on'][$t] = 'y';}
+						} else {unset($my_macs[$mac]['scan_on']);}
+					} else {
+						//Now that we've stored these values reset the counters so that we don't store again
+						//In the future might want to just unset($my_macs) since that way we'll 
+						//never run out of space or slow the process over time.  
+						$my_macs[$mac]['status'] = 'clean';
+						$my_macs[$mac]['inq_count'] = 0;
+						$my_macs[$mac]['scan_count'] = 0;
+						unset($my_macs[$mac]['inq_on']);
+						unset($my_macs[$mac]['scan_on']);
+					}
 				}
 
 			}
