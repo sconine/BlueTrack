@@ -57,7 +57,8 @@ $(function () {
         tooltip: {
             useHTML: true, 
             formatter: function() {
-                var det = '   <a href="analyze_one.php?mac=' + encodeURIComponent(this.point.m) + '" target="_n">details</a>';
+                var det = '   <a href="analyze_one.php?mac=' + encodeURIComponent(this.point.m) + 
+                          '&col=' + encodeURIComponent(this.point.w) + '" target="_n">details</a>';
                 return '<b>' + this.point.n + '</b><br>Seen: ' + this.point.t + ' times' +
                     <?php
                         echo($b_types);
