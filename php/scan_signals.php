@@ -213,10 +213,12 @@ while (1 == 1) {
 				unset($inq_on_next_time);
 				unset($scan_on_next_time);
 				if (count($inq_on) > $ecs_limit) {
+					echo "for mac $mac inq_on count was " . count($inq_on) . "\n";
 					$inq_on_next_time = array_slice($inq_on, $ecs_limit);
 					$inq_on = array_slice($inq_on, 0, $ecs_limit);
 				}				
 				if (count($scan_on) > $ecs_limit) {
+					echo "for mac $mac scan_on count was " . count($scan_on) . "\n";
 					$scan_on_next_time = array_slice($scan_on, $ecs_limit);
 					$scan_on = array_slice($scan_on, 0, $ecs_limit);
 				}
@@ -264,10 +266,12 @@ while (1 == 1) {
 					// If arrays got too large save in batches
 					if (isset($inq_on_next_time) || isset($scan_on_next_time) ) {
 						if (isset($inq_on_next_time)) {
+							echo "for mac $mac inq_on_next_time count was " . count($inq_on_next_time) . "\n";
 							foreach ($inq_on_next_time as $c => $t) {$my_macs[$mac]['inq_on'][$t] = 'y';}
 						} else {unset($my_macs[$mac]['inq_on']);}
 						
 						if (isset($scan_on_next_time)) {
+							echo "for mac $mac scan_on_next_time count was " . count($scan_on_next_time) . "\n";
 							foreach ($scan_on_next_time as $c => $t) {$my_macs[$mac]['scan_on'][$t] = 'y';}
 						} else {unset($my_macs[$mac]['scan_on']);}
 					} else {
