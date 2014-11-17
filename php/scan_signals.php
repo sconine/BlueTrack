@@ -256,7 +256,8 @@ while (1 == 1) {
 					$result = $client->updateItem($to_update);
 				} catch (Exception $e) {
 					echo 'Caught exception: ',  $e->getMessage(), "\n";
-					var_dump($to_update);
+					echo "mac was $mac \n";
+					//var_dump($to_update);
 					$ec2_save = false;
 				}	
 				
