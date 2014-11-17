@@ -212,11 +212,11 @@ while (1 == 1) {
 				$ecs_limit = 800;
 				unset($inq_on_next_time);
 				unset($scan_on_next_time);
-				if (count($inq_on)) > $ecs_limit) {
+				if (count($inq_on) > $ecs_limit) {
 					$inq_on_next_time = array_slice($inq_on, $ecs_limit);
 					$inq_on = array_slice($inq_on, 0, $ecs_limit);
 				}				
-				if (count($scan_on)) > $ecs_limit) {
+				if (count($scan_on) > $ecs_limit) {
 					$scan_on_next_time = array_slice($scan_on, $ecs_limit);
 					$scan_on = array_slice($scan_on, 0, $ecs_limit);
 				}
