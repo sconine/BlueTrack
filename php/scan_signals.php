@@ -265,15 +265,17 @@ while (1 == 1) {
 				if ($ec2_save) {
 					// If arrays got too large save in batches
 					if (isset($inq_on_next_time) || isset($scan_on_next_time) ) {
+						unset($my_macs[$mac]['inq_on']);
+						unset($my_macs[$mac]['scan_on']);
 						if (isset($inq_on_next_time)) {
 							echo "for mac $mac inq_on_next_time count was " . count($inq_on_next_time) . "\n";
 							foreach ($inq_on_next_time as $c => $t) {$my_macs[$mac]['inq_on'][$t] = 'y';}
-						} else {unset($my_macs[$mac]['inq_on']);}
+						} 
 						
 						if (isset($scan_on_next_time)) {
 							echo "for mac $mac scan_on_next_time count was " . count($scan_on_next_time) . "\n";
 							foreach ($scan_on_next_time as $c => $t) {$my_macs[$mac]['scan_on'][$t] = 'y';}
-						} else {unset($my_macs[$mac]['scan_on']);}
+						} 
 					} else {
 						//Now that we've stored these values reset the counters so that we don't store again
 						//In the future might want to just unset($my_macs) since that way we'll 
