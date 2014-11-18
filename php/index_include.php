@@ -188,8 +188,8 @@ foreach ($full_data as $mac => $collectors) {
 			),
 			'ReturnValues' => "NONE"
 		);
-		var_dump($to_update);
-		//$result = $client->updateItem($to_update);
+		//var_dump($to_update);
+		$result = $client->updateItem($to_update);
         }
         /////////////////////////////////////////////////////////////
         $collect[] = $collector_id;
