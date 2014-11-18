@@ -176,6 +176,8 @@ foreach ($full_data as $mac => $collectors) {
             $to_store = array_unique(array_map("shorten_time", $v['seen_old']));
             var_dump($v['seen_old']);
             var_dump($to_store);
+            var_dump(array_map("lengthen_time",$to_store));
+            
 			$to_update = array(
 				'TableName' => 'collector_data',
 				'Key' => array(
