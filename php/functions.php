@@ -2,12 +2,20 @@
 
 function shorten_time($in_time) {
 	// shortens time by 100 seconds
-	// 2342341231 becomes 23423412
-	return substr($in_time, 0, -2);
+	// 1415421466 becomes 14154214
+	if (strlen($in_time) > 8) {
+		return substr($in_time, 0, -2);
+	} else {
+		return $in_time;
+	}
 }
 
 function lengthen_time($in_time) {
-	return ($in_time * 100);
+	if (strlen($in_time) > 6) {
+		return ($in_time * 100);
+	else {
+		return $in_time;
+	}
 }
 
 function format_mac_info($mac_info) {
