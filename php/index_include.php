@@ -154,7 +154,7 @@ do {
         $full_data[$mac][$collector_id]['seen'] = array_map("lengthen_time", isset($value['seen_on']["NS"]) ? $value['seen_on']["NS"] : array());
         $full_data[$mac][$collector_id]['type'] = isset($value['type']["S"]) ? $value['type']["S"] : 'X';
     }
-} while(isset($response['LastEvaluatedKey']) && 1 == 0); 
+} while(isset($response['LastEvaluatedKey'])); 
 
 //////////////////////////////////////////////////////////////////////
 // now go through and clean up the data  and aggregate by mac id
@@ -171,7 +171,7 @@ foreach ($full_data as $mac => $collectors) {
 
     foreach ($collectors as $collector_id => $v) {
         /////////////////////////////////////////////////////////////
-        // Code to modify time so it is shorter  array_filter($array1, "odd")
+        // Code to modify time so it is shorter this can be commented out once all data is converted
         if (empty($v['seen'])) {
             	$to_store = array_values(array_filter(array_unique(array_map("shorten_time", $v['seen_old'])), "remove_short_time"));
 		$to_update = array(
