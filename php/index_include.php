@@ -53,7 +53,7 @@ if (!is_numeric($total_count_f)) {$total_count_f = 0;}
 $request = array(
     "TableName" => $tableName,
     //"ConditionalOperator" => 'OR',
-    "Limit" => 11
+    "Limit" => 15
 );
 
 $scan_filters = array();
@@ -150,7 +150,7 @@ do {
         $full_data[$mac][$collector_id]['name'] = isset($value['name']["SS"]) ? $value['name']["SS"] : array('n/a');
         $full_data[$mac][$collector_id]['class'] = isset($value['class']["SS"]) ? $value['class']["SS"] : array('n/a');
         $full_data[$mac][$collector_id]['mac_info'] = isset($value['mac_info']["S"]) ? $value['mac_info']["S"] : 'n/a';
-        $full_data[$mac][$collector_id]['seen_old'] = array_merge(isset($value['scan_on']["NS"]) ? $value['scan_on']["NS"] : array(), isset($value['scan_on']["NS"]) ? $value['scan_on']["NS"] : array());
+        $full_data[$mac][$collector_id]['seen_old'] = array_merge(isset($value['scan_on']["NS"]) ? $value['scan_on']["NS"] : array(), isset($value['inq_on']["NS"]) ? $value['inq_on']["NS"] : array());
         $full_data[$mac][$collector_id]['seen'] = array_map("lengthen_time", isset($value['seen_on']["NS"]) ? $value['seen_on']["NS"] : array());
         $full_data[$mac][$collector_id]['type'] = isset($value['type']["S"]) ? $value['type']["S"] : 'X';
     }
