@@ -13,7 +13,7 @@ function shorten_time($in_time) {
 function lengthen_time($in_time) {
 	if (strlen($in_time) > 6) {
 		return ($in_time * 100);
-	else {
+	} else {
 		return $in_time;
 	}
 }
