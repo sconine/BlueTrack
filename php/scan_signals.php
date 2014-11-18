@@ -155,7 +155,7 @@ while (1 == 1) {
 				$my_macs[$d[1]]['name'] = str_replace("\u2019", "'", $d[2]);
 				if (isset($my_macs[$d[1]]['scan_count'])) {$my_macs[$d[1]]['scan_count']++;} 
 				else {$my_macs[$d[1]]['scan_count'] = 1;}
-				$my_macs[$d[1]]['scan_on'][time()] = 'y';
+				$my_macs[$d[1]]['scan_on'][shorten_time(time())] = 'y';
 			} 
 		}
 	}
@@ -174,7 +174,7 @@ while (1 == 1) {
 				$my_macs[$d[1]]['class'] = str_replace("class: ", "", $d[3]);
 				if (isset($my_macs[$d[1]]['inq_count'])) {$my_macs[$d[1]]['inq_count']++;} 
 				else {$my_macs[$d[1]]['inq_count'] = 1;}
-				$my_macs[$d[1]]['inq_on'][time()] = 'y';
+				$my_macs[$d[1]]['inq_on'][shorten_time(time())] = 'y';
 			} 
 		}
 	}
@@ -201,26 +201,15 @@ while (1 == 1) {
 				$scan_on = array(1);
 				if (isset($farray['inq_on'])) {if (is_array($farray['inq_on'])) {$inq_on = array_keys($farray['inq_on']);}}
 				if (isset($farray['scan_on'])) {if (is_array($farray['scan_on'])) {$scan_on = array_keys($farray['scan_on']);}}
+				$seen_on = array_unique(array_merge($inq_on, $scan_on))
 				if ($debug) {echo "mac = $mac \n";}
 				if ($debug) {echo "name \n"; var_dump($name);}
 				if ($debug) {echo "clock_offset \n"; var_dump($clock_offset);}
 				if ($debug) {echo "class \n"; var_dump($class);}
+				if ($debug) {var_dump($seen_on);}
 				if ($debug) {var_dump($inq_on);}
 				if ($debug) {var_dump($scan_on);}
-				
-				// If scan_on and inq_on arrays get too big you can't send them to EC2
-				$ecs_limit = 500;
-				unset($inq_on_next_time);
-				unset($scan_on_next_time);
-				if (count($inq_on) > $ecs_limit) {
-					$inq_on_next_time = array_slice($inq_on, $ecs_limit);
-					$inq_on = array_slice($inq_on, 0, $ecs_limit);
-				}				
-				if (count($scan_on) > $ecs_limit) {
-					$scan_on_next_time = array_slice($scan_on, $ecs_limit);
-					$scan_on = array_slice($scan_on, 0, $ecs_limit);
-				}
-				
+
 				$ec2_save = true;
 				try {
 					$to_update = array(
@@ -242,12 +231,8 @@ while (1 == 1) {
 								"Value" => array("SS" => $class),
 								"Action" => "ADD"
 							),
-							"inq_on" => array(
-								"Value" => array("NS" => $inq_on),
-								"Action" => "ADD"
-							),
-							"scan_on" => array(
-								"Value" => array("NS" => $scan_on),
+							"seen_on" => array(
+								"Value" => array("NS" => $seen_on),
 								"Action" => "ADD"
 							)
 						),
@@ -262,27 +247,14 @@ while (1 == 1) {
 				}	
 				
 				if ($ec2_save) {
-					// If arrays got too large save in batches
-					if (isset($inq_on_next_time) || isset($scan_on_next_time) ) {
-						unset($my_macs[$mac]['inq_on']);
-						unset($my_macs[$mac]['scan_on']);
-						if (isset($inq_on_next_time)) {
-							foreach ($inq_on_next_time as $c => $t) {$my_macs[$mac]['inq_on'][$t] = 'y';}
-						} 
-						
-						if (isset($scan_on_next_time)) {
-							foreach ($scan_on_next_time as $c => $t) {$my_macs[$mac]['scan_on'][$t] = 'y';}
-						} 
-					} else {
-						//Now that we've stored these values reset the counters so that we don't store again
-						//In the future might want to just unset($my_macs) since that way we'll 
-						//never run out of space or slow the process over time.  
-						$my_macs[$mac]['status'] = 'clean';
-						$my_macs[$mac]['inq_count'] = 0;
-						$my_macs[$mac]['scan_count'] = 0;
-						unset($my_macs[$mac]['inq_on']);
-						unset($my_macs[$mac]['scan_on']);
-					}
+					//Now that we've stored these values reset the counters so that we don't store again
+					//In the future might want to just unset($my_macs) since that way we'll 
+					//never run out of space or slow the process over time.  
+					$my_macs[$mac]['status'] = 'clean';
+					$my_macs[$mac]['inq_count'] = 0;
+					$my_macs[$mac]['scan_count'] = 0;
+					unset($my_macs[$mac]['inq_on']);
+					unset($my_macs[$mac]['scan_on']);
 				}
 
 			}
