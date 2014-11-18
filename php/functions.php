@@ -18,6 +18,13 @@ function lengthen_time($in_time) {
 	}
 }
 
+function remove_short_time($in_time) {
+	if (strlen($in_time) < 4) {
+		return false;
+	} else {
+		return true;
+	}
+}
 function format_mac_info($mac_info) {
     $mac_info = str_replace("\n", " ", $mac_info);
     $mac_info = str_replace("'", "\'", $mac_info);
