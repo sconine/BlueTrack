@@ -197,8 +197,8 @@ while (1 == 1) {
 				$name = array(!empty($farray['name']) ? $farray['name'] : 'n/a');
 				$clock_offset = array(!empty($farray['clock offset']) ? $farray['clock offset'] : 'n/a');
 				$class = array(!empty($farray['class']) ? $farray['class'] : 'n/a');
-				$inq_on = array(1);
-				$scan_on = array(1);
+				$inq_on = array();
+				$scan_on = array();
 				if (isset($farray['inq_on'])) {if (is_array($farray['inq_on'])) {$inq_on = array_keys($farray['inq_on']);}}
 				if (isset($farray['scan_on'])) {if (is_array($farray['scan_on'])) {$scan_on = array_keys($farray['scan_on']);}}
 				$seen_on = array_values(array_unique(array_merge($inq_on, $scan_on)));
