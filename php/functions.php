@@ -1,5 +1,15 @@
 <?php
 
+function shorten_time($in_time) {
+	// shortens time by 100 seconds
+	// 2342341231 becomes 23423412
+	return substr($in_time, 0, -2);
+}
+
+function lengthen_time($in_time) {
+	return ($in_time * 100);
+}
+
 function format_mac_info($mac_info) {
     $mac_info = str_replace("\n", " ", $mac_info);
     $mac_info = str_replace("'", "\'", $mac_info);
