@@ -201,7 +201,7 @@ while (1 == 1) {
 				$scan_on = array(1);
 				if (isset($farray['inq_on'])) {if (is_array($farray['inq_on'])) {$inq_on = array_keys($farray['inq_on']);}}
 				if (isset($farray['scan_on'])) {if (is_array($farray['scan_on'])) {$scan_on = array_keys($farray['scan_on']);}}
-				$seen_on = array_unique(array_merge($inq_on, $scan_on))
+				$seen_on = array_values(array_unique(array_merge($inq_on, $scan_on)));
 				if ($debug) {echo "mac = $mac \n";}
 				if ($debug) {echo "name \n"; var_dump($name);}
 				if ($debug) {echo "clock_offset \n"; var_dump($clock_offset);}
