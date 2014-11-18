@@ -1,4 +1,6 @@
 <?php
+include 'functions.php';
+
 // A script that uses hcitool to scan bluetooth signals
 // and load results into a dynamoDB
 
