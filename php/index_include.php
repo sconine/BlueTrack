@@ -53,7 +53,7 @@ if (!is_numeric($total_count_f)) {$total_count_f = 0;}
 $request = array(
     "TableName" => $tableName,
     //"ConditionalOperator" => 'OR',
-    "Limit" => 17
+    "Limit" => 25
 );
 
 $scan_filters = array();
