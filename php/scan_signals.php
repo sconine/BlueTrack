@@ -281,6 +281,8 @@ while (1 == 1) {
 				echo 'Caught exception: ',  $e->getMessage(), "\n";
 			}
 		}
+		echo 'done';
+		exit;
 	}
 
 	$lp_cnt++;
