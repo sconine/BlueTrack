@@ -181,6 +181,9 @@ foreach ($full_data as $mac => $collectors) {
 				'collector_id'      => array("S" => $collector_id)
 			),
 			"AttributeUpdates" => array(
+				"inq_on" => array(
+					"Action" => "DELETE"
+				),
 				"seen_on" => array(
 					"Value" => array("NS" => $to_store),
 					"Action" => "ADD"
