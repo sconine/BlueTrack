@@ -173,7 +173,7 @@ foreach ($full_data as $mac => $collectors) {
         /////////////////////////////////////////////////////////////
         // Code to modify time so it is shorter
         if (empty($v['seen'])) {
-            	$to_store = array_unique(array_map("shorten_time", $v['seen_old']));
+            	$to_store = array_values(array_unique(array_map("shorten_time", $v['seen_old'])));
 		$to_update = array(
 			'TableName' => 'collector_data',
 			'Key' => array(
