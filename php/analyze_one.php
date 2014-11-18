@@ -8,6 +8,7 @@
 <body>
 
 <?php
+include 'functions.php';
 
 // Load my configuration
 $debug = false;
