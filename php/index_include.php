@@ -53,7 +53,7 @@ if (!is_numeric($total_count_f)) {$total_count_f = 0;}
 $request = array(
     "TableName" => $tableName,
     //"ConditionalOperator" => 'OR',
-    "Limit" => 8
+    "Limit" => 11
 );
 
 $scan_filters = array();
@@ -194,7 +194,8 @@ foreach ($full_data as $mac => $collectors) {
 			),
 			'ReturnValues' => "NONE"
 		);
-		//var_dump($to_update);
+		var_dump($v['seen_old']);
+		var_dump($to_update);
 		$result = $client->updateItem($to_update);
         }
         /////////////////////////////////////////////////////////////
