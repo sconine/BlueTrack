@@ -150,7 +150,8 @@ do {
         $full_data[$mac][$collector_id]['name'] = isset($value['name']["SS"]) ? $value['name']["SS"] : array('n/a');
         $full_data[$mac][$collector_id]['class'] = isset($value['class']["SS"]) ? $value['class']["SS"] : array('n/a');
         $full_data[$mac][$collector_id]['mac_info'] = isset($value['mac_info']["S"]) ? $value['mac_info']["S"] : 'n/a';
-        $full_data[$mac][$collector_id]['seen'] = array_merge(isset($value['scan_on']["NS"]) ? $value['scan_on']["NS"] : array(), isset($value['scan_on']["NS"]) ? $value['scan_on']["NS"] : array());
+        $full_data[$mac][$collector_id]['seen_old'] = array_merge(isset($value['scan_on']["NS"]) ? $value['scan_on']["NS"] : array(), isset($value['scan_on']["NS"]) ? $value['scan_on']["NS"] : array());
+        $full_data[$mac][$collector_id]['seen'] = array_map("lengthen_time", isset($value['seen_on']["NS"]) ? $value['seen_on']["NS"] : array());
         $full_data[$mac][$collector_id]['type'] = isset($value['type']["S"]) ? $value['type']["S"] : 'X';
     }
 } while(isset($response['LastEvaluatedKey'])); 
@@ -169,6 +170,30 @@ foreach ($full_data as $mac => $collectors) {
     $full_seen = array();
 
     foreach ($collectors as $collector_id => $v) {
+        /////////////////////
+        // Code to modify time so it is shorter
+        if (empty($v['seen'])) {
+            $to_store = array_unique(array_map("shorten_time", $v['seen_old']));
+            var_dump($v['seen_old']);
+            var_dump($to_store);
+			$to_update = array(
+				'TableName' => 'collector_data',
+				'Key' => array(
+					'mac_id'      => array("S" => $mac),
+					'collector_id'      => array("S" => $collector_id)
+				),
+				"AttributeUpdates" => array(
+					"seen_on" => array(
+						"Value" => array("NS" => $to_store),
+						"Action" => "ADD"
+					)
+				),
+				'ReturnValues' => "NONE"
+			);
+			//$result = $client->updateItem($to_update);
+        }
+        
+        /////////////////////
         $collect[] = $collector_id;
         if ($v['type'] != 'X') {$type = $v['type'];}
         else {$has_x[] = $collector_id;}
