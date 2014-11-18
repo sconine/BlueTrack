@@ -53,7 +53,7 @@ if (!is_numeric($total_count_f)) {$total_count_f = 0;}
 $request = array(
     "TableName" => $tableName,
     //"ConditionalOperator" => 'OR',
-    "Limit" => 500
+    "Limit" => 5
 );
 
 $scan_filters = array();
@@ -154,7 +154,7 @@ do {
         $full_data[$mac][$collector_id]['seen'] = array_map("lengthen_time", isset($value['seen_on']["NS"]) ? $value['seen_on']["NS"] : array());
         $full_data[$mac][$collector_id]['type'] = isset($value['type']["S"]) ? $value['type']["S"] : 'X';
     }
-} while(isset($response['LastEvaluatedKey'])); 
+} while(isset($response['LastEvaluatedKey']) && 1 == 0); 
 
 //////////////////////////////////////////////////////////////////////
 // now go through and clean up the data  and aggregate by mac id
