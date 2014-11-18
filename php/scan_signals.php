@@ -157,7 +157,7 @@ while (1 == 1) {
 				$my_macs[$d[1]]['name'] = str_replace("\u2019", "'", $d[2]);
 				if (isset($my_macs[$d[1]]['scan_count'])) {$my_macs[$d[1]]['scan_count']++;} 
 				else {$my_macs[$d[1]]['scan_count'] = 1;}
-				$my_macs[$d[1]]['scan_on'][shorten_time(time())] = 'y';
+				$my_macs[$d[1]]['scan_on'][time()] = 'y';
 			} 
 		}
 	}
@@ -176,7 +176,7 @@ while (1 == 1) {
 				$my_macs[$d[1]]['class'] = str_replace("class: ", "", $d[3]);
 				if (isset($my_macs[$d[1]]['inq_count'])) {$my_macs[$d[1]]['inq_count']++;} 
 				else {$my_macs[$d[1]]['inq_count'] = 1;}
-				$my_macs[$d[1]]['inq_on'][shorten_time(time())] = 'y';
+				$my_macs[$d[1]]['inq_on'][time()] = 'y';
 			} 
 		}
 	}
@@ -203,7 +203,7 @@ while (1 == 1) {
 				$scan_on = array();
 				if (isset($farray['inq_on'])) {if (is_array($farray['inq_on'])) {$inq_on = array_keys($farray['inq_on']);}}
 				if (isset($farray['scan_on'])) {if (is_array($farray['scan_on'])) {$scan_on = array_keys($farray['scan_on']);}}
-				$seen_on = array_values(array_unique(array_merge($inq_on, $scan_on)));
+				$seen_on = array_values(array_unique(array_map("shorten_time", array_merge($inq_on, $scan_on))));
 				if ($debug) {echo "mac = $mac \n";}
 				if ($debug) {echo "name \n"; var_dump($name);}
 				if ($debug) {echo "clock_offset \n"; var_dump($clock_offset);}
@@ -281,8 +281,6 @@ while (1 == 1) {
 				echo 'Caught exception: ',  $e->getMessage(), "\n";
 			}
 		}
-		echo 'done';
-		exit;
 	}
 
 	$lp_cnt++;
