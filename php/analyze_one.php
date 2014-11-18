@@ -55,12 +55,8 @@ $c_name .= isset($result['Item']['type']["S"]) ? $result['Item']['type']["S"] : 
 
 // Manipulate the dates a bit
 $seen = array();
-if (is_array($result['Item']['scan_on']["NS"]) && is_array($result['Item']['inq_on']["NS"])) {
-    $seen = array_merge($result['Item']['scan_on']["NS"], $result['Item']['inq_on']["NS"]);
-} elseif (is_array($result['Item']['scan_on']["NS"])) {
-    $seen = $result['Item']['scan_on']["NS"];
-} elseif (is_array($result['Item']['inq_on']["NS"])) {
-    $seen = $result['Item']['scan_on']["NS"];
+if (is_array($result['Item']['seen_on']["NS"])) {
+    $seen = array_map("lengthen_time", $result['Item']['seen_on']["NS"]);
 }
 
 $min_day = 0;
