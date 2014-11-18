@@ -170,32 +170,27 @@ foreach ($full_data as $mac => $collectors) {
     $full_seen = array();
 
     foreach ($collectors as $collector_id => $v) {
-        /////////////////////
+        /////////////////////////////////////////////////////////////
         // Code to modify time so it is shorter
         if (empty($v['seen'])) {
-            $to_store = array_unique(array_map("shorten_time", $v['seen_old']));
-            var_dump($v['seen_old']);
-            var_dump($to_store);
-            var_dump(array_map("lengthen_time",$to_store));
-            
-			$to_update = array(
-				'TableName' => 'collector_data',
-				'Key' => array(
-					'mac_id'      => array("S" => $mac),
-					'collector_id'      => array("S" => $collector_id)
-				),
-				"AttributeUpdates" => array(
-					"seen_on" => array(
-						"Value" => array("NS" => $to_store),
-						"Action" => "ADD"
-					)
-				),
-				'ReturnValues' => "NONE"
-			);
-			//$result = $client->updateItem($to_update);
+            	$to_store = array_unique(array_map("shorten_time", $v['seen_old']));
+		$to_update = array(
+			'TableName' => 'collector_data',
+			'Key' => array(
+				'mac_id'      => array("S" => $mac),
+				'collector_id'      => array("S" => $collector_id)
+			),
+			"AttributeUpdates" => array(
+				"seen_on" => array(
+					"Value" => array("NS" => $to_store),
+					"Action" => "ADD"
+				)
+			),
+			'ReturnValues' => "NONE"
+		);
+		$result = $client->updateItem($to_update);
         }
-        
-        /////////////////////
+        /////////////////////////////////////////////////////////////
         $collect[] = $collector_id;
         if ($v['type'] != 'X') {$type = $v['type'];}
         else {$has_x[] = $collector_id;}
