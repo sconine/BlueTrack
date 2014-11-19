@@ -261,7 +261,7 @@ foreach ($unified_data as $mac => $value) {
     $first_seen[$mac] = 0;
 
     // Apply filters
-    if ($name_f != '') {if (strpos(strtolower($name[$mac]), strtolower($name_f)) === false) {continue;}}          
+    if ($name_f != '') {if (strpos(strtolower($names[$mac]), strtolower($name_f)) === false) {continue;}}          
     $pass_s = false;
 
     if ($start_day_f != '') {
