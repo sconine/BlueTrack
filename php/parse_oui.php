@@ -43,6 +43,7 @@ foreach ($f as $i => $line) {
       else {$data['address'][] = $thisline;}
     }
   }
+  $row++;
 }
 
 
