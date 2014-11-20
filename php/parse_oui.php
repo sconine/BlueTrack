@@ -39,7 +39,7 @@ foreach ($f as $i => $line) {
     unset($data);
     $data = array();
     $row = 0;
-  } else {
+  } elseif ($mac != '') {
     if (trim($line) != '') {
       $thisline = strtoupper(substr($line, 24));
     echo "thisline $thisline\n";
