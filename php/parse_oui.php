@@ -37,7 +37,7 @@ foreach ($f as $i => $line) {
     $data = array();
     $row = 0;
   } else {
-    if (!empty(trim($line))) {
+    if (trim($line) != '') {
       $thisline = strtoupper(substr($line, 24));
       if ($row == 0) {$data['company'] = $thisline;}
       else {$data['address'][] = $thisline;}
