@@ -48,9 +48,9 @@ foreach ($f as $i => $line) {
 
       if ($row == 0) {$data['company'] = $thisline;}
       else {$data['address'][] = $thisline;}
+      $row++;
     }
   }
-  $row++;
 }
 
 
