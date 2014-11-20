@@ -32,7 +32,7 @@ foreach ($f as $i => $line) {
       exit;
     }
     
-    $mac = preg_replace($pattern, $replacement, $string);
+    $mac = preg_replace($pattern, $replacement, $line);
     unset($data);
     $data = array();
     $row = 0;
