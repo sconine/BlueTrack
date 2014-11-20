@@ -314,10 +314,10 @@ foreach ($unified_data as $mac => $value) {
             else {$seen_hours[$mac][$hourofday] = 1;}
 
             // Last Seen
-            if ($last_seen[$mac] < $v || $last_seen[$mac] == 0) {$last_seen[$mac] = strtotime(date("Y-m-d", $v));}
+            if ($last_seen[$mac] < $v || $last_seen[$mac] == 0) {$last_seen[$mac] = strtotime(date("Y-m-d h:i a", $v));}
 
             // First Seen
-            if ($first_seen[$mac] > $v || $first_seen[$mac] == 0) {$first_seen[$mac] = strtotime(date("Y-m-d", $v));}
+            if ($first_seen[$mac] > $v || $first_seen[$mac] == 0) {$first_seen[$mac] = strtotime(date("Y-m-d h:i a", $v));}
         }  
     }
     
