@@ -17,7 +17,6 @@ foreach ($f as $i => $line) {
   if (preg_match($pattern, $line) != 0) {
     // Process the last one we just found
     if ($row != 0) {
-      var_dump($data);
       $addr_rows = count($data['address']) - 1;
       $all[$mac]['company'] = $data['company'];
       $all[$mac]['country'] = $data['address'][$addr_rows];
@@ -31,8 +30,9 @@ foreach ($f as $i => $line) {
         }
       }
       for ($i = 0; $i < $addr_rows ; $i++) {$all[$mac]['address'][] = $data['address'][$i];}
-      
-      if ($companies > 10) {var_dump($all); exit;}
+      var_dump($data);
+      var_dump($all[$mac]);  
+      if ($companies > 10) {exit;}
       
       $companies++;
     }
