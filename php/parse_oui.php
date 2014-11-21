@@ -58,13 +58,4 @@ foreach ($f as $i => $line) {
 
 
 
-
-line                            M/S 105-50C
-
- ine                            WEBSTER NY 14580
-
-
-
-
-
 ?>
