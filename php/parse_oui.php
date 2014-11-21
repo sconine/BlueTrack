@@ -3,7 +3,7 @@
 // mac address license file
 
 $f = file("/usr/www/html/BlueTrack/data/oui.txt");
-$pattern = '/^\s*([a-zA-Z0-9\-]{8})\s+.*$/';
+$pattern = '/^\s{0,2}([a-zA-Z0-9\-]{8})\s+.*$/';
 $statesp = '/^([A-Z ]+)\s+([A-Z]{2})\s+([0-9-]{5,10})$/';
 $replacement = '$1';
 $data = array();
@@ -22,6 +22,7 @@ foreach ($f as $i => $line) {
       $all[$mac]['country'] = $data['address'][$addr_rows];
       if ($all[$mac]['country'] == 'UNITED STATES') {
         $st = $data['address'][$addr_rows - 1];
+        echo "state: $st \n";
         if (preg_match($pattern, $st, $matches) != 0) {
           $all[$mac]['city'] = $matches[1];
           $all[$mac]['state'] = $matches[2];
