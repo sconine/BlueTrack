@@ -42,12 +42,14 @@ foreach ($f as $i => $line) {
   } elseif ($mac != '') {
     if (trim($line) != '') {
       $thisline = strtoupper(substr($line, 24));
+      $thisline2 = strtoupper(substr($line, 14));
     echo "thisline $thisline\n";
+    echo "thisline2 $thisline2\n";
     echo "line $line\n";
     echo "row $row\n";
 
-      if ($row == 0) {$data['company'] = $thisline;}
-      else {$data['address'][] = $thisline;}
+      if ($row == 0) {$data['company'] = strtoupper(substr($line, 24));}
+      else {$data['address'][] = strtoupper(substr($line, 14));}
       $row++;
     }
   }
@@ -57,6 +59,9 @@ foreach ($f as $i => $line) {
 
 
 
+line                            M/S 105-50C
+
+ ine                            WEBSTER NY 14580
 
 
 
