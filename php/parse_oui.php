@@ -30,7 +30,9 @@ foreach ($f as $i => $line) {
         }
       }
       for ($i = 0; $i < $addr_rows ; $i++) {$all[$mac]['address'][] = $data['address'][$i];}
+      echo "############################## \n";
       var_dump($data);
+      echo "############################## \n";
       var_dump($all[$mac]);  
       if ($companies > 10) {exit;}
       
