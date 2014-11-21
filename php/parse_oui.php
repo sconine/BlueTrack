@@ -23,7 +23,7 @@ foreach ($f as $i => $line) {
       if ($all[$mac]['country'] == 'UNITED STATES') {
         $st = $data['address'][$addr_rows - 1];
         echo "state: $st \n";
-        if (preg_match($pattern, $st, $matches) != 0) {
+        if (preg_match($statesp, $st, $matches) != 0) {
           $all[$mac]['city'] = $matches[1];
           $all[$mac]['state'] = $matches[2];
           $all[$mac]['zip'] = $matches[3];
