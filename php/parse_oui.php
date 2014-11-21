@@ -4,7 +4,7 @@
 
 $f = file("/usr/www/html/BlueTrack/data/oui.txt");
 $pattern = '/^\s{0,2}([a-zA-Z0-9\-]{8})\s+.*$/';
-$statesp = '/^([A-Z ]+)\s+([A-Z]{2})\s+([0-9-]{5,10})$/';
+$statesp = '/^([A-Z ]+)\s+([A-Z]{2})\s+([0-9-]{2,10})$/';
 $replacement = '$1';
 $data = array();
 $thisline = '';
@@ -29,6 +29,8 @@ foreach ($f as $i => $line) {
           $all[$mac]['zip'] = $matches[3];
           $addr_rows = $addr_rows - 1;
         }
+        echo "############################## \n";
+        var_dump($matches);
       }
       for ($i = 0; $i < $addr_rows ; $i++) {$all[$mac]['address'][] = $data['address'][$i];}
       echo "############################## \n";
