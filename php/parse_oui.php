@@ -41,15 +41,13 @@ foreach ($f as $i => $line) {
     $row = 0;
   } elseif ($mac != '') {
     if (trim($line) != '') {
-      $thisline = strtoupper(substr($line, 24));
-      $thisline2 = strtoupper(substr($line, 14));
+      $thisline = strtoupper(preg_replace('/^\s+([a-zA-Z0-9]{1}.*)$/', '$1', $line));
     echo "thisline $thisline\n";
-    echo "thisline2 $thisline2\n";
     echo "line $line\n";
     echo "row $row\n";
 
       if ($row == 0) {$data['company'] = strtoupper(substr($line, 24));}
-      else {$data['address'][] = strtoupper(substr($line, 14));}
+      else {$data['address'][] = $thisline;}
       $row++;
     }
   }
