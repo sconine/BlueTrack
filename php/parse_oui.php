@@ -9,6 +9,7 @@ $replacement = '$1';
 $data = array();
 $thisline = '';
 $row = 0;
+$companies = 0;
 $mac = '';
 $all = array();
 
@@ -16,7 +17,6 @@ foreach ($f as $i => $line) {
   if (preg_match($pattern, $line) != 0) {
     // Process the last one we just found
     if ($row != 0) {
-      var_dump($data);
       $addr_rows = count($data['address']) - 1;
       $all[$mac]['company'] = $data['company'];
       $all[$mac]['country'] = $data['address'][$addr_rows];
@@ -30,22 +30,19 @@ foreach ($f as $i => $line) {
         }
       }
       for ($i = 0; $i < $addr_rows ; $i++) {$all[$mac]['address'][] = $data['address'][$i];}
-      var_dump($all);
-      exit;
+      
+      if ($companies > 10) {var_dump($all); exit;}
+      
+      $companies++;
     }
     
     $mac = preg_replace($pattern, $replacement, $line);
-    echo "found $mac\n";
     unset($data);
     $data = array();
     $row = 0;
   } elseif ($mac != '') {
     if (trim($line) != '') {
       $thisline = strtoupper(preg_replace('/^\s+([a-zA-Z0-9]{1}.*)$/', '$1', $line));
-    echo "thisline $thisline\n";
-    echo "line $line\n";
-    echo "row $row\n";
-
       if ($row == 0) {$data['company'] = strtoupper(substr($line, 24));}
       else {$data['address'][] = $thisline;}
       $row++;
