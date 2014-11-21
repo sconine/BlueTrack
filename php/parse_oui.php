@@ -24,7 +24,7 @@ foreach ($f as $i => $line) {
         $st = $data['address'][$addr_rows - 1];
         echo "state: $st \n";
         if (preg_match($statesp, $st, $matches) == 1) {
-          echo "#########ggggggggggggggggggg############ \n";
+          echo "#########ggggggg  $matches[1] gggggggggggg############ \n";
           $all[$mac]['city'] = $matches[1];
           $all[$mac]['state'] = $matches[2];
           $all[$mac]['zip'] = $matches[3];
