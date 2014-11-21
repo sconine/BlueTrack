@@ -24,18 +24,15 @@ foreach ($f as $i => $line) {
         $st = $data['address'][$addr_rows - 1];
         echo "state: $st \n";
         if (preg_match($statesp, $st, $matches) == 1) {
-          echo "#########ggggggg  $matches[1] gggggggggggg############ \n";
           $all[$mac]['city'] = $matches[1];
           $all[$mac]['state'] = $matches[2];
           $all[$mac]['zip'] = $matches[3];
           $addr_rows = $addr_rows - 1;
         }
-        echo "############################## \n";
-        var_dump($matches);
       }
       for ($i = 0; $i < $addr_rows ; $i++) {$all[$mac]['address'][] = $data['address'][$i];}
-      echo "############################## \n";
-      var_dump($data);
+      //echo "############################## \n";
+      //var_dump($data);
       echo "############################## \n";
       var_dump($all[$mac]);  
       if ($companies > 10) {exit;}
