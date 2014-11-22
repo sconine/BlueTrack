@@ -1,6 +1,7 @@
 <?php
 // First run wget http://www.ieee.org/netstorage/standards/oui.txt to get the latest Bluetooth 
 // mac address license file
+$debug = false;
 $datastring = file_get_contents('/usr/www/html/BlueTrack/master_config.json');
 $config = json_decode($datastring, true);
 require '/usr/www/html/BlueTrack/vendor/autoload.php';
