@@ -73,7 +73,7 @@ function save_mac_data($mac, $sd, $client) {
 		),
 		"AttributeUpdates" => array(
 			"macs" => array(
-				"Value" => array("SS" => $mac),
+				"Value" => array("SS" => array($mac)),
 				"Action" => "ADD"
 			),
 			"country" => array(
