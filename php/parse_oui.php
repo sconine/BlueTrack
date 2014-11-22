@@ -61,13 +61,18 @@ foreach ($f as $i => $line) {
 }
 
 function save_mac_data($mac, $sd, $client) {
-  $sd['company'] = isset($sd['company']) ? $sd['company'] : 'n/a';
-  $sd['country'] = isset($sd['country']) ? $sd['country'] : 'n/a';
-  $sd['address'] = isset($sd['address']) ? implode("\n", $sd['address']) : 'n/a';
+  $sd['company'] = isset($sd['company']) ? $sd['company'] : '';
+  $sd['country'] = isset($sd['country']) ? $sd['country'] : '';
+  $sd['address'] = isset($sd['address']) ? implode("\n", $sd['address']) : '';
+  $sd['city'] = isset($sd['city']) ? $sd['city'] : '';
+  $sd['state'] = isset($sd['state']) ? $sd['state'] : '';
+  $sd['zip'] = isset($sd['zip']) ? $sd['zip'] : '';
+  if (empty($sd['company'])) {$sd['company'] = 'n/a';}
+  if (empty($sd['country'])) {$sd['country'] = 'n/a';}
   if (empty($sd['address'])) {$sd['address'] = 'n/a';}
-  $sd['city'] = isset($sd['city']) ? $sd['city'] : 'n/a';
-  $sd['state'] = isset($sd['state']) ? $sd['state'] : 'n/a';
-  $sd['zip'] = isset($sd['zip']) ? $sd['zip'] : 'n/a';
+  if (empty($sd['city'])) {$sd['city'] = 'n/a';}
+  if (empty($sd['state'])) {$sd['state'] = 'n/a';}
+  if (empty($sd['zip'])) {$sd['zip'] = 'n/a';}
   
 	$to_update = array(
 		'TableName' => 'mac_data',
