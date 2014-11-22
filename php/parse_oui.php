@@ -22,7 +22,6 @@ foreach ($f as $i => $line) {
       $all[$mac]['country'] = $data['address'][$addr_rows];
       if ($all[$mac]['country'] == 'UNITED STATES') {
         $st = $data['address'][$addr_rows - 1];
-        echo "state: $st \n";
         if (preg_match($statesp, $st, $matches) == 1) {
           $all[$mac]['city'] = $matches[1];
           $all[$mac]['state'] = $matches[2];
@@ -35,7 +34,7 @@ foreach ($f as $i => $line) {
       //var_dump($data);
       echo "############################## \n";
       var_dump($all[$mac]);  
-      if ($companies > 10) {exit;}
+      if ($companies > 50) {exit;}
       
       $companies++;
     }
