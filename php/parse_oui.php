@@ -78,23 +78,23 @@ function save_mac_data($mac, $sd, $client) {
 			),
 			"country" => array(
 				"Value" => array("S" => $sd['country']),
-				"Action" => "ADD"
+				"Action" => "PUT"
 			),
 			"address" => array(
 				"Value" => array("S" => $sd['address']),
-				"Action" => "ADD"
+				"Action" => "PUT"
 			),
 			"city" => array(
 				"Value" => array("S" => $sd['city']),
-				"Action" => "ADD"
+				"Action" => "PUT"
 			),
 			"state" => array(
 				"Value" => array("S" => $sd['state']),
-				"Action" => "ADD"
+				"Action" => "PUT"
 			),
 			"zip" => array(
 				"Value" => array("S" => $sd['zip']),
-				"Action" => "ADD"
+				"Action" => "PUT"
 			)
 		),
 		'ReturnValues' => "NONE"
