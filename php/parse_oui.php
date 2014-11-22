@@ -64,6 +64,7 @@ function save_mac_data($mac, $sd, $client) {
   $sd['company'] = isset($sd['company']) ? $sd['company'] : 'n/a';
   $sd['country'] = isset($sd['country']) ? $sd['country'] : 'n/a';
   $sd['address'] = isset($sd['address']) ? implode("\n", $sd['address']) : 'n/a';
+  if (empty($sd['address'])) {$sd['address'] = 'n/a';}
   $sd['city'] = isset($sd['city']) ? $sd['city'] : 'n/a';
   $sd['state'] = isset($sd['state']) ? $sd['state'] : 'n/a';
   $sd['zip'] = isset($sd['zip']) ? $sd['zip'] : 'n/a';
