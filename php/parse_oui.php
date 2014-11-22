@@ -1,7 +1,15 @@
 <?php
 // First run wget http://www.ieee.org/netstorage/standards/oui.txt to get the latest Bluetooth 
 // mac address license file
-
+$datastring = file_get_contents('/home/pi/BlueTrack/master_config.json');
+$config = json_decode($datastring, true);
+require '/home/pi/BlueTrack/vendor/autoload.php';
+use Aws\Common\Aws;
+$aws = Aws::factory('/home/pi/BlueTrack/php/amazon_config.json');
+$client = $aws->get('DynamoDb');
+// Make sure the dynamo tables exists assumes $client is defined
+include 'dynamo_tables.php';
+	
 $f = file("/usr/www/html/BlueTrack/data/oui.txt");
 $pattern = '/^\s{0,2}([a-zA-Z0-9\-]{8})\s+.*$/';
 $statesp = '/^([A-Z ]+)\s+([A-Z]{2})\s+([0-9-]{2,10})$/';
@@ -30,12 +38,8 @@ foreach ($f as $i => $line) {
         }
       }
       for ($i = 0; $i < $addr_rows ; $i++) {$all[$mac]['address'][] = $data['address'][$i];}
-      //echo "############################## \n";
-      //var_dump($data);
-      echo "############################## \n";
-      var_dump($all[$mac]);  
-      if ($companies > 50) {exit;}
-      
+      save_mac_data($mac, $all[$mac]);
+      echo "Saving: $mac - $all[$mac]['company'] \n";
       $companies++;
     }
     
@@ -53,7 +57,50 @@ foreach ($f as $i => $line) {
   }
 }
 
-
+function save_mac_data($mac, $sd) {
+  $sd['company'] = isset($sd['company']) ? $sd['company'] : '';
+  $sd['country'] = isset($sd['country']) ? $sd['country'] : '';
+  $sd['address'] = isset($sd['address']) ? implode("\n", $sd['address']) : '';
+  $sd['city'] = isset($sd['city']) ? $sd['city'] : '';
+  $sd['state'] = isset($sd['state']) ? $sd['state'] : '';
+  $sd['zip'] = isset($sd['zip']) ? $sd['zip'] : '';
+  
+	$to_update = array(
+		'TableName' => 'mac_data',
+		'Key' => array(
+			'company_name'      => array("S" => $sd['company'])
+		),
+		"AttributeUpdates" => array(
+			"macs" => array(
+				"Value" => array("SS" => $mac),
+				"Action" => "ADD"
+			),
+			"country" => array(
+				"Value" => array("S" => $sd['country']),
+				"Action" => "ADD"
+			),
+			"address" => array(
+				"Value" => array("S" => $sd['address']),
+				"Action" => "ADD"
+			),
+			"city" => array(
+				"Value" => array("S" => $sd['city']),
+				"Action" => "ADD"
+			),
+			"state" => array(
+				"Value" => array("S" => $sd['state']),
+				"Action" => "ADD"
+			),
+			"zip" => array(
+				"Value" => array("S" => $sd['zip']),
+				"Action" => "ADD"
+			)
+		),
+		'ReturnValues' => "NONE"
+	);
+	$result = $client->updateItem($to_update);
+  
+}
 
 
 ?>
