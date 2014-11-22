@@ -39,7 +39,7 @@ foreach ($f as $i => $line) {
         }
       }
       for ($i = 0; $i < $addr_rows ; $i++) {$all[$mac]['address'][] = $data['address'][$i];}
-      save_mac_data($mac, $all[$mac]);
+      save_mac_data($mac, $all[$mac], $client);
       echo "Saving: $mac - $all[$mac]['company'] \n";
       $companies++;
     }
@@ -58,7 +58,7 @@ foreach ($f as $i => $line) {
   }
 }
 
-function save_mac_data($mac, $sd) {
+function save_mac_data($mac, $sd, $client) {
   $sd['company'] = isset($sd['company']) ? $sd['company'] : '';
   $sd['country'] = isset($sd['country']) ? $sd['country'] : '';
   $sd['address'] = isset($sd['address']) ? implode("\n", $sd['address']) : '';
