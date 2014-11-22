@@ -1,11 +1,11 @@
 <?php
 // First run wget http://www.ieee.org/netstorage/standards/oui.txt to get the latest Bluetooth 
 // mac address license file
-$datastring = file_get_contents('/home/pi/BlueTrack/master_config.json');
+$datastring = file_get_contents('/usr/www/html/BlueTrack/master_config.json');
 $config = json_decode($datastring, true);
-require '/home/pi/BlueTrack/vendor/autoload.php';
+require '/usr/www/html/BlueTrack/vendor/autoload.php';
 use Aws\Common\Aws;
-$aws = Aws::factory('/home/pi/BlueTrack/php/amazon_config.json');
+$aws = Aws::factory('/usr/www/html/BlueTrack/php/amazon_config.json');
 $client = $aws->get('DynamoDb');
 // Make sure the dynamo tables exists assumes $client is defined
 include 'dynamo_tables.php';
