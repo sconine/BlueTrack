@@ -6,8 +6,10 @@
 // Load my configuration
 $debug = false;
 $datastring = file_get_contents('/usr/www/html/BlueTrack/master_config.json');
+$mac_data = file_get_contents('/usr/www/html/BlueTrack/data/mac_data.json');
 if ($debug) {echo "datastring = $datastring <br>\n";}
 $config = json_decode($datastring, true);
+$mac_info = json_decode($mac_data, true);
 if ($debug) {var_dump($config);}
 date_default_timezone_set('UTC');
 
