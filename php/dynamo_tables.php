@@ -6,11 +6,44 @@ $result = $client->listTables();
 $has_regions = false;
 $has_collectors = false;
 $has_collector_data = false;
+$has_mac_data = false;
 foreach ($result['TableNames'] as $table_name) {
     if ($table_name == "collector_regions") {$has_regions = true;}
     if ($table_name == "collectors") {$has_collectors = true;}
     if ($table_name == "collector_data") {$has_collector_data = true;}
+    if ($table_name == "mac_data") {$has_mac_data = true;}
     if ($debug) {echo "Found Table: " . $table_name . "<br>\n";}
+}
+
+
+// Create tables if non-existent
+if (!$has_mac_data ) {
+    // This can take a few mintes so increase timelimit
+    set_time_limit(600);
+    
+    if ($debug) {echo "Attempting to Create Table: mac_data<br>\n";}
+    $client->createTable(array(
+        'TableName' => 'mac_data',
+        'AttributeDefinitions' => array(
+            array(
+                'AttributeName' => 'company_name',
+                'AttributeType' => 'S'
+            )
+        ),
+        'KeySchema' => array(
+            array(
+                'AttributeName' => 'company_name',
+                'KeyType'       => 'HASH'
+            )
+        ),
+        'ProvisionedThroughput' => array(
+            'ReadCapacityUnits'  => 1,
+            'WriteCapacityUnits' => 1
+        )
+    ));
+    if ($debug) {echo "Created Table: mac_data<br>\n";}
+    $client->waitUntilTableExists(array('TableName' => 'mac_data'));
+    if ($debug) {echo "Table Exists!<br>\n";}
 }
 
 
@@ -43,7 +76,6 @@ if (!$has_regions ) {
     $client->waitUntilTableExists(array('TableName' => 'collector_regions'));
     if ($debug) {echo "Table Exists!<br>\n";}
 }
-
 
 // Create tables if non-existent
 if (!$has_collectors ) {
