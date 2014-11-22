@@ -26,19 +26,21 @@ foreach ($f as $i => $line) {
   if (preg_match($pattern, $line) != 0) {
     // Process the last one we just found
     if ($row != 0) {
-      $addr_rows = count($data['address']) - 1;
       $all[$mac]['company'] = $data['company'];
-      $all[$mac]['country'] = $data['address'][$addr_rows];
-      if ($all[$mac]['country'] == 'UNITED STATES') {
-        $st = $data['address'][$addr_rows - 1];
-        if (preg_match($statesp, $st, $matches) == 1) {
-          $all[$mac]['city'] = $matches[1];
-          $all[$mac]['state'] = $matches[2];
-          $all[$mac]['zip'] = $matches[3];
-          $addr_rows = $addr_rows - 1;
-        }
+      if (isset($data['address'])) {
+	      $addr_rows = count($data['address']) - 1;
+	      $all[$mac]['country'] = $data['address'][$addr_rows];
+	      if ($all[$mac]['country'] == 'UNITED STATES') {
+	        $st = $data['address'][$addr_rows - 1];
+	        if (preg_match($statesp, $st, $matches) == 1) {
+	          $all[$mac]['city'] = $matches[1];
+	          $all[$mac]['state'] = $matches[2];
+	          $all[$mac]['zip'] = $matches[3];
+	          $addr_rows = $addr_rows - 1;
+	        }
+	      }
+	      for ($i = 0; $i < $addr_rows ; $i++) {$all[$mac]['address'][] = $data['address'][$i];}
       }
-      for ($i = 0; $i < $addr_rows ; $i++) {$all[$mac]['address'][] = $data['address'][$i];}
       save_mac_data($mac, $all[$mac], $client);
       echo "Saving: $mac - " . $all[$mac]['company']  . "\n";
       $companies++;
