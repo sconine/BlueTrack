@@ -9,7 +9,7 @@ $datastring = file_get_contents('/usr/www/html/BlueTrack/master_config.json');
 $mac_data = file_get_contents('/usr/www/html/BlueTrack/data/mac_data.json');
 if ($debug) {echo "datastring = $datastring <br>\n";}
 $config = json_decode($datastring, true);
-$mac_info = json_decode($mac_data, true);
+$all_mac_info = json_decode($mac_data, true);
 if ($debug) {var_dump($config);}
 date_default_timezone_set('UTC');
 
@@ -213,6 +213,9 @@ foreach ($full_data as $mac => $collectors) {
         
         // For class we'll just store one that was not n/a
         foreach ($v['class'] as $i => $n) {if ($n != 'n/a') {$class = $n;}}
+        
+        // Use this to sync mac_info across everything if you want to clean it
+        update_mac_info($client, $mac, $collector_id, get_mac_info($mac, $all_mac_info));
     }
     
     // Pick unique names
@@ -226,7 +229,7 @@ foreach ($full_data as $mac => $collectors) {
     }
 
     // See if we need to sync mac_info across collectors
-    if ($mac_info == 'n/a') {$mac_info = get_mac_info($mac, $mac_info);}
+    if ($mac_info == 'n/a') {$mac_info = get_mac_info($mac, $all_mac_info);}
     if (count($has_na) > 0 && $mac_info != 'n/a') {
         foreach ($has_na as $i => $collector_id) {
             update_mac_info($client, $mac, $collector_id, $mac_info);
