@@ -198,7 +198,7 @@ foreach ($full_data as $mac => $collectors) {
 		);
 		//var_dump($v['seen_old']);
 		//var_dump($to_update);
-		$result = $client->updateItem($to_update);
+		//$result = $client->updateItem($to_update);
         }
         /////////////////////////////////////////////////////////////
         $collect[] = $collector_id;
