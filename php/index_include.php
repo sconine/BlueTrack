@@ -198,7 +198,7 @@ foreach ($full_data as $mac => $collectors) {
 		);
 		//var_dump($v['seen_old']);
 		//var_dump($to_update);
-		//$result = $client->updateItem($to_update);
+		$result = $client->updateItem($to_update);
         }
         /////////////////////////////////////////////////////////////
         $collect[] = $collector_id;
@@ -215,7 +215,7 @@ foreach ($full_data as $mac => $collectors) {
         foreach ($v['class'] as $i => $n) {if ($n != 'n/a') {$class = $n;}}
         
         // Use this to sync mac_info across everything if you want to clean it
-        update_mac_info($client, $mac, $collector_id, get_mac_info($mac, $all_mac_info));
+        //update_mac_info($client, $mac, $collector_id, get_mac_info($mac, $all_mac_info));
     }
     
     // Pick unique names
