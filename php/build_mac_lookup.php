@@ -39,7 +39,7 @@ do {
     		// Save when we see one with a real name
     		if (isset($dt[$mac])) {
     		    if ($dt[$mac]['company_name'] == 'n/a') {
-    		        echo "Saving new mac for " . $dt[$mac]['company_name'] . "\n";
+    		        echo "Saving new mac  ($mac) for " . $d['company_name'] . "\n";
     		        $dt[$mac] = $d;
     		    }
     		} else {
