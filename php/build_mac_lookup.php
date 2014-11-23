@@ -29,6 +29,7 @@ do {
     foreach ($response['Items'] as $key => $value) {
     	foreach ($value['macs']["SS"] as $i => $mac) {
     		unset($d);
+    		$mac = trim($mac);
     		$d['company_name'] = $value['company_name']["S"];
     		$d['country'] = $value['country']["S"];
     		$d['address'] = $value['address']["S"];
