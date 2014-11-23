@@ -117,11 +117,12 @@ function checkit($v) {
 }
 
 // these come from http://standards.ieee.org/develop/regauth/oui/public.html
-function get_mac_info($mac) {
+function get_mac_info($mac, &$mac_info) {
     $mac = str_replace(':', '-', $mac);
     $mac = substr($mac, 0, 8);
-    echo "retreiving mac = $mac <br>\n";
-    
+    if (isset($mac_info[$mac])) {return $mac_info[$mac]['company_name'] . ', ' . $mac_info[$mac]['country'];}
+    echo "retreiving mac = $mac ";
+
     $ch = curl_init();
     curl_setopt($ch, CURLOPT_URL,"http://standards.ieee.org/cgi-bin/ouisearch");
     curl_setopt($ch, CURLOPT_POST, 1);
@@ -152,8 +153,10 @@ function get_mac_info($mac) {
                 $cc = str_replace('-', '', $mac);
                 $data = str_replace($cc, '', $data);
                 $data = preg_replace("/[ \t]{2,}/", "", $data);
+                echo " as: $data <br>\n";
                 return $data;
     } 
+    echo " as: n/a <br>\n";
     return 'n/a';
 }
 
