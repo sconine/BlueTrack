@@ -35,7 +35,16 @@ do {
     		$d['city'] = $value['city']["S"];
     		$d['state'] = $value['state']["S"];
     		$d['zip'] = $value['zip']["S"];
-    		$dt[$mac] = $d;
+    		
+    		// Save when we see one with a real name
+    		if (isset($dt[$mac])) {
+    		    if ($dt[$mac]['company_name'] == 'n/a') {
+    		        echo "Saving new mac for " . $dt[$mac]['company_name'] . "\n";
+    		        $dt[$mac] = $d;
+    		    }
+    		} else {
+        		$dt[$mac] = $d;
+    		}
     	}
     	
     }
