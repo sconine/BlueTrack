@@ -29,6 +29,7 @@ $day_count_f = 0;
 $col_count_f = 0;
 $col_id_f = array();
 $company_name_select_list = array();
+$company_name_count_list = array();
 $company_name_f = array();
 $class_type_select_list = array();
 $class_type_f = array();
@@ -226,6 +227,9 @@ foreach ($full_data as $mac => $collectors) {
         foreach ($v['class'] as $i => $n) {if ($n != 'n/a') {$class = $n;}}
         
         // Use this to sync mac_info across everything if you want to clean it
+        // This is just company name and country, if we wanted to clean things up
+        // we could jsut always pull this from all_mac_info(), but it is kind of
+        // nice ot have it in the dynamodb table when you view it directly
         //update_mac_info($client, $mac, $collector_id, get_mac_info($mac, $all_mac_info));
     }
     
@@ -267,12 +271,19 @@ foreach ($full_data as $mac => $collectors) {
     
     // Build lists of all companies seen and all class_types seen
     if (!empty($all_mac_info[base_mac($mac)]['company_name'])) {
-    	$company_name_select_list[$all_mac_info[base_mac($mac)]['company_name']] = $all_mac_info[base_mac($mac)]['company_name'];
+    	if (isset($company_name_count_list[$all_mac_info[base_mac($mac)]['company_name']])) {
+    		$company_name_count_list[$all_mac_info[base_mac($mac)]['company_name']]++;
+    	} else {
+    		$company_name_count_list[$all_mac_info[base_mac($mac)]['company_name']] = 1;
+    	}
     }
     $class_type_select_list[$class_type] = $class_type;
 }
-krsort($class_type_select_list);
-krsort($company_name_select_list);
+
+// Put counts for each company of devices we've seen
+foreach ($company_name_count_list as $n => $c) {$class_type_select_list[$n] = $n . ' (' . $c . ')';}
+ksort($class_type_select_list);
+ksort($company_name_select_list);
 
 
 
