@@ -266,7 +266,9 @@ foreach ($full_data as $mac => $collectors) {
     $unified_data[$mac]['seen'] = $full_seen;
     
     // Build lists of all companies seen and all class_types seen
-    $company_name_select_list[$all_mac_info[base_mac($mac)]['company_name']] = $all_mac_info[base_mac($mac)]['company_name'];
+    if (!empty($all_mac_info[base_mac($mac)]['company_name'])) {
+    	$company_name_select_list[$all_mac_info[base_mac($mac)]['company_name']] = $all_mac_info[base_mac($mac)]['company_name'];
+    }
     $class_type_select_list[$class_type] = $class_type;
 }
 
