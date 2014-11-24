@@ -106,7 +106,9 @@ function create_select($name, $arr, $def, $multi, $size) {
 	foreach ($arr as $i => $v) {
 		$to_ret .= '<option value="' . htmlentities($i) . '"';
 		if (in_array($v, $def)) {$to_ret .= ' selected ';}
-		$to_ret .= ">" . htmlentities($v) . "</option>\n";
+		$disp = htmlentities($v);
+		if (strlen($disp) > 32) {$disp = substr($disp, 0, 29) . '...';}
+		$to_ret .= ">" . htmlentities($disp) . "</option>\n";
 	}
 	$to_ret .= "</select>\n";
 	return $to_ret;
