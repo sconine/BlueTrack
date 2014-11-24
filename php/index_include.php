@@ -271,6 +271,10 @@ foreach ($full_data as $mac => $collectors) {
     }
     $class_type_select_list[$class_type] = $class_type;
 }
+krsort($class_type_select_list);
+krsort($company_name_select_list);
+
+
 
 //////////////////////////////////////////////////////////////////////
 // now for through and filter and analyze each device seen
