@@ -62,7 +62,7 @@ include 'index_include.php';
 							Name Contains:&#160;&#160;&#160;&#160;&#160; <input type="text" name="name" size="18" value="<?php echo htmlentities($name_f);?>"><br>
 							Mac Info Contains: <input type="text" name="man_info" size="18" value="<?php echo htmlentities($man_info_f);?>"><br>
 							Count Greater Than: <input type="text" name="total_count" size="8" value="<?php echo htmlentities($total_count_f);?>"><br>
-							Company:;&#160;<?php echo create_select('company_name', $company_name_select_list, $company_name_f, false, 4); ?><br>
+							Company:&#160;<?php echo create_select('company_name', $company_name_select_list, $company_name_f, false, 4); ?><br>
 							Class Type: &#160;&#160;&#160;&#160;&#160;&#160;<?php echo create_select('class_type', $class_type_select_list, $class_type_f, false, 4); ?><br>
 							From Collector: &#160;&#160;&#160;&#160;&#160;&#160;<?php echo create_select('col_id', $col_select_list, $col_id_f, false, 4); ?><br>
 						</div>
