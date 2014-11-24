@@ -285,7 +285,7 @@ ksort($company_name_count_list);
 arsort($company_name_count_list);
 foreach ($company_name_count_list as $n => $c) {
 	if (strlen($n) > 24) {$n = substr($n, 0, 21) . '...';}
-	$n = str_pad($n, 24);
+	$n = str_replace(' ', '&#160;', str_pad($n, 24));
 	$company_name_select_list[$n] = $n . ' (' . $c . ')';
 }
 ksort($class_type_select_list);
