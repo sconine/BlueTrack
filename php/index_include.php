@@ -28,6 +28,10 @@ $multi_day_f = false;
 $day_count_f = 0;
 $col_count_f = 0;
 $col_id_f = array();
+$company_name_select_list = array();
+$company_name_f = array();
+$class_type_select_list = array();
+$class_type_f = array();
 $man_info_f = '';
 $name_f = '';
 $total_count_f = '';
@@ -41,6 +45,8 @@ if(!empty($_REQUEST['name'])) {$name_f = $_REQUEST['name'];}
 if(!empty($_REQUEST['total_count'])) {$total_count_f = $_REQUEST['total_count'];}
 if(!empty($_REQUEST['day_count'])) {$day_count_f = $_REQUEST['day_count'][0];}
 if(!empty($_REQUEST['col_count'])) {$col_count_f = $_REQUEST['col_count'][0];}
+if(!empty($_REQUEST['company_name'])) {$company_name_f = $_REQUEST['company_name'][0];}
+if(!empty($_REQUEST['class_type'])) {$class_type_f = $_REQUEST['class_type'][0];}
 if(!empty($_REQUEST['start_day'])) {$start_day_f = $_REQUEST['start_day'];}
 if(!empty($_REQUEST['end_day'])) {$end_day_f = $_REQUEST['end_day'];}
 
@@ -155,6 +161,7 @@ do {
         $full_data[$mac][$collector_id]['seen_old'] = array_merge(isset($value['scan_on']["NS"]) ? $value['scan_on']["NS"] : array(), isset($value['inq_on']["NS"]) ? $value['inq_on']["NS"] : array());
         $full_data[$mac][$collector_id]['seen'] = array_map("lengthen_time", isset($value['seen_on']["NS"]) ? $value['seen_on']["NS"] : array());
         $full_data[$mac][$collector_id]['type'] = isset($value['type']["S"]) ? $value['type']["S"] : 'X';
+        $full_data[$mac][$collector_id]['class_type'] = isset($value['class_type']["S"]) ? $value['class_type']["S"] : 'n/a';
     }
 } while(isset($response['LastEvaluatedKey'])); 
 
@@ -165,16 +172,18 @@ foreach ($full_data as $mac => $collectors) {
     $type = 'X';
     $class = 'n/a';
     $mac_info = 'n/a';
+    $class_type = 'n/a';
     $d_name = array();
     $collect = array();
     $has_x = array();
     $has_na = array();
+    $has_class_na = array();
     $full_seen = array();
 
     foreach ($collectors as $collector_id => $v) {
         /////////////////////////////////////////////////////////////
         // Code to modify time so it is shorter this can be commented out once all data is converted
-        if (empty($v['seen'])) {
+        /*if (empty($v['seen'])) {
             	$to_store = array_values(array_filter(array_unique(array_map("shorten_time", $v['seen_old'])), "remove_short_time"));
 		$to_update = array(
 			'TableName' => 'collector_data',
@@ -199,13 +208,15 @@ foreach ($full_data as $mac => $collectors) {
 		//var_dump($v['seen_old']);
 		//var_dump($to_update);
 		$result = $client->updateItem($to_update);
-        }
+        }*/
         /////////////////////////////////////////////////////////////
         $collect[] = $collector_id;
         if ($v['type'] != 'X') {$type = $v['type'];}
         else {$has_x[] = $collector_id;}
         if ($v['mac_info'] != 'n/a') {$mac_info = $v['mac_info'];}
         else {$has_na[] = $collector_id;}
+        if ($v['class_type'] != 'n/a') {$class_type = $v['class_type'];}
+        else {$has_class_na[] = $collector_id;}
         $full_seen = array_merge($full_seen, $v['seen']);
         
         // Save all names
@@ -236,18 +247,27 @@ foreach ($full_data as $mac => $collectors) {
         }
     }
 
-    // get deailed class info
-    $class_detail = '';
-    if ($class != 'n/a') {get_bt_class_info($class, $class_detail);}
-    if ($class_detail == '') {$class_detail = 'Not Sent';}
+    // See if we need to sync class_type across collectors
+    if ($class_type == 'n/a' && $class != 'n/a') {get_bt_class_info($class, $class_type);}
+    if (count($has_class_na) > 0 && $class_type != 'n/a') {
+        foreach ($has_class_na as $i => $collector_id) {
+            update_major_class_type(&$client, $mac, $collector_id, $class_type);
+        }
+    }
 
+    // get deailed class info
+    if ($class_type == '') {$class_type = 'Not Sent';}
     $unified_data[$mac]['name'] = implode(', ', $d_name);
     $unified_data[$mac]['class'] = $class;
-    $unified_data[$mac]['class_detail'] = $class_detail;
+    $unified_data[$mac]['class_type'] = $class_type;
     $unified_data[$mac]['mac_info'] = format_mac_info($mac_info);
     $unified_data[$mac]['collectors'] = $collect;
     $unified_data[$mac]['type'] = $type;
     $unified_data[$mac]['seen'] = $full_seen;
+    
+    // Build lists of all companies seen and all class_types seen
+    $company_name_select_list[$mac_info[$mac]['company_name']] = $mac_info[$mac]['company_name'];
+    $class_type_select_list[$class_type] = $class_type;
 }
 
 //////////////////////////////////////////////////////////////////////
@@ -284,8 +304,8 @@ foreach ($unified_data as $mac => $value) {
     $count++;
 
     // Keep track of counts by class
-    if (isset($by_class[$value['class_detail']][$mac])) {$by_class[$value['class_detail']][$mac]++;}
-    else {$by_class[$value['class_detail']][$mac] = 1;}
+    if (isset($by_class[$value['class_type']][$mac])) {$by_class[$value['class_type']][$mac]++;}
+    else {$by_class[$value['class_type']][$mac] = 1;}
     
     // Manipulate the dates a bit
     $seen_count = 0;
