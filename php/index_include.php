@@ -284,7 +284,7 @@ foreach ($full_data as $mac => $collectors) {
 ksort($company_name_count_list);
 arsort($company_name_count_list);
 foreach ($company_name_count_list as $n => $c) {
-	if (strlen($n) > 28) {$n = substr($n, 0, 25) . '...';}
+	if (strlen($n) > 24) {$n = substr($n, 0, 21) . '...';}
 	$company_name_select_list[$n] = $n . ' (' . $c . ')';
 }
 ksort($class_type_select_list);
