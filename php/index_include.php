@@ -281,9 +281,10 @@ foreach ($full_data as $mac => $collectors) {
 }
 
 // Put counts for each company of devices we've seen
+ksort($company_name_count_list);
+asort($company_name_count_list);
 foreach ($company_name_count_list as $n => $c) {$company_name_select_list[$n] = $n . ' (' . $c . ')';}
 ksort($class_type_select_list);
-ksort($company_name_select_list);
 
 
 
