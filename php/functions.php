@@ -72,6 +72,24 @@ function update_type(&$client, $mac, $collector_id, $type) {
 	return true;
 }
 
+function update_major_class_type(&$client, $mac, $collector_id, $class_type) {
+	$result = $client->updateItem(array(
+		'TableName' => 'collector_data',
+		'Key' => array(
+			'mac_id'      => array("S" => $mac),
+			'collector_id'      => array("S" => $collector_id)
+		),
+		"AttributeUpdates" => array(
+			"class_type" => array(
+				"Value" => array("S" => $class_type),
+				"Action" => "PUT"
+			)
+		),
+		'ReturnValues' => "NONE"
+	));
+	return true;
+}
+
 
 function create_select($name, $arr, $def, $multi, $size) {
 	$to_ret = '<select name="' . htmlentities($name) . '[]"' ;
