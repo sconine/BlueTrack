@@ -251,7 +251,7 @@ foreach ($full_data as $mac => $collectors) {
     if ($class_type == 'n/a' && $class != 'n/a') {get_bt_class_info($class, $class_type);}
     if (count($has_class_na) > 0 && $class_type != 'n/a') {
         foreach ($has_class_na as $i => $collector_id) {
-            update_major_class_type(&$client, $mac, $collector_id, $class_type);
+            update_major_class_type($client, $mac, $collector_id, $class_type);
         }
     }
 
@@ -266,7 +266,7 @@ foreach ($full_data as $mac => $collectors) {
     $unified_data[$mac]['seen'] = $full_seen;
     
     // Build lists of all companies seen and all class_types seen
-    $company_name_select_list[$mac_info[$mac]['company_name']] = $mac_info[$mac]['company_name'];
+    $company_name_select_list[$all_mac_info[$mac]['company_name']] = $all_mac_info[$mac]['company_name'];
     $class_type_select_list[$class_type] = $class_type;
 }
 
