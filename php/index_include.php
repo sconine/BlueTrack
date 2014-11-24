@@ -249,7 +249,7 @@ foreach ($full_data as $mac => $collectors) {
 
     // See if we need to sync class_type across collectors
     if ($class_type == 'n/a' && $class != 'n/a') {get_bt_class_info($class, $class_type);}
-    if (count($has_class_na) > 0 && $class_type != 'n/a') {
+    if (count($has_class_na) > 0 && $class_type != 'n/a' && $class_type != '') {
         foreach ($has_class_na as $i => $collector_id) {
             update_major_class_type($client, $mac, $collector_id, $class_type);
         }
