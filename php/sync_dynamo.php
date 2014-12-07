@@ -7,24 +7,26 @@ if (!isset($_SERVER['HTTP_HOST'])) {
 } else {
     if (isset($_REQUEST['debug'])) {$debug = true;}
 }
+
 // Load my configuration
-$datastring = file_get_contents('/usr/www/html/photo-display/master_config.json');
+$datastring = file_get_contents('/usr/www/html/BlueTrack/master_config.json');
 $config = json_decode($datastring, true);
 if ($debug) {echo "datastring: $datastring\n";}
 if ($debug) {var_dump($config);}
 //Use MY SQL - this include assumes that $config has been loaded 
-include '/usr/www/html/photo-display/php/my_sql.php';
+include '/usr/www/html/BlueTrack/php/my_sql.php';
 // You'll need to edit this with your config
-require '/usr/www/html/photo-display/vendor/autoload.php';
+require '/usr/www/html/BlueTrack/vendor/autoload.php';
 use Aws\Common\Aws;
-$aws = Aws::factory('/usr/www/html/photo-display/php/amazon_config.json');
-// Build the media_files table schema on the fly
+$aws = Aws::factory('/usr/www/html/BlueTrack/php/amazon_config.json');
+
+// Build the devices table schema on the fly
 // id = increment column for joins if need be in the future
 // rnd_id = random ID used for sorting
 // shown_int = the state of being shown this is 0 = now shown, 1 = shown, 2 = sent but not confirmed
-$sql = 'CREATE TABLE IF NOT EXISTS media_files ('
+$sql = 'CREATE TABLE IF NOT EXISTS devices ('
 . ' id INTEGER AUTO_INCREMENT UNIQUE KEY, '
-. ' media_path varchar(767) NOT NULL, '
+. ' mac_id varchar(32) NOT NULL, '
 . ' media_type varchar(32) NOT NULL, '
 . ' media_size BIGINT NOT NULL, '
 . ' rnd_id int NULL, '
