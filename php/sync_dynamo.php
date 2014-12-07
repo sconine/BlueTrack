@@ -38,13 +38,11 @@ $sql = 'CREATE TABLE IF NOT EXISTS device_scans ('
 . ' id INTEGER AUTO_INCREMENT UNIQUE KEY, '
 . ' mac_id varchar(32) NOT NULL, '
 . ' device_id varchar(32) NOT NULL, '
-. ' seen varchar(32) NOT NULL, '
-. ' name varchar(512) NOT NULL, '
-. ' type varchar(32) NOT NULL, '
-. ' PRIMARY KEY (mac_id), '
-. ' INDEX(id), INDEX(mac_root));';
+. ' seen int NOT NULL, '
+. ' PRIMARY KEY (mac_id, device_id, seen), '
+. ' INDEX(seen), INDEX(device_id));';
 if (!$mysqli->query($sql)) {die("Table creation failed: (" . $mysqli->errno . ") " . $mysqli->error);}
-if ($debug) {echo 'devices table Exists'. "\n";}
+if ($debug) {echo 'device_scans table Exists'. "\n";}
 
 
 
