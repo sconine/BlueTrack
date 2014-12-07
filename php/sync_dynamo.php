@@ -21,35 +21,34 @@ use Aws\Common\Aws;
 $aws = Aws::factory('/usr/www/html/BlueTrack/php/amazon_config.json');
 
 // Build the devices table schema on the fly
-// id = increment column for joins if need be in the future
-// rnd_id = random ID used for sorting
-// shown_int = the state of being shown this is 0 = now shown, 1 = shown, 2 = sent but not confirmed
 $sql = 'CREATE TABLE IF NOT EXISTS devices ('
 . ' id INTEGER AUTO_INCREMENT UNIQUE KEY, '
 . ' mac_id varchar(32) NOT NULL, '
-. ' media_type varchar(32) NOT NULL, '
-. ' media_size BIGINT NOT NULL, '
-. ' rnd_id int NULL, '
-. ' last_sync BIGINT NOT NULL, '
-. ' shown int NOT NULL, '
-. ' PRIMARY KEY (media_path), '
-. ' INDEX(id), INDEX(shown));';
+. ' mac_root varchar(32) NOT NULL, '
+. ' class varchar(32) NOT NULL, '
+. ' name varchar(512) NOT NULL, '
+. ' type varchar(32) NOT NULL, '
+. ' PRIMARY KEY (mac_id), '
+. ' INDEX(id), INDEX(mac_root));';
 if (!$mysqli->query($sql)) {die("Table creation failed: (" . $mysqli->errno . ") " . $mysqli->error);}
-if ($debug) {echo 'media_files table Exists'. "\n";}
-// First see if we've shown everything, if so we'll re-randomize
-$sql = 'SELECT id FROM media_files WHERE shown=0 LIMIT 50;';
-$shown_all = query_to_array($sql, $mysqli);
-if (count($shown_all) < 50) {
-	// We've pretty much shown everything to re-randomize and reset (expecting 100,000 files typically)
-	$sql = 'UPDATE media_files '
-		. ' SET rnd_id=(FLOOR( 1 + RAND( ) *6000000 )), shown=0;';
-	if ($debug) {echo "Running: $sql\n";}
-	if (!$mysqli->query($sql)) {die("Insert Failed: (" . $mysqli->errno . ") " . $mysqli->error);}
-}
-// Always reset things that were sent but not congfirmed
-$sql = 'UPDATE media_files SET shown=0 WHERE shown=2;';
-if ($debug) {echo "Running: $sql\n";}
-if (!$mysqli->query($sql)) {die("Insert Failed: (" . $mysqli->errno . ") " . $mysqli->error);}
+if ($debug) {echo 'devices table Exists'. "\n";}
+
+// Build the devices table schema on the fly
+$sql = 'CREATE TABLE IF NOT EXISTS device_scans ('
+. ' id INTEGER AUTO_INCREMENT UNIQUE KEY, '
+. ' mac_id varchar(32) NOT NULL, '
+. ' device_id varchar(32) NOT NULL, '
+. ' seen varchar(32) NOT NULL, '
+. ' name varchar(512) NOT NULL, '
+. ' type varchar(32) NOT NULL, '
+. ' PRIMARY KEY (mac_id), '
+. ' INDEX(id), INDEX(mac_root));';
+if (!$mysqli->query($sql)) {die("Table creation failed: (" . $mysqli->errno . ") " . $mysqli->error);}
+if ($debug) {echo 'devices table Exists'. "\n";}
+
+
+
+
 // connect to S3 and get a list of files we are storeing
 // Unknown: What is the pratical upper limit to # of files, hoping it is like 1M
 $s3_client = $aws->get('s3');
