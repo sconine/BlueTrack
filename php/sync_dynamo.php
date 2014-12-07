@@ -44,6 +44,27 @@ $sql = 'CREATE TABLE IF NOT EXISTS device_scans ('
 if (!$mysqli->query($sql)) {die("Table creation failed: (" . $mysqli->errno . ") " . $mysqli->error);}
 if ($debug) {echo 'device_scans table Exists'. "\n";}
 
+// Build the devices table schema on the fly
+$sql = 'CREATE TABLE IF NOT EXISTS device_scans ('
+. ' id INTEGER AUTO_INCREMENT UNIQUE KEY, '
+. ' mac_id varchar(32) NOT NULL, '
+. ' device_id varchar(32) NOT NULL, '
+. ' seen int NOT NULL, '
+. ' PRIMARY KEY (mac_id, device_id, seen), '
+. ' INDEX(seen), INDEX(device_id));';
+if (!$mysqli->query($sql)) {die("Table creation failed: (" . $mysqli->errno . ") " . $mysqli->error);}
+if ($debug) {echo 'device_scans table Exists'. "\n";}
+
+// Build the devices table schema on the fly
+$sql = 'CREATE TABLE IF NOT EXISTS class_description ('
+. ' id INTEGER AUTO_INCREMENT UNIQUE KEY, '
+. ' class varchar(32) NOT NULL, '
+. ' short varchar(64) NOT NULL, '
+. ' long varchar(512) NOT NULL, '
+. ' PRIMARY KEY (class);';
+if (!$mysqli->query($sql)) {die("Table creation failed: (" . $mysqli->errno . ") " . $mysqli->error);}
+if ($debug) {echo 'device_scans table Exists'. "\n";}
+
 
 
 
