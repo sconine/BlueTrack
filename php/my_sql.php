@@ -56,7 +56,7 @@ $sql = 'CREATE TABLE IF NOT EXISTS manufacturers ('
 . ' country varchar(128) NULL, '
 . ' state varchar(64) NULL, '
 . ' zip varchar(32) NULL, '
-. ' PRIMARY KEY (manu_id));';
+. ' PRIMARY KEY (company_name));';
 if (!$mysqli->query($sql)) {die("Table creation failed: (" . $mysqli->errno . ") " . $mysqli->error);}
 if ($debug) {echo 'manufacturers table Exists'. "\n";}
 
