@@ -180,7 +180,7 @@ function get_mac_info($mac, &$mac_info) {
 
 // Function to turn a bluetooth class code into an english description
 // not sure this is perfectly accurate, and up to date but works for my purposes
-function get_bt_class_info($hex, &$mdcs) {
+function get_bt_class_info($hex, &$mdcs, &$mdc = '', &$msc = array(), &$min_sc = array()) {
 	$mdc = ''; 
 	$mdcs = ''; 
 	$mds_c = 0;
