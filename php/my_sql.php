@@ -30,7 +30,7 @@ $sql = 'CREATE TABLE IF NOT EXISTS class_description ('
 . ' short_major_type varchar(64) NOT NULL, '
 . ' major_type varchar(128) NOT NULL, '
 . ' service_class varchar(1024) NOT NULL, '
-. ' device_type varchar(2014) NOT NULL, '
+. ' device_type varchar(1014) NOT NULL, '
 . ' PRIMARY KEY (class);';
 if (!$mysqli->query($sql)) {die("Table creation failed: (" . $mysqli->errno . ") " . $mysqli->error);}
 if ($debug) {echo 'class_description table Exists'. "\n";}
