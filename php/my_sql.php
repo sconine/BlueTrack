@@ -27,11 +27,15 @@ if ($debug) {echo 'devices table Exists'. "\n";}
 // stores the description of what a class ID stands for in english
 $sql = 'CREATE TABLE IF NOT EXISTS class_description ('
 . ' class varchar(32) NOT NULL, '
-. ' short varchar(64) NOT NULL, '
-. ' long varchar(512) NOT NULL, '
+. ' short_major_type varchar(64) NOT NULL, '
+. ' major_type varchar(128) NOT NULL, '
+. ' service_class varchar(1024) NOT NULL, '
+. ' device_type varchar(2014) NOT NULL, '
 . ' PRIMARY KEY (class);';
 if (!$mysqli->query($sql)) {die("Table creation failed: (" . $mysqli->errno . ") " . $mysqli->error);}
 if ($debug) {echo 'class_description table Exists'. "\n";}
+
+mdcs, $mdc, $msc, $min_sc
 
 // Build the device_scans table schema on the fly
 $sql = 'CREATE TABLE IF NOT EXISTS device_scans ('
