@@ -13,7 +13,6 @@ if ($debug) {
 // We'll make sure all the tables we are expecting exist
 // Build the devices table schema on the fly
 $sql = 'CREATE TABLE IF NOT EXISTS devices ('
-. ' id INTEGER AUTO_INCREMENT UNIQUE KEY, '
 . ' mac_id varchar(32) NOT NULL, '
 . ' mac_root varchar(32) NOT NULL, '
 . ' class varchar(32) NOT NULL, '
@@ -27,7 +26,6 @@ if ($debug) {echo 'devices table Exists'. "\n";}
 // Build the class_description table schema on the fly
 // stores the description of what a class ID stands for in english
 $sql = 'CREATE TABLE IF NOT EXISTS class_description ('
-. ' id INTEGER AUTO_INCREMENT UNIQUE KEY, '
 . ' class varchar(32) NOT NULL, '
 . ' short varchar(64) NOT NULL, '
 . ' long varchar(512) NOT NULL, '
@@ -37,7 +35,6 @@ if ($debug) {echo 'class_description table Exists'. "\n";}
 
 // Build the device_scans table schema on the fly
 $sql = 'CREATE TABLE IF NOT EXISTS device_scans ('
-. ' id INTEGER AUTO_INCREMENT UNIQUE KEY, '
 . ' mac_id varchar(32) NOT NULL, '
 . ' device_id varchar(32) NOT NULL, '
 . ' seen int NOT NULL, '
