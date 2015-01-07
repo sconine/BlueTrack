@@ -1,12 +1,7 @@
 <?php
-// Get the media we have stored on S3 and load it into a dynamoDB
+// Get the media we have stored in dynamoDB and load into a MySQL structure
 // don't want to print debug through web server in general
-$debug = false; 
-if (!isset($_SERVER['HTTP_HOST'])) {
-    $debug = true; 
-} else {
-    if (isset($_REQUEST['debug'])) {$debug = true;}
-}
+$debug = true; 
 
 // Load my configuration
 $datastring = file_get_contents('/usr/www/html/BlueTrack/master_config.json');
@@ -74,12 +69,8 @@ do {
     }
 } while(isset($response['LastEvaluatedKey'])); 
 
-// This comes from mac_data table
-        //$full_data[$mac][$collector_id]['mac_info'] = isset($value['mac_info']["S"]) ? $value['mac_info']["S"] : 'n/a';
-
 // Setup to run through a table 100 pages at a time
 $request = array("TableName" => "mac_data","Limit" => 100);
-
 do {
     // Add the ExclusiveStartKey if we got one back in the previous response
     if(isset($response) && isset($response['LastEvaluatedKey'])) {
@@ -100,11 +91,12 @@ do {
 
         if (count($manu_id) == 0) {
             $msql = 'INSERT INTO manufacturers (company_name, address, city, country, state, zip)';
-            $msql .= ' VALUES (' . sqlq($mac,0) . ',' .
-                    sqlq(base_mac($mac),0) . ',' .
-                    sqlq($class,0) . ',' .
-                    sqlq($name,0) . ',' .
-                    sqlq($type,0) . '); ';
+            $msql .= ' VALUES (' . sqlq($company_name,0) . ',' .
+                    sqlq($address,0) . ',' .
+                    sqlq($city,0) . ',' .
+                    sqlq($country,0) . ',' .
+                    sqlq($state,0) . ',' .
+                    sqlq($zip,0) . '); ';
         	if ($debug) {echo "Running: $sql\n";}
         	if (!$mysqli->query($msql)) {die("Insert Failed: (" . $mysqli->errno . ") " . $mysqli->error);}
         	
@@ -114,8 +106,8 @@ do {
         
         // Store Macs this manu is assocaited with
         foreach ($macs as $i => $mac_root) {    
-            $sql . = 'INSERT INTO mac_roots (manu_id, mac_root)';
-            $sql .= ' VALUES (' . sqlq($manu_id,1) . ',' . sqlq($mac_root,0) . ');';
+            $sql . = 'INSERT INTO mac_roots (manu_id, mac_root)' .
+        	     ' VALUES (' . sqlq($manu_id,1) . ',' . sqlq($mac_root,0) . '); ';
         }
     }
 
@@ -124,6 +116,7 @@ do {
 	if (!$mysqli->query($sql)) {die("Insert Failed: (" . $mysqli->errno . ") " . $mysqli->error);}
 } while(isset($response['LastEvaluatedKey'])); 
 
+echo 'Done!';
 
 function get_manu_id($company_name, &$mysqli) {
     // See if we've created this company before
