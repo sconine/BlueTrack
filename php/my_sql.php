@@ -36,7 +36,7 @@ if ($debug) {echo 'class_description table Exists'. "\n";}
 // Build the device_scans table schema on the fly
 $sql = 'CREATE TABLE IF NOT EXISTS device_scans ('
 . ' mac_id varchar(32) NOT NULL, '
-. ' device_id varchar(32) NOT NULL, '
+. ' collector_id varchar(32) NOT NULL, '
 . ' seen int NOT NULL, '
 . ' PRIMARY KEY (mac_id, device_id, seen), '
 . ' INDEX(seen), INDEX(device_id));';
