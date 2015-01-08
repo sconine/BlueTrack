@@ -135,7 +135,7 @@ function get_manu_id($company_name, &$mysqli) {
 	if (count($manu_id) == 0) {
 	    return 0;
 	} else {
-	    return $manu_id[0];
+	    return $manu_id[0]['manu_id'];
 	}
 }
 ?>
