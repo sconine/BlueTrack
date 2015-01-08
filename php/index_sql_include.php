@@ -22,14 +22,27 @@ $client = $aws->get('DynamoDb');
 $type_f = array();
 $start_day_f = '';
 $end_day_f = '';
+$name_f = '';
+$total_count_h_f = 0;
+$total_count_l_f = 0;
+$company_name_f = array();
+$col_id_f = array();
+
 if(!empty($_REQUEST['type'])) {$type_f = $_REQUEST['type'];}
 if(!empty($_REQUEST['start_day'])) {$start_day_f = $_REQUEST['start_day'];}
 if(!empty($_REQUEST['end_day'])) {$end_day_f = $_REQUEST['end_day'];}
+if(!empty($_REQUEST['name'])) {$name_f = $_REQUEST['name'];}
+if(!empty($_REQUEST['total_coun_h'])) {$total_count_h_f = $_REQUEST['total_count_h'];}
+if(!empty($_REQUEST['total_count_l'])) {$total_count_l_f = $_REQUEST['total_count_l'];}
+if(!empty($_REQUEST['company_name'])) {$company_name_f = $_REQUEST['company_name'][0];}
+if(!empty($_REQUEST['col_id'])) {$col_id_f = $_REQUEST['col_id'];}
 
 $pattern = '/^[a-zA-ZvV0-9,]+$/';
 if (preg_match($pattern, implode(",", $type_f)) == 0) {$type_f = array();}
 if ($start_day_f != '') {$start_day_f = strtotime($start_day_f);}
 if ($end_day_f != '') {$end_day_f = strtotime($end_day_f);}
+if (!is_numeric($total_count_h_f)) {$total_count_h_f = 0;}
+if (!is_numeric($total_count_l_f)) {$total_count_l_f = 0;}
 
 
 
@@ -42,23 +55,31 @@ if ($end_day_f != '') {$end_day_f = strtotime($end_day_f);}
 
 
 
+// List of collectors to pick from
+$col_select_list= array();
+$sql = 'select collector_id from collectors order by collector_id;';
+$coll_ar = $type_ar = query_to_array($sql, $mysqli);
+if (count($coll_ar) > 0) {
+  foreach ($coll_ar as $i => $v) {
+    $col_select_list[$v['collector_id']] = $v['collector_id'];
+  }
+} 
 
-
-
-
-
-
-
-
-
-
+// List of companies to choose from
+$company_name_select_list = array();
+$sql = 'SELECT manu_id, company_name, SUM(DevCount) as DeviceCount FROM (select a.manu_id, company_name, (SELECT count(1) FROM devices c WHERE c.mac_root=b.mac_root) as DevCount FROM manufacturers a INNER JOIN mac_roots b on a.manu_id=b.manu_id) as tbl GROUP BY manu_id, company_name HAVING DeviceCount > 0 ORDER BY DeviceCount DESC;';
+$comp_ar = $type_ar = query_to_array($sql, $mysqli);
+if (count($comp_ar) > 0) {
+  foreach ($comp_ar as $i => $v) {
+    $company_name_select_list[$v['manu_id']] = $v['company_name'] . ' (' . $v['DeviceCount'] . ')';
+  }
+} 
 
 // List of type filters from class table
+$type_desc = array();
 $sql = 'SELECT class, short_major_type, device_type FROM class_description WHERE  short_major_type IS NOT NULL ORDER BY  short_major_type, device_type;';
 $type_ar = query_to_array($sql, $mysqli);
-if (count($type_ar) == 0) {
-  $type_desc = array();
-} else {
+if (count($type_ar) > 0) {
   $class_array = array();
   foreach ($type_ar as $i => $v) {
     $dt = json_decode($v['device_type']);
