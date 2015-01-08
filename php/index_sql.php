@@ -40,7 +40,7 @@ include 'index_sql_include.php';
 							foreach ($type_desc as $type => $desc) {
 								$col = '<input type="checkbox" name="type[]" value="' . $type .
 											 '" ' . ischecked($type, $type_f) .
-											 '> ' . $type . ' = ' . $desc . '<br>';
+											 '> ' . $desc . '<br>';
 								if ($c % 2 == 0) {$cl2 .= $col;}
 								else {$cl1 .= $col;}
 								$c++;
