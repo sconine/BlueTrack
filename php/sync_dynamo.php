@@ -54,10 +54,10 @@ do {
             $sql .= ' VALUES (' . sqlq($mac,0) . ',' .
                     sqlq($collector_id,0) . ',' .
                     sqlq($v,1) . '); ' . "\n" ;
+	    	if ($debug) {echo "Running: $sql\n";}
+	    	if (!$mysqli->query($sql)) {die("Insert Failed: (" . $mysqli->errno . ") " . $mysqli->error);}
+		$sql = '';
         }
-    	if ($debug) {echo "Running: $sql\n";}
-    	if (!$mysqli->query($sql)) {die("Insert Failed: (" . $mysqli->errno . ") " . $mysqli->error);}
-	$sql = '';
         
         if ($class != 'n/a') {
             $hex = str_replace("0x", "", $class);
