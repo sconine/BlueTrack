@@ -1,7 +1,8 @@
 <?php
 // Get the media we have stored in dynamoDB and load into a MySQL structure
 // don't want to print debug through web server in general
-$debug = true; 
+$debug = false; 
+
 // Load my configuration
 $datastring = file_get_contents('/usr/www/html/BlueTrack/master_config.json');
 $config = json_decode($datastring, true);
