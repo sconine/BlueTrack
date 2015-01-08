@@ -19,7 +19,7 @@ $sql = 'CREATE TABLE IF NOT EXISTS devices ('
 . ' name varchar(512) NOT NULL, '
 . ' type varchar(32) NOT NULL, '
 . ' PRIMARY KEY (mac_id), '
-. ' INDEX(id), INDEX(mac_root));';
+. ' INDEX(mac_root));';
 if ($debug) {echo $sql . "\n";}
 if (!$mysqli->query($sql)) {die("Table creation failed: (" . $mysqli->errno . ") " . $mysqli->error);}
 if ($debug) {echo 'devices table Exists'. "\n";}
