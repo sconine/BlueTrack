@@ -71,6 +71,19 @@ if ($debug) {echo $sql . "\n";}
 if (!$mysqli->query($sql)) {die("Table creation failed: (" . $mysqli->errno . ") " . $mysqli->error);}
 if ($debug) {echo 'mac_roots table Exists'. "\n";}
 
+// Build the collectors table schema on the fly
+$sql = 'CREATE TABLE IF NOT EXISTS collectors ('
+. ' collector_id varchar(32) NOT NULL, '
+. ' region_name varchar(256) NOT NULL, '
+. ' checkin_count int NOT NULL, '
+. ' last_checkin int NOT NULL, '
+. ' collector_locations varchar(1024) NOT NULL, '
+. ' private_ip varchar(64) NOT NULL, '
+. ' public_ip varchar(64) NOT NULL, '
+. ' PRIMARY KEY (collector_id));';
+if ($debug) {echo $sql . "\n";}
+if (!$mysqli->query($sql)) {die("Table creation failed: (" . $mysqli->errno . ") " . $mysqli->error);}
+if ($debug) {echo 'collectors table Exists'. "\n";}
 
 
 // Query helper functions - TODO: pull these into a common function file
