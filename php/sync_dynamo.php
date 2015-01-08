@@ -53,7 +53,7 @@ do {
             $sql .= 'REPLACE INTO device_scans (mac_id, collector_id, seen)';
             $sql .= ' VALUES (' . sqlq($mac,0) . ',' .
                     sqlq($collector_id,0) . ',' .
-                    sqlq($v,1) . '); ';
+                    sqlq($v,1) . '); ' . "\n" ;
         }
     	if ($debug) {echo "Running: $sql\n";}
     	if (!$mysqli->query($sql)) {die("Insert Failed: (" . $mysqli->errno . ") " . $mysqli->error);}
@@ -68,7 +68,7 @@ do {
                     sqlq($mdcs,0) . ',' .
                     sqlq($mdc,0) . ',' .
                     sqlq(json_encode($msc),0) . ',' .
-                    sqlq(json_encode($min_sc),0) . '); ';
+                    sqlq(json_encode($min_sc),0) . '); ' . "\n";
         }
     	if ($debug) {echo "Running: $sql\n";}
     	if (!$mysqli->query($sql)) {die("Insert Failed: (" . $mysqli->errno . ") " . $mysqli->error);}
