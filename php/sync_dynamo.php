@@ -69,11 +69,12 @@ do {
                     sqlq($mdc,0) . ',' .
                     sqlq(json_encode($msc),0) . ',' .
                     sqlq(json_encode($min_sc),0) . '); ' . "\n";
+                    
+                if ($debug) {echo "Running: $sql\n";}
+	    	if (!$mysqli->query($sql)) {die("Insert Failed: (" . $mysqli->errno . ") " . $mysqli->error);}
+		$sql = '';
+
         }
-    	if ($debug) {echo "Running: $sql\n";}
-    	if (!$mysqli->query($sql)) {die("Insert Failed: (" . $mysqli->errno . ") " . $mysqli->error);}
-	$sql = '';
-        
     }
 } while(isset($response['LastEvaluatedKey'])); 
 
@@ -116,12 +117,11 @@ do {
         foreach ($macs as $i => $mac_root) {    
             $sql .= 'INSERT INTO mac_roots (manu_id, mac_root)' .
         	     ' VALUES (' . sqlq($manu_id,1) . ',' . sqlq($mac_root,0) . '); ';
+                if ($debug) {echo "Running: $sql\n";}
+	    	if (!$mysqli->query($sql)) {die("Insert Failed: (" . $mysqli->errno . ") " . $mysqli->error);}
+		$sql = '';
         }
     }
-
-    // Insert all the mac root mappings we've got so far
-	if ($debug) {echo "Running: $sql\n";}
-	if (!$mysqli->query($sql)) {die("Insert Failed: (" . $mysqli->errno . ") " . $mysqli->error);}
 } while(isset($response['LastEvaluatedKey'])); 
 
 echo 'Done!';
