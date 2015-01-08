@@ -18,7 +18,13 @@ use Aws\Common\Aws;
 $aws = Aws::factory('/usr/www/html/BlueTrack/php/amazon_config.json');
 $client = $aws->get('DynamoDb');
 
-
-
+// List of type filters from class table
+$sql = 'SELECT DISTINCT short_major_type FROM class_description;';
+$type_ar = query_to_array($sql, $mysqli);
+if (count($type_ar) == 0) {
+  $type_desc = array();
+} else {
+  foreach ($type_ar as $i => $v) {$type_desc[$v['short_major_type']] = $v['short_major_type'];}
+}
 
 ?>
