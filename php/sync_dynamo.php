@@ -99,7 +99,7 @@ do {
         $macs = isset($value['macs']["SS"]) ? $value['macs']["SS"] : array();
         $manu_id = get_manu_id($company_name, $mysqli);
 
-        if (count($manu_id) == 0) {
+        if ($manu_id == 0) {
             $msql = 'INSERT INTO manufacturers (company_name, address, city, country, state, zip)';
             $msql .= ' VALUES (' . sqlq($company_name,0) . ',' .
                     sqlq($address,0) . ',' .
