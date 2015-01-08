@@ -90,7 +90,7 @@ do {
     $sql = '';
     
     foreach ($response['Items'] as $key => $value) {
-        $company_name = $value['company_name']["S"];
+        $company_name = strtoupper($value['company_name']["S"]);
         $address = isset($value['address']["S"]) ? $value['address']["S"] : 'n/a';
         $city = isset($value['city']["S"]) ? $value['city']["S"] : 'n/a';
         $country = isset($value['country']["S"]) ? $value['country']["S"] : 'n/a';
@@ -116,8 +116,8 @@ do {
         
         // Store Macs this manu is assocaited with
         foreach ($macs as $i => $mac_root) {    
-            $sql .= 'INSERT INTO mac_roots (manu_id, mac_root)' .
-        	     ' VALUES (' . sqlq($manu_id,1) . ',' . sqlq($mac_root,0) . '); ';
+            $sql .= 'REPLACE INTO mac_roots (manu_id, mac_root)' .
+        	     ' VALUES (' . sqlq($manu_id,1) . ',' . sqlq(trim(strtoupper($mac_root)),0) . '); ';
                 if ($debug) {echo "Running: $sql\n";}
 	    	if (!$mysqli->query($sql)) {die("Insert Failed: (" . $mysqli->errno . ") " . $mysqli->error);}
 		$sql = '';
