@@ -36,7 +36,7 @@ do {
         $region_name = $value['collector_region_name']["S"];
         $checkin_count = $value['collector_checkin_count']["N"];
         $last_checkin = $value['collector_last_checkin']["N"];
-        $collector_locations = $value['collector_locations']["S"];
+        $collector_locations = json_encode($value['collector_locations']["SS"]);
         $private_ip = $value['collector_private_ip']["S"];
         $public_ip = $value['collector_public_ip']["S"];
         
