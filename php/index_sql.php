@@ -1,6 +1,6 @@
 <?php
 include 'functions.php';
-include 'index_include.php';
+include 'index_sql_include.php';
 //Using bootstrap css and library from here: http://bootswatch.com/paper/
 ?>
 
