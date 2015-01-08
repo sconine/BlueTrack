@@ -45,13 +45,19 @@ do {
                 sqlq($class,0) . ',' .
                 sqlq($name,0) . ',' .
                 sqlq($type,0) . '); ';
-
+    	if ($debug) {echo "Running: $sql\n";}
+    	if (!$mysqli->query($sql)) {die("Insert Failed: (" . $mysqli->errno . ") " . $mysqli->error);}
+	$sql = '';
+	
         foreach ($seen as $i => $v) {    
             $sql .= 'REPLACE INTO device_scans (mac_id, collector_id, seen)';
             $sql .= ' VALUES (' . sqlq($mac,0) . ',' .
                     sqlq($collector_id,0) . ',' .
                     sqlq($v,1) . '); ';
         }
+    	if ($debug) {echo "Running: $sql\n";}
+    	if (!$mysqli->query($sql)) {die("Insert Failed: (" . $mysqli->errno . ") " . $mysqli->error);}
+	$sql = '';
         
         if ($class != 'n/a') {
             $hex = str_replace("0x", "", $class);
@@ -64,9 +70,10 @@ do {
                     sqlq(json_encode($msc),0) . ',' .
                     sqlq(json_encode($min_sc),0) . '); ';
         }
-        
     	if ($debug) {echo "Running: $sql\n";}
     	if (!$mysqli->query($sql)) {die("Insert Failed: (" . $mysqli->errno . ") " . $mysqli->error);}
+	$sql = '';
+        
     }
 } while(isset($response['LastEvaluatedKey'])); 
 
