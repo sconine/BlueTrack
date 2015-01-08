@@ -11,6 +11,7 @@ if ($debug) {var_dump($config);}
 //Use MY SQL - this include assumes that $config has been loaded 
 //All the table creation is done in this include
 include '/usr/www/html/BlueTrack/php/my_sql.php';
+include '/usr/www/html/BlueTrack/php/functions.php';
 
 // You'll need to edit this with your config
 require '../vendor/autoload.php';
