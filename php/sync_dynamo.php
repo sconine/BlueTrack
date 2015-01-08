@@ -131,6 +131,7 @@ function get_manu_id($company_name, &$mysqli) {
     // See if we've created this company before
     $sql = 'SELECT manu_id FROM manufacturers WHERE company_name=' . sqlq($company_name,0) . ';';
 	$manu_id = query_to_array($sql, $mysqli);
+	var_dump($manu_id);
 	if (count($manu_id) == 0) {
 	    return 0;
 	} else {
