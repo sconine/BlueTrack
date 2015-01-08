@@ -21,6 +21,39 @@ use Aws\Common\Aws;
 $aws = Aws::factory('/usr/www/html/BlueTrack/php/amazon_config.json');
 $client = $aws->get('DynamoDb');
 
+// Load collectors
+$request = array("TableName" => "collectors","Limit" => 100);
+
+do {
+    // Add the ExclusiveStartKey if we got one back in the previous response
+    if(isset($response) && isset($response['LastEvaluatedKey'])) {
+        $request['ExclusiveStartKey'] = $response['LastEvaluatedKey'];
+    }
+    $response = $client->scan($request);
+    
+    foreach ($response['Items'] as $key => $value) {
+        $collector_id = strtoupper($value['collector_id']["S"]);
+        $region_name = $value['collector_region_name']["S"];
+        $checkin_count = $value['collector_checkin_count']["N"];
+        $last_checkin = $value['collector_last_checkin']["N"];
+        $collector_locations = $value['collector_locations']["S"];
+        $private_ip = $value['collector_private_ip']["S"];
+        $public_ip = $value['collector_public_ip']["S"];
+        
+        $sql = 'REPLACE INTO collectors (collector_id, region_name, checkin_count, last_checkin, collector_locations, private_ip, public_ip)';
+        $sql .= ' VALUES (' . sqlq($collector_id,0) . ',' .
+                sqlq($region_name,0) . ',' .
+                sqlq($checkin_count,1) . ',' .
+                sqlq($last_checkin,1) . ',' .
+                sqlq($collector_locations,0) . ',' .
+                sqlq($private_ip,0) . ',' .
+                sqlq($public_ip,0) . '); ';
+    	if ($debug) {echo "Running: $sql\n";}
+    	if (!$mysqli->query($sql)) {die("Insert Failed: (" . $mysqli->errno . ") " . $mysqli->error);}
+    }
+} while(isset($response['LastEvaluatedKey'])); 
+
+
 // Setup to run through a table 100 pages at a time
 $request = array("TableName" => "collector_data","Limit" => 100);
 
