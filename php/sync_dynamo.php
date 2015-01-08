@@ -32,10 +32,10 @@ do {
     $response = $client->scan($request);
     
     foreach ($response['Items'] as $key => $value) {
-        $mac = $value['mac_id']["S"];
-        $collector_id = $value['collector_id']["S"];
+        $mac = strtoupper($value['mac_id']["S"]);
+        $collector_id = strtoupper($value['collector_id']["S"]);
         $name = isset($value['name']["SS"]) ? $value['name']["SS"][0] : 'n/a';
-        $class = isset($value['class']["SS"]) ? $value['class']["SS"][0] : 'n/a';
+        $class = strtoupper(isset($value['class']["SS"]) ? $value['class']["SS"][0] : 'n/a');
         $type = isset($value['type']["S"]) ? $value['type']["S"] : 'X';
         $seen = array_map("lengthen_time", isset($value['seen_on']["NS"]) ? $value['seen_on']["NS"] : array());
 
