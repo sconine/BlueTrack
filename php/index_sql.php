@@ -53,16 +53,13 @@ include 'index_sql_include.php';
 
 					<div class="form-group">
 						<div class="col-lg-12">
-							Seen Between: <input type="text" id="datepickers" name="start_day" size="8" value="<?php echo $start_day_f;?>"> 
+							Between: <input type="text" id="datepickers" name="start_day" size="8" value="<?php echo $start_day_f;?>"> 
 							and <input type="text" id="datepickere" name="end_day" size="8" value="<?php echo $end_day_f;?>"> <br>
-							Seen: <?php echo create_select('day_count', range(0, 50), $day_count_f, false, 0); ?> different days<br>
-							Seen at: <?php echo create_select('col_count', range(0, 50), $col_count_f, false, 0); ?> different collectors<br>
 							Name Contains:&#160;&#160;&#160;&#160;&#160; <input type="text" name="name" size="18" value="<?php echo htmlentities($name_f);?>"><br>
-							Mac Info Contains: <input type="text" name="man_info" size="18" value="<?php echo htmlentities($man_info_f);?>"><br>
-							Count Greater Than: <input type="text" name="total_count" size="8" value="<?php echo htmlentities($total_count_f);?>"><br>
+							Count Between:  <input type="text" name="total_count" size="8" value="<?php echo htmlentities($total_count_f);?>">
+								and	<input type="text" name="total_count" size="8" value="<?php echo htmlentities($total_count_f);?>"><br>
 							Company:&#160;<?php echo create_select('company_name', $company_name_select_list, $company_name_f, false, 4); ?><br>
-							Class Type: &#160;&#160;&#160;&#160;&#160;&#160;<?php echo create_select('class_type', $class_type_select_list, $class_type_f, false, 4); ?><br>
-							From Collector: &#160;&#160;&#160;&#160;&#160;&#160;<?php echo create_select('col_id', $col_select_list, $col_id_f, false, 4); ?><br>
+							From Collector: &#160;&#160;&#160;&#160;&#160;&#160;<?php echo create_select('col_id', $col_select_list, $col_id_f, true, 4); ?><br>
 						</div>
 					</div>
 					
