@@ -23,7 +23,7 @@ $client = $aws->get('DynamoDb');
 
 // Setup to run through a table 100 pages at a time
 $request = array("TableName" => "collector_data","Limit" => 100);
-
+if (1==0) {
 do {
     // Add the ExclusiveStartKey if we got one back in the previous response
     if(isset($response) && isset($response['LastEvaluatedKey'])) {
@@ -77,6 +77,7 @@ do {
         }
     }
 } while(isset($response['LastEvaluatedKey'])); 
+}
 
 // Setup to run through a table 100 pages at a time
 $request = array("TableName" => "mac_data","Limit" => 100);
