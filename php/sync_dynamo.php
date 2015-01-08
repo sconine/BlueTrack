@@ -87,7 +87,7 @@ do {
         $state = isset($value['state']["S"]) ? $value['state']["S"] : 'n/a';
         $zip = isset($value['zip']["S"]) ? $value['zip']["S"] : 'n/a';
         $macs = isset($value['macs']["SS"]) ? $value['macs']["SS"] : array();
-        $manu_id = get_manu_id($company_name, &$mysqli);
+        $manu_id = get_manu_id($company_name, $mysqli);
 
         if (count($manu_id) == 0) {
             $msql = 'INSERT INTO manufacturers (company_name, address, city, country, state, zip)';
@@ -101,12 +101,12 @@ do {
         	if (!$mysqli->query($msql)) {die("Insert Failed: (" . $mysqli->errno . ") " . $mysqli->error);}
         	
             // Get the ID we just created (yea there's probably a way to do this in 1 step...)
-            $manu_id = get_manu_id($company_name, &$mysqli);
+            $manu_id = get_manu_id($company_name, $mysqli);
         }
         
         // Store Macs this manu is assocaited with
         foreach ($macs as $i => $mac_root) {    
-            $sql . = 'INSERT INTO mac_roots (manu_id, mac_root)' .
+            $sql .= 'INSERT INTO mac_roots (manu_id, mac_root)' .
         	     ' VALUES (' . sqlq($manu_id,1) . ',' . sqlq($mac_root,0) . '); ';
         }
     }
