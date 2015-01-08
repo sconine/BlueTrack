@@ -20,9 +20,38 @@ $client = $aws->get('DynamoDb');
 
 // Setup filters
 $type_f = array();
+$start_day_f = '';
+$end_day_f = '';
 if(!empty($_REQUEST['type'])) {$type_f = $_REQUEST['type'];}
+if(!empty($_REQUEST['start_day'])) {$start_day_f = $_REQUEST['start_day'];}
+if(!empty($_REQUEST['end_day'])) {$end_day_f = $_REQUEST['end_day'];}
+
 $pattern = '/^[a-zA-ZvV0-9,]+$/';
 if (preg_match($pattern, implode(",", $type_f)) == 0) {$type_f = array();}
+if ($start_day_f != '') {$start_day_f = strtotime($start_day_f);}
+if ($end_day_f != '') {$end_day_f = strtotime($end_day_f);}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // List of type filters from class table
 $sql = 'SELECT class, short_major_type, device_type FROM class_description WHERE  short_major_type IS NOT NULL ORDER BY  short_major_type, device_type;';
