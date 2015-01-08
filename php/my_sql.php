@@ -35,8 +35,6 @@ $sql = 'CREATE TABLE IF NOT EXISTS class_description ('
 if (!$mysqli->query($sql)) {die("Table creation failed: (" . $mysqli->errno . ") " . $mysqli->error);}
 if ($debug) {echo 'class_description table Exists'. "\n";}
 
-mdcs, $mdc, $msc, $min_sc
-
 // Build the device_scans table schema on the fly
 $sql = 'CREATE TABLE IF NOT EXISTS device_scans ('
 . ' mac_id varchar(32) NOT NULL, '
