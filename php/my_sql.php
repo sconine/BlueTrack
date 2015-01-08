@@ -66,7 +66,7 @@ if ($debug) {echo 'manufacturers table Exists'. "\n";}
 $sql = 'CREATE TABLE IF NOT EXISTS mac_roots ('
 . ' manu_id INTEGER NOT NULL, '
 . ' mac_root varchar(32) NOT NULL, '
-. ' PRIMARY KEY (manu_id, mac_root);';
+. ' PRIMARY KEY (manu_id, mac_root));';
 if ($debug) {echo $sql . "\n";}
 if (!$mysqli->query($sql)) {die("Table creation failed: (" . $mysqli->errno . ") " . $mysqli->error);}
 if ($debug) {echo 'mac_roots table Exists'. "\n";}
