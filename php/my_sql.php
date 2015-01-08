@@ -20,6 +20,7 @@ $sql = 'CREATE TABLE IF NOT EXISTS devices ('
 . ' type varchar(32) NOT NULL, '
 . ' PRIMARY KEY (mac_id), '
 . ' INDEX(id), INDEX(mac_root));';
+if ($debug) {echo $sql . "\n";}
 if (!$mysqli->query($sql)) {die("Table creation failed: (" . $mysqli->errno . ") " . $mysqli->error);}
 if ($debug) {echo 'devices table Exists'. "\n";}
 
@@ -32,6 +33,7 @@ $sql = 'CREATE TABLE IF NOT EXISTS class_description ('
 . ' service_class varchar(1024) NOT NULL, '
 . ' device_type varchar(1014) NOT NULL, '
 . ' PRIMARY KEY (class);';
+if ($debug) {echo $sql . "\n";}
 if (!$mysqli->query($sql)) {die("Table creation failed: (" . $mysqli->errno . ") " . $mysqli->error);}
 if ($debug) {echo 'class_description table Exists'. "\n";}
 
@@ -42,6 +44,7 @@ $sql = 'CREATE TABLE IF NOT EXISTS device_scans ('
 . ' seen int NOT NULL, '
 . ' PRIMARY KEY (mac_id, device_id, seen), '
 . ' INDEX(seen), INDEX(device_id));';
+if ($debug) {echo $sql . "\n";}
 if (!$mysqli->query($sql)) {die("Table creation failed: (" . $mysqli->errno . ") " . $mysqli->error);}
 if ($debug) {echo 'device_scans table Exists'. "\n";}
 
@@ -55,6 +58,7 @@ $sql = 'CREATE TABLE IF NOT EXISTS manufacturers ('
 . ' state varchar(64) NULL, '
 . ' zip varchar(32) NULL, '
 . ' PRIMARY KEY (company_name));';
+if ($debug) {echo $sql . "\n";}
 if (!$mysqli->query($sql)) {die("Table creation failed: (" . $mysqli->errno . ") " . $mysqli->error);}
 if ($debug) {echo 'manufacturers table Exists'. "\n";}
 
@@ -63,6 +67,7 @@ $sql = 'CREATE TABLE IF NOT EXISTS mac_roots ('
 . ' manu_id INTEGER NOT NULL, '
 . ' mac_root varchar(32) NOT NULL, '
 . ' PRIMARY KEY (manu_id, mac_root);';
+if ($debug) {echo $sql . "\n";}
 if (!$mysqli->query($sql)) {die("Table creation failed: (" . $mysqli->errno . ") " . $mysqli->error);}
 if ($debug) {echo 'mac_roots table Exists'. "\n";}
 
