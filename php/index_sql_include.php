@@ -77,7 +77,7 @@ $sql = 'SELECT manu_id, company_name, SUM(DevCount) as DeviceCount FROM (select 
 $comp_ar = $type_ar = query_to_array($sql, $mysqli);
 if (count($comp_ar) > 0) {
   foreach ($comp_ar as $i => $v) {
-    $company_name_select_list[$v['manu_id']] = $v['company_name'] . ' (' . $v['DeviceCount'] . ')';
+    $company_name_select_list[$v['manu_id']] = substr($v['company_name'], 0, 32) . ' (' . $v['DeviceCount'] . ')';
   }
 } 
 
