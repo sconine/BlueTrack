@@ -60,6 +60,8 @@ include 'index_sql_include.php';
 							<div class="col-md-6">
 								Name Contains: <input type="text" name="name" size="18" value="<?php echo htmlentities($name_f);?>">
 							</div>
+					</div>
+					<div class="form-group">
 							<div class="col-md-6">
 								<?php echo create_select('company_name', $company_name_select_list, $company_name_f, true, 4, "All Companies"); ?>
 							</div>
