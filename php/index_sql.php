@@ -27,7 +27,7 @@ include 'index_sql_include.php';
 	<div class="row">
 		<div class="col-lg-8">
 			<div class="well bs-component">
-				<form method="GET" action="index.php" class="form-horizontal">
+				<form method="GET" action="index_sql.php" class="form-horizontal">
 				<input type="hidden" name="bust" value="<?php echo time();?>"> 
 				<fieldset>
 					<legend>Filter Devices</legend>
