@@ -56,41 +56,41 @@ if (!empty($type_f)) {
   $class_types = quote_list($type_f, 0);
   if ($class_types != '') {
     if ($filters != '') {$filters .= ' AND ';}
-    $filters = ' b.class IN (' . $class_types . ')';
+    $filters .= ' b.class IN (' . $class_types . ')';
   }
 }
 
 // Date range filters
 if ($start_day_f != '') {
     if ($filters != '') {$filters .= ' AND ';}
-    $filters = ' seen >= ' . sqlq($start_day_f,1);
+    $filters .= ' seen >= ' . sqlq($start_day_f,1);
 }
 if ($end_day_f != '') {
     if ($filters != '') {$filters .= ' AND ';}
-    $filters = ' seen <= ' . sqlq($end_day_f,1);
+    $filters .= ' seen <= ' . sqlq($end_day_f,1);
 }
 
 // Device Name filter
 if ($name_f != '') {
     if ($filters != '') {$filters .= ' AND ';}
-    $filters = ' name like ' . sqlq('%' . $name_f . '%' ,0);
+    $filters .= ' name like ' . sqlq('%' . $name_f . '%' ,0);
 }
 
 // Company Name filter
 if ($company_name_f != '') {
-  $company_names = quote_list($company_name_f, 0);
+  $company_names = quote_list($company_name_f, 1);
   if ($company_names != '') {
     if ($filters != '') {$filters .= ' AND ';}
-    $filters = ' b.manu_id IN (' . $company_names . ')';
+    $filters .= ' b.manu_id IN (' . $company_names . ')';
   }
 }
 
 // Collector filter
 if ($col_id_f != '') {
-  $colids = quote_list($col_id_f, 1);
+  $colids = quote_list($col_id_f, 0);
   if ($colids != '') {
     if ($filters != '') {$filters .= ' AND ';}
-    $filters = ' collector_id IN (' . $colids . ')';
+    $filters. = ' collector_id IN (' . $colids . ')';
   }
 }
 if ($filters != '') {$filters = ' WHERE ' . $filters;}
