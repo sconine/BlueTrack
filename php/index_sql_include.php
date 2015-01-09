@@ -42,11 +42,17 @@ if ($start_day_f != '') {$start_day_f = strtotime($start_day_f);}
 if ($end_day_f != '') {$end_day_f = strtotime($end_day_f);}
 
 // Pull data we care about
-$sql = 'SELECT a. mac_id, collector_id, seen, name, major_type, device_type, service_class, company_name, d.manu_id, b.class'.
+$sql = 'SELECT a. mac_id, collector_id, name, major_type, device_type, service_class, company_name, d.manu_id, b.class, '.
+        ' ' .
         ' FROM device_scans a INNER JOIN devices b ON a.mac_id=b.mac_id '.
         ' INNER JOIN class_description c ON c.class=b.class '.
         ' LEFT OUTER JOIN mac_roots d ON d.mac_root=b.mac_root '.
         ' LEFT OUTER JOIN manufacturers e ON d.manu_id=e.manu_id '.
+
+
+//select FROM_UNIXTIME(seen,"%c/%e/%Y %l%p") FROM device_scans limit 10;
+//| 10/19/2014 12AM                     |
+
 
 // Setup filters
 $filters = '';
