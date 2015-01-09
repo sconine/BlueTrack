@@ -33,8 +33,6 @@ if(!empty($_REQUEST['type'])) {$type_f = $_REQUEST['type'];}
 if(!empty($_REQUEST['start_day'])) {$start_day_f = $_REQUEST['start_day'];}
 if(!empty($_REQUEST['end_day'])) {$end_day_f = $_REQUEST['end_day'];}
 if(!empty($_REQUEST['name'])) {$name_f = $_REQUEST['name'];}
-if(!empty($_REQUEST['total_coun_h'])) {$total_count_h_f = $_REQUEST['total_count_h'];}
-if(!empty($_REQUEST['total_count_l'])) {$total_count_l_f = $_REQUEST['total_count_l'];}
 if(!empty($_REQUEST['company_name'])) {$company_name_f = $_REQUEST['company_name'];}
 if(!empty($_REQUEST['col_id'])) {$col_id_f = $_REQUEST['col_id'];}
 
@@ -42,11 +40,9 @@ $pattern = '/^[a-zA-ZvV0-9,]+$/';
 if (preg_match($pattern, implode(",", $type_f)) == 0) {$type_f = array();}
 if ($start_day_f != '') {$start_day_f = strtotime($start_day_f);}
 if ($end_day_f != '') {$end_day_f = strtotime($end_day_f);}
-if (!is_numeric($total_count_h_f)) {$total_count_h_f = 0;}
-if (!is_numeric($total_count_l_f)) {$total_count_l_f = 0;}
 
 // Pull data we care about
-$sql = 'SELECT a. mac_id, collector_id, seen, name, major_type, device_type, service_class, company_name, b.class'.
+$sql = 'SELECT a. mac_id, collector_id, seen, name, major_type, device_type, service_class, company_name, d.manu_id, b.class'.
         'FROM device_scans a INNER JOIN devices b ON a.mac_id=b.mac_id '.
         'INNER JOIN class_description c ON c.class=b.class '.
         'LEFT OUTER JOIN mac_roots d ON d.mac_root=b.mac_root '.
@@ -57,19 +53,53 @@ $filters = '';
 
 // Filter by Class Type
 if (!empty($type_f)) {
-  $class_types = '';
-  foreach ($type_f as $i => $v) {
-    foreach (explode(',', $v)) {
-      if ($class_types != '') {$class_types .= ',';}
-      $class_types .= sqlq($v,0);
-    }
+  $class_types = quote_list(type_f, 0);
   if ($class_types != '') {
     if ($filters != '') {$filters .= ' AND ';}
-    $filters = 'b.class IN (' . $class_types . ')';
+    $filters = ' b.class IN (' . $class_types . ')';
   }
 }
 
+// Date range filters
+if ($start_day_f != '') {
+    if ($filters != '') {$filters .= ' AND ';}
+    $filters = ' seen >= ' . sqlq($start_day_f,1);
+}
+if ($end_day_f != '') {
+    if ($filters != '') {$filters .= ' AND ';}
+    $filters = ' seen <= ' . sqlq($end_day_f,1);
+}
+
+// Device Name filter
+if ($name_f != '') {
+    if ($filters != '') {$filters .= ' AND ';}
+    $filters = ' name like ' . sqlq('%' . $name_f . '%' ,0);
+}
+
+// Company Name filter
+if ($company_name_f != '') {
+  $company_names = quote_list(company_name_f, 0);
+  if ($company_names != '') {
+    if ($filters != '') {$filters .= ' AND ';}
+    $filters = ' b.manu_id IN (' . $company_names . ')';
+  }
+}
+
+// Collector filter
+if ($col_id_f != '') {
+  $colids = quote_list(col_id_f, 1);
+  if ($colids != '') {
+    if ($filters != '') {$filters .= ' AND ';}
+    $filters = ' collector_id IN (' . $colids . ')';
+  }
+}
+if ($filters != '') {$filters = ' WHERE ' . $filters;}
+$sql .= $filters;
+$data = query_to_array($sql, $mysqli);
+echo $sql;
+
 // Data for bubble chart
+if (1==0) {
 $b_data = '';
 $series = array();
 foreach ($top as $mac => $mct) {
@@ -128,6 +158,9 @@ foreach ($series as $lsn => $lsn_data) {
     if ($lsn == 0) {$lsn = "More than 7 Days Ago";} else {$lsn = date("m/d/Y", $lsn);}
     $b_data .= "{ showInLegend: true, name: '". $lsn . "', data: [" . $lsn_data . "]}";
 }
+}
+
+
 
 
 
@@ -178,5 +211,9 @@ if (count($type_ar) > 0) {
   }
   foreach ($class_array as $i => $v) {$type_desc[$v] = $i;}
 }
+
+
+
+
 
 ?>
