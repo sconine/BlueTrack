@@ -53,7 +53,7 @@ $filters = '';
 
 // Filter by Class Type
 if (!empty($type_f)) {
-  $class_types = quote_list(type_f, 0);
+  $class_types = quote_list($type_f, 0);
   if ($class_types != '') {
     if ($filters != '') {$filters .= ' AND ';}
     $filters = ' b.class IN (' . $class_types . ')';
@@ -97,7 +97,6 @@ if ($filters != '') {$filters = ' WHERE ' . $filters;}
 $sql .= $filters . ' LIMIT 10;';
 echo $sql;
 $data = query_to_array($sql, $mysqli);
-echo "\n rannnn \n";
 
 // Data for bubble chart
 if (1==0) {
