@@ -52,12 +52,18 @@ include 'index_sql_include.php';
 					</div>
 
 					<div class="form-group">
-						<div class="col-lg-12">
-							Between: <input type="text" id="datepickers" name="start_day" size="8" value="<?php echo $start_day_f;?>"> 
-							and <input type="text" id="datepickere" name="end_day" size="8" value="<?php echo $end_day_f;?>"> <br>
-							Name Contains:&#160;&#160;&#160;&#160;&#160; <input type="text" name="name" size="18" value="<?php echo htmlentities($name_f);?>"><br>
-							Company:&#160;<?php echo create_select('company_name', $company_name_select_list, $company_name_f, true, 4); ?><br>
-							From Collector: &#160;&#160;&#160;&#160;&#160;&#160;<?php echo create_select('col_id', $col_select_list, $col_id_f, true, 4); ?><br>
+						<div class="col-lg-8">
+							<div class="col-md-6">
+								Between: <input type="text" id="datepickers" name="start_day" size="8" value="<?php echo $start_day_f;?>"> 
+								and <input type="text" id="datepickere" name="end_day" size="8" value="<?php echo $end_day_f;?>"> <br>
+							</div>
+							<div class="col-md-6">
+								Name Contains: <input type="text" name="name" size="18" value="<?php echo htmlentities($name_f);?>"><br>
+							</div>
+							<label for="select" class="col-lg-2 control-label">Company:</label>
+							<?php echo create_select('company_name', $company_name_select_list, $company_name_f, true, 4); ?><br>
+							<label for="select" class="col-lg-2 control-label">From Collector:</label>
+							<?php echo create_select('col_id', $col_select_list, $col_id_f, true, 4); ?><br>
 						</div>
 					</div>
 					
