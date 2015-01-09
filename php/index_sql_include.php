@@ -97,6 +97,7 @@ if ($filters != '') {$filters = ' WHERE ' . $filters;}
 $sql .= $filters;
 echo $sql;
 $data = query_to_array($sql, $mysqli);
+echo "\n rannnn \n";
 
 // Data for bubble chart
 if (1==0) {
