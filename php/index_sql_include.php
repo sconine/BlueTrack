@@ -81,7 +81,7 @@ if ($company_name_f != '') {
   $company_names = quote_list($company_name_f, 1);
   if ($company_names != '') {
     if ($filters != '') {$filters .= ' AND ';}
-    $filters .= ' b.manu_id IN (' . $company_names . ')';
+    $filters .= ' d.manu_id IN (' . $company_names . ')';
   }
 }
 
