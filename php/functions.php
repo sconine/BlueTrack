@@ -4,6 +4,17 @@ function base_mac($mac) {
 	return strtoupper(substr(str_replace(':', '-', $mac), 0, 8));
 }
 
+function quote_list($inarr) {
+  $names = '';
+  foreach ($inarr as $i => $v) {
+    foreach (explode(',', $v)) {
+      if ($names != '') {$names .= ',';}
+      $names .= sqlq($v,1);
+    }
+  }
+  return $names;
+}
+
 function shorten_time($in_time) {
 	// shortens time by 100 seconds
 	// 1415421466 becomes 14154214
