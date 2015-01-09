@@ -23,6 +23,10 @@ include 'index_sql_include.php';
 		<h1>BlueTrack - Analyze</h1>
 		<p class="lead">A system to analyze data from Bluetooth scans</p>
 	</div>
+      
+	<div class="row">
+		<div id="bydevice" style="height: 600px;"></div>
+	</div>
 	
 	<div class="row">
 		<div class="col-lg-8">
@@ -116,15 +120,8 @@ include 'index_sql_include.php';
 			</div>
 		</div>
 	</div>
-      
-	<div class="row">
-		<div id="bydevice" style="height: 600px;"></div>
-	</div>
-</div>
 
-<?php
-//include 'graph_js.js';
-?>
+</div>
 
 <script>
 (function(){$('.bs-component [data-toggle="tooltip"]').tooltip();})();
