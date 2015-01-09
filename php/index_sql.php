@@ -62,6 +62,7 @@ include 'index_sql_include.php';
 							</div>
 					</div>
 					<div class="form-group">
+						<div class="col-lg-12">
 							<div class="col-md-6">
 								<?php echo create_select('company_name', $company_name_select_list, $company_name_f, true, 4, "All Companies"); ?>
 							</div>
