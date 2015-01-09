@@ -78,7 +78,7 @@ if ($name_f != '') {
 
 // Company Name filter
 if ($company_name_f != '') {
-  $company_names = quote_list(company_name_f, 0);
+  $company_names = quote_list($company_name_f, 0);
   if ($company_names != '') {
     if ($filters != '') {$filters .= ' AND ';}
     $filters = ' b.manu_id IN (' . $company_names . ')';
@@ -87,7 +87,7 @@ if ($company_name_f != '') {
 
 // Collector filter
 if ($col_id_f != '') {
-  $colids = quote_list(col_id_f, 1);
+  $colids = quote_list($col_id_f, 1);
   if ($colids != '') {
     if ($filters != '') {$filters .= ' AND ';}
     $filters = ' collector_id IN (' . $colids . ')';
@@ -95,8 +95,8 @@ if ($col_id_f != '') {
 }
 if ($filters != '') {$filters = ' WHERE ' . $filters;}
 $sql .= $filters;
-$data = query_to_array($sql, $mysqli);
 echo $sql;
+$data = query_to_array($sql, $mysqli);
 
 // Data for bubble chart
 if (1==0) {
