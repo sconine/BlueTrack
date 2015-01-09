@@ -60,6 +60,7 @@ include 'index_sql_include.php';
 							<div class="col-md-6">
 								Name Contains: <input type="text" name="name" size="18" value="<?php echo htmlentities($name_f);?>">
 							</div>
+						</div>
 					</div>
 					<div class="form-group">
 						<div class="col-lg-12">
