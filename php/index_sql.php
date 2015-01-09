@@ -25,7 +25,7 @@ include 'index_sql_include.php';
 	</div>
 	
 	<div class="row">
-		<div class="col-md-4">
+		<div class="col-lg-6">
 			<div class="well bs-component">
 				<form method="GET" action="index.php" class="form-horizontal">
 				<input type="hidden" name="bust" value="<?php echo time();?>"> 
@@ -72,7 +72,7 @@ include 'index_sql_include.php';
 				</form>
 			</div>
 		</div>
-		<div class="col-md-4">
+		<div class="col-lg-6">
 			<div class="well bs-component">
 				<legend>Key Stats</legend>
 				<p>
