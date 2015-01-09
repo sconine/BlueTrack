@@ -124,6 +124,64 @@ include 'index_sql_include.php';
 </div>
 
 <script>
+$(function () {
+    $('#bydevice').highcharts({
+
+        chart: {
+            type: 'bubble',
+            zoomType: 'xy'
+        },
+        yAxis: {
+            labels: {
+                enabled: true
+            },
+            categories: [' ', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun', ' ']
+        },
+        title: {
+            text: 'Devices'
+        },
+        tooltip: {
+            useHTML: true, 
+            formatter: function() {
+                var det = '   <a href="analyze_one.php?mac=' + encodeURIComponent(this.point.m) + 
+                          '&col=' + encodeURIComponent(this.point.w) + '" target="_n">details</a>';
+                return '<b>' + this.point.n + '</b><br>Seen: ' + this.point.t + ' times' +
+                    '<br>Avg Hour: ' + this.point.h + ', Avg Day: ' + this.point.d +
+                    '<br>' + this.point.c + 
+                    '<br>MAC: ' + this.point.m + 
+                    '<br>MAC info: ' + this.point.i + 
+                    '<br>Collectors: ' + this.point.w + 
+                    '<br>First Seen: <b>' + this.point.f +
+                    '</b><br>Last Seen: <b>' + this.point.l + '</b>' + det;
+            }
+        },
+        plotOptions: {
+            bubble: {
+                dataLabels: {
+                    enabled: true,
+                    style: { textShadow: 'none', color: '#000000' },
+                    formatter: function() {
+                        if (this.point.n == 'n/a' || this.point.type != 'U') {
+                            return this.point.type;
+                        } else {
+                            return '<b>(' + this.point.type + ')</b>';
+                        }
+                    }
+                },
+            
+                minSize:15,
+                maxSize:100
+                
+            }
+        },
+        series: [<?php echo $b_data; ?>]
+    });
+});
+
+</script>
+
+
+<script>
 (function(){$('.bs-component [data-toggle="tooltip"]').tooltip();})();
 $(function() {$( "#datepickers" ).datepicker();});
 $(function() {$( "#datepickere" ).datepicker();});
