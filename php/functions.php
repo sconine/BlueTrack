@@ -107,7 +107,7 @@ function create_select($name, $arr, $def, $multi, $size, $top = "Select One") {
 	}
 	foreach ($arr as $i => $v) {
 		$to_ret .= '<option value="' . htmlentities($i) . '"';
-		if (in_array($v, $def)) {$to_ret .= ' selected ';}
+		if (in_array($i, $def)) {$to_ret .= ' selected ';}
 		$to_ret .= ">" . htmlentities($v) . "</option>\n";
 	}
 	$to_ret .= "</select>\n";
