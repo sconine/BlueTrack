@@ -57,11 +57,16 @@ if (!is_numeric($total_count_l_f)) {$total_count_l_f = 0;}
 
 // List of collectors to pick from
 $col_select_list= array();
-$sql = 'select collector_id from collectors order by collector_id;';
+$collectors= array();
+$sql = 'select collector_id, region_name, checkin_count, last_checkin, private_ip from collectors order by collector_id;';
 $coll_ar = $type_ar = query_to_array($sql, $mysqli);
 if (count($coll_ar) > 0) {
   foreach ($coll_ar as $i => $v) {
     $col_select_list[$v['collector_id']] = $v['collector_id'];
+    $collectors[$v['collector_id']]['collector_checkin_count'] = $v['checkin_count'];
+    $collectors[$v['collector_id']]['collector_last_checkin'] = $v['last_checkin'];
+    $collectors[$v['collector_id']]['collector_region_name'] = $v['region_name'];
+    $collectors[$v['collector_id']]['collector_private_ip'] = $v['private_ip'];
   }
 } 
 
