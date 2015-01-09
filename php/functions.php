@@ -91,11 +91,13 @@ function update_major_class_type(&$client, $mac, $collector_id, $class_type) {
 }
 
 
-function create_select($name, $arr, $def, $multi, $size) {
+function create_select($name, $arr, $def, $multi, $size, $top = "Select One") {
 	$to_ret = '<select name="' . htmlentities($name) . '[]"' ;
 	if ($multi) {$to_ret .= ' multiple size="' . $size . '"';}
 	$to_ret .= ">\n";
-	$to_ret .= '<option value="">Select One</option>' . "\n";
+	$to_ret .= '<option value=""';
+	if (empty($def)) {$to_ret .= ' selected ';}
+	$to_ret .= '>' . $top . '</option>' . "\n";
 	
 	if (!is_array($def)) {
 		$t = $def;
