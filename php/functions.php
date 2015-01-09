@@ -6,7 +6,12 @@ function base_mac($mac) {
 
 function quote_list($inarr, $qt) {
   $names = '';
-
+  foreach ($inarr as $i => $v) {
+    foreach (explode(',', $v) as $j => $k) {
+      if ($names != '') {$names .= ',';}
+      $names .= sqlq($k,$qt);
+    }
+  }
   return $names;
 }
 
