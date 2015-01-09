@@ -56,8 +56,6 @@ include 'index_sql_include.php';
 							Between: <input type="text" id="datepickers" name="start_day" size="8" value="<?php echo $start_day_f;?>"> 
 							and <input type="text" id="datepickere" name="end_day" size="8" value="<?php echo $end_day_f;?>"> <br>
 							Name Contains:&#160;&#160;&#160;&#160;&#160; <input type="text" name="name" size="18" value="<?php echo htmlentities($name_f);?>"><br>
-							Count Between:  <input type="text" name="total_count_h" size="8" value="<?php echo htmlentities($total_count_h_f);?>">
-								and	<input type="text" name="total_count_l" size="8" value="<?php echo htmlentities($total_count_l_f);?>"><br>
 							Company:&#160;<?php echo create_select('company_name', $company_name_select_list, $company_name_f, true, 4); ?><br>
 							From Collector: &#160;&#160;&#160;&#160;&#160;&#160;<?php echo create_select('col_id', $col_select_list, $col_id_f, true, 4); ?><br>
 						</div>
@@ -72,7 +70,7 @@ include 'index_sql_include.php';
 				</form>
 			</div>
 		</div>
-		<div class="col-lg-6">
+		<div class="col-lg-4">
 			<div class="well bs-component">
 				<legend>Key Stats</legend>
 				<p>
