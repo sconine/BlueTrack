@@ -35,7 +35,7 @@ if(!empty($_REQUEST['end_day'])) {$end_day_f = $_REQUEST['end_day'];}
 if(!empty($_REQUEST['name'])) {$name_f = $_REQUEST['name'];}
 if(!empty($_REQUEST['total_coun_h'])) {$total_count_h_f = $_REQUEST['total_count_h'];}
 if(!empty($_REQUEST['total_count_l'])) {$total_count_l_f = $_REQUEST['total_count_l'];}
-if(!empty($_REQUEST['company_name'])) {$company_name_f = $_REQUEST['company_name'][0];}
+if(!empty($_REQUEST['company_name'])) {$company_name_f = $_REQUEST['company_name'];}
 if(!empty($_REQUEST['col_id'])) {$col_id_f = $_REQUEST['col_id'];}
 
 $pattern = '/^[a-zA-ZvV0-9,]+$/';
