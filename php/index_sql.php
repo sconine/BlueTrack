@@ -76,18 +76,14 @@ include 'index_sql_include.php';
 			<div class="well bs-component">
 				<legend>Key Stats</legend>
 				<p>
-					Total Devices: <strong><?php echo number_format($count); ?></strong><br>
-					Total Scans: <strong><?php echo number_format($total_seen); ?></strong><br>
-					Total Date Range: <strong><?php echo date("m-d-Y", $t_first_seen); ?></strong> to
-					<strong><?php echo date("m-d-Y", $t_last_seen); ?></strong><br>
 				</p>
 				<p>
-					Unique Devies in Last Hr: <strong><?php echo number_format(count($last_hour)); ?></strong><br>
-					Displayed Devices: <strong><?php echo number_format($displayed_count); ?></strong><br>
-					Displayed Date Range: <strong><?php echo date("m-d-Y", $t_first_disp); ?></strong> to
-					<strong><?php echo date("m-d-Y", $t_last_disp); ?></strong><br>
+					Unique Devies in Last Hr: <strong><?php echo number_format(count(99999)); ?></strong><br>
+					Displayed Date Range: <strong><?php echo date("m-d-Y", 456456); ?></strong> to
+					<strong><?php echo date("m-d-Y", 345345); ?></strong><br>
 				</p>
 			</div>
+			<div id="byclass"></div>
 			<div class="well bs-component">
 				<legend>Collector Stats</legend>
 				<p>
@@ -109,7 +105,6 @@ include 'index_sql_include.php';
 				</p>
 			</div>
 		</div>
-		<div class="col-md-4"><div id="byclass"></div></div>
 	</div>
       
 	<div class="row">
@@ -118,7 +113,7 @@ include 'index_sql_include.php';
 </div>
 
 <?php
-include 'graph_js.js';
+//include 'graph_js.js';
 ?>
 
 <script>
