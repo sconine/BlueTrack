@@ -45,8 +45,89 @@ if ($end_day_f != '') {$end_day_f = strtotime($end_day_f);}
 if (!is_numeric($total_count_h_f)) {$total_count_h_f = 0;}
 if (!is_numeric($total_count_l_f)) {$total_count_l_f = 0;}
 
+// Pull data we care about
+$sql = 'SELECT a. mac_id, collector_id, seen, name, major_type, device_type, service_class, company_name, b.class'.
+        'FROM device_scans a INNER JOIN devices b ON a.mac_id=b.mac_id '.
+        'INNER JOIN class_description c ON c.class=b.class '.
+        'LEFT OUTER JOIN mac_roots d ON d.mac_root=b.mac_root '.
+        'LEFT OUTER JOIN manufacturers e ON d.manu_id=e.manu_id '.
 
+// Setup filters
+$filters = '';
 
+// Filter by Class Type
+if (!empty($type_f)) {
+  $class_types = '';
+  foreach ($type_f as $i => $v) {
+    foreach (explode(',', $v)) {
+      if ($class_types != '') {$class_types .= ',';}
+      $class_types .= sqlq($v,0);
+    }
+  if ($class_types != '') {
+    if ($filters != '') {$filters .= ' AND ';}
+    $filters = 'b.class IN (' . $class_types . ')';
+  }
+}
+
+// Data for bubble chart
+$b_data = '';
+$series = array();
+foreach ($top as $mac => $mct) {
+    // For each device get the top day it's been seen and the top date
+    $dowtot = 0;
+    $doytot = 0;
+    if (isset($seen_dayofw[$mac])) {foreach ($seen_dayofw[$mac] as $dow => $dcnt) {$dowtot = $dowtot + ($dow * $dcnt);}}
+    if (isset($seen_hours[$mac])) {foreach ($seen_hours[$mac] as $hrs => $dcnt) {$doytot = $doytot + ($hrs * $dcnt);}}
+    $avg_dayofweek = round($dowtot/$mct,2);
+    $avg_hr = round($doytot/$mct,2);
+    if ($avg_dayofweek == 0) {$avg_dayofweek = 1;}
+    if ($avg_hr == 0) {$avg_hr = 1;}
+    
+    $disp_hr = date("h:i a", round($avg_hr * 60 * 60));
+    
+    // Name series based on how recently these were seen
+    $lsn = 0;
+    if (isset($last_seen[$mac])) {if ($last_seen[$mac] > (time() - (3600*24*7))) {$lsn = strtotime(date("m/d/Y", $last_seen[$mac]));}}
+    if (isset($series[$lsn])) { $series[$lsn] .= ", \n";} else {$series[$lsn] = '';}
+    // Set an upper limit on the circle size
+    $mctd = $mct;
+    if ($mctd > 300) {$mctd = 300;}
+    
+    // Get infor about this class of device
+    $class_det = 'Unknown';
+    if ($classes[$mac] != 'n/a') {
+        $hex = str_replace("0x", "", $classes[$mac]);
+        $class_det = str_replace("'", "\'", get_bt_class_info($hex, $mdc));
+    }
+    $series[$lsn] .= "{n: '". str_replace("'", "\'", $names[$mac]) 
+            . "', m: '" . $mac 
+            . "', l: '" . date("m/d/Y h:i a", $last_seen[$mac]) 
+            . "', f: '" . date("m/d/Y h:i a", $first_seen[$mac]) 
+            . "', d: '" . $day_names[(round($avg_dayofweek) - 1)]
+            . "', h: '" . $disp_hr 
+            . "', c: '" . $class_det
+            . "', w: '" . $my_collectors[$mac]
+            . "', i: '" . $my_mac_info[$mac] 
+            . "', type: '" . $dev_type[$mac] 
+            . "', t: " . $mct 
+            . ", x: " . $avg_hr 
+            . ", y: " . $avg_dayofweek
+            . ", z: " . $mctd . "}";
+}
+// Build the type list for ajax setting
+$b_types = '';
+foreach ($type_list as $type => $val) {
+    if ($b_types == '') { $b_types = "\t\t\t\t'(";} else {$b_types .= " | ' + \n \t\t\t\t'";}
+    $b_types .= "<a onclick=\"set_type(\'" . $type . "\', \'' + this.point.m + '\', \'' + this.point.w + '\');\">" . $type . "</a>";
+}
+$b_types .= ")' + \n";
+// Build the series
+krsort($series);
+foreach ($series as $lsn => $lsn_data) {
+    if ($b_data != '') {$b_data .= ", \n";}
+    if ($lsn == 0) {$lsn = "More than 7 Days Ago";} else {$lsn = date("m/d/Y", $lsn);}
+    $b_data .= "{ showInLegend: true, name: '". $lsn . "', data: [" . $lsn_data . "]}";
+}
 
 
 
