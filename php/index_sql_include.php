@@ -90,7 +90,7 @@ if ($col_id_f != '') {
   $colids = quote_list($col_id_f, 0);
   if ($colids != '') {
     if ($filters != '') {$filters .= ' AND ';}
-    $filters. = ' collector_id IN (' . $colids . ')';
+    $filters .= ' collector_id IN (' . $colids . ')';
   }
 }
 if ($filters != '') {$filters = ' WHERE ' . $filters;}
