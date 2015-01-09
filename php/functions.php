@@ -4,12 +4,12 @@ function base_mac($mac) {
 	return strtoupper(substr(str_replace(':', '-', $mac), 0, 8));
 }
 
-function quote_list($inarr) {
+function quote_list($inarr, $qt) {
   $names = '';
   foreach ($inarr as $i => $v) {
     foreach (explode(',', $v)) {
       if ($names != '') {$names .= ',';}
-      $names .= sqlq($v,1);
+      $names .= sqlq($v,$qt);
     }
   }
   return $names;
