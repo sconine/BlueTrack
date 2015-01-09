@@ -94,7 +94,7 @@ if ($col_id_f != '') {
   }
 }
 if ($filters != '') {$filters = ' WHERE ' . $filters;}
-$sql .= $filters;
+$sql .= $filters . ';';
 echo $sql;
 $data = query_to_array($sql, $mysqli);
 echo "\n rannnn \n";
