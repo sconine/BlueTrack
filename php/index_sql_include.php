@@ -43,10 +43,10 @@ if ($end_day_f != '') {$end_day_f = strtotime($end_day_f);}
 
 // Pull data we care about
 $sql = 'SELECT a. mac_id, collector_id, seen, name, major_type, device_type, service_class, company_name, d.manu_id, b.class'.
-        'FROM device_scans a INNER JOIN devices b ON a.mac_id=b.mac_id '.
-        'INNER JOIN class_description c ON c.class=b.class '.
-        'LEFT OUTER JOIN mac_roots d ON d.mac_root=b.mac_root '.
-        'LEFT OUTER JOIN manufacturers e ON d.manu_id=e.manu_id '.
+        ' FROM device_scans a INNER JOIN devices b ON a.mac_id=b.mac_id '.
+        ' INNER JOIN class_description c ON c.class=b.class '.
+        ' LEFT OUTER JOIN mac_roots d ON d.mac_root=b.mac_root '.
+        ' LEFT OUTER JOIN manufacturers e ON d.manu_id=e.manu_id '.
 
 // Setup filters
 $filters = '';
