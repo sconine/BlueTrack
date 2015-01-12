@@ -62,7 +62,7 @@ $sql = 'CREATE TABLE IF NOT EXISTS device_scans_hourly ('
 . ' class varchar(32) NULL, '
 . ' seen_hour int NOT NULL,  '
 . ' hour_count int NOT NULL,  '
-. ' PRIMARY KEY (mac_id, collector_id), INDEX(seen_hour) '
+. ' PRIMARY KEY (mac_id, collector_id, seen_hour), INDEX(seen_hour) '
 . ' ); ';
 if ($debug) {echo $sql . "\n";}
 if (!$mysqli->query($sql)) {die("Table creation failed: (" . $mysqli->errno . ") " . $mysqli->error);}
