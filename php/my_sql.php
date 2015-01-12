@@ -42,6 +42,7 @@ $sql = 'CREATE TABLE IF NOT EXISTS device_scans ('
 . ' mac_id varchar(32) NOT NULL, '
 . ' collector_id varchar(32) NOT NULL, '
 . ' seen int NOT NULL, '
+. ' seen_hour int NULL, '
 . ' PRIMARY KEY (mac_id, collector_id, seen), '
 . ' INDEX(seen), INDEX(collector_id));';
 if ($debug) {echo $sql . "\n";}
