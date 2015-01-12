@@ -111,12 +111,6 @@ do {
     }
 } while(isset($response['LastEvaluatedKey'])); 
 
-// Update hour column in device_scans
-$sql = 'UPDATE device_scans SET seen_hour = UNIX_TIMESTAMP(FROM_UNIXTIME(seen,"%Y-%m-%d %H:00:00")) WHERE seen_hour IS NULL;';
-if ($debug) {echo "Running: $sql\n";}
-if (!$mysqli->query($sql)) {die("Update Failed: (" . $mysqli->errno . ") " . $mysqli->error);}
-
-
 // Setup to run through a table 100 pages at a time
 $request = array("TableName" => "mac_data","Limit" => 100);
 do {
@@ -162,6 +156,16 @@ do {
         }
     }
 } while(isset($response['LastEvaluatedKey'])); 
+
+
+// Update hour column in device_scans
+$sql = 'UPDATE device_scans SET seen_hour = UNIX_TIMESTAMP(FROM_UNIXTIME(seen,"%Y-%m-%d %H:00:00")) WHERE seen_hour IS NULL;';
+if ($debug) {echo "Running: $sql\n";}
+if (!$mysqli->query($sql)) {die("Update Failed: (" . $mysqli->errno . ") " . $mysqli->error);}
+
+
+
+
 
 echo 'Done!';
 
