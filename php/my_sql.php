@@ -49,6 +49,25 @@ if ($debug) {echo $sql . "\n";}
 if (!$mysqli->query($sql)) {die("Table creation failed: (" . $mysqli->errno . ") " . $mysqli->error);}
 if ($debug) {echo 'device_scans table Exists'. "\n";}
 
+
+$sql = 'CREATE TABLE IF NOT EXISTS device_scans_hourly ('
+. ' mac_id varchar(32) NOT NULL, '
+. ' collector_id varchar(32) NOT NULL, '
+. ' name varchar(512) NULL, '
+. ' major_type varchar(128) NULL, '
+. ' device_type varchar(1014) NULL, '
+. ' service_class varchar(1024) NULL, '
+. ' company_name varchar(255) NULL, '
+. ' manu_id INTEGER NULL, '
+. ' class varchar(32) NULL, '
+. ' seen_hour int NOT NULL,  '
+. ' PRIMARY KEY (mac_id, collector_id), INDEX(seen_hour) '
+. ' ); ';
+if ($debug) {echo $sql . "\n";}
+if (!$mysqli->query($sql)) {die("Table creation failed: (" . $mysqli->errno . ") " . $mysqli->error);}
+if ($debug) {echo 'device_scans_hourly table Exists'. "\n";}
+
+
 // Build the manufacturers table schema on the fly
 $sql = 'CREATE TABLE IF NOT EXISTS manufacturers ('
 . ' manu_id INTEGER AUTO_INCREMENT UNIQUE KEY, '
