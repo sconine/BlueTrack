@@ -49,7 +49,25 @@ $sql = 'SELECT a.mac_id, collector_id, name, major_type, device_type, service_cl
         ' INNER JOIN class_description c ON c.class=b.class '.
         ' LEFT OUTER JOIN mac_roots d ON d.mac_root=b.mac_root '.
         ' LEFT OUTER JOIN manufacturers e ON d.manu_id=e.manu_id '.
-        
+
+INSERT INTO device_scans_hourly 
+SELECT a.mac_id, collector_id, name, major_type, device_type, service_class, company_name, d.manu_id, 
+b.class, seen_hour, count(1) as hour_count
+FROM device_scans a 
+INNER JOIN devices b ON a.mac_id=b.mac_id 
+INNER JOIN class_description c ON c.class=b.class 
+LEFT OUTER JOIN mac_roots d ON d.mac_root=b.mac_root LEFT OUTER JOIN manufacturers e ON d.manu_id=e.manu_id 
+GROUP BY a.mac_id, collector_id, name, major_type, device_type, service_class, 
+company_name, d.manu_id, b.class, seen_hour;
+
+SELECT a.mac_id, collector_id, seen_hour, count(1) as hour_count
+FROM device_scans a 
+GROUP BY a.mac_id, collector_id, seen_hour 
+HAVING hour_count > 25 limit 25;
+
+
+UPDATE device_scans SET seen_hour = UNIX_TIMESTAMP(FROM_UNIXTIME(seen,"%Y-%m-%d %H:00:00")) WHERE seen_hour IS NULL;
+
 // Setup filters
 $filters = '';
 
