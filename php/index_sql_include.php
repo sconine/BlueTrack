@@ -42,18 +42,14 @@ if ($start_day_f != '') {$start_day_f = strtotime($start_day_f);}
 if ($end_day_f != '') {$end_day_f = strtotime($end_day_f);}
 
 // Pull data we care about
-$sql = 'SELECT a. mac_id, collector_id, name, major_type, device_type, service_class, company_name, d.manu_id, b.class, '.
-        ' ' .
+// (for date format see: http://www.epochconverter.com/programming/mysql-from-unixtime.php) 
+$sql = 'SELECT a.mac_id, collector_id, name, major_type, device_type, service_class, company_name, d.manu_id, b.class, '.
+        ' UNIX_TIMESTAMP(FROM_UNIXTIME(seen,"%Y-%m-%d %H:00:00")) as day_hour, count(seen) as seen_count ' .
         ' FROM device_scans a INNER JOIN devices b ON a.mac_id=b.mac_id '.
         ' INNER JOIN class_description c ON c.class=b.class '.
         ' LEFT OUTER JOIN mac_roots d ON d.mac_root=b.mac_root '.
         ' LEFT OUTER JOIN manufacturers e ON d.manu_id=e.manu_id '.
-
-
-//select FROM_UNIXTIME(seen,"%c/%e/%Y %l%p") FROM device_scans limit 10;
-//| 10/19/2014 12AM                     |
-
-
+        
 // Setup filters
 $filters = '';
 
@@ -100,7 +96,10 @@ if ($col_id_f != '') {
   }
 }
 if ($filters != '') {$filters = ' WHERE ' . $filters;}
-$sql .= $filters . ' LIMIT 10;';
+$sql .= $filters;
+$sql .= ' GROUP BY a.mac_id, collector_id, name, major_type, device_type, service_class, company_name, d.manu_id, b.class, day_hour ';
+$sql .= ' LIMIT 10; ';
+
 echo $sql;
 $data = query_to_array($sql, $mysqli);
 
