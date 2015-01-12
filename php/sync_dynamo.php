@@ -163,8 +163,23 @@ $sql = 'UPDATE device_scans SET seen_hour = UNIX_TIMESTAMP(FROM_UNIXTIME(seen,"%
 if ($debug) {echo "Running: $sql\n";}
 if (!$mysqli->query($sql)) {die("Update Failed: (" . $mysqli->errno . ") " . $mysqli->error);}
 
+// DELETE FROM device_scans_hourly
+$sql = 'TRUNCATE TABLE device_scans_hourly;';
+if ($debug) {echo "Running: $sql\n";}
+if (!$mysqli->query($sql)) {die("TRUNCATE Failed: (" . $mysqli->errno . ") " . $mysqli->error);}
 
-
+// Insert pre-computed aggregates
+$sql = 'INSERT INTO device_scans_hourly '
+  . ' SELECT a.mac_id, collector_id, name, major_type, device_type, service_class, company_name, d.manu_id, '
+  . ' b.class, seen_hour, count(1) as hour_count '
+  . ' FROM device_scans a '
+  . ' INNER JOIN devices b ON a.mac_id=b.mac_id '
+  . ' INNER JOIN class_description c ON c.class=b.class '
+  . ' LEFT OUTER JOIN mac_roots d ON d.mac_root=b.mac_root LEFT OUTER JOIN manufacturers e ON d.manu_id=e.manu_id '
+  . ' GROUP BY a.mac_id, collector_id, name, major_type, device_type, service_class, '
+  . ' company_name, d.manu_id, b.class, seen_hour;';
+if ($debug) {echo "Running: $sql\n";}
+if (!$mysqli->query($sql)) {die("INSERT Failed: (" . $mysqli->errno . ") " . $mysqli->error);}
 
 
 echo 'Done!';
