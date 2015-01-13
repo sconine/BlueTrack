@@ -50,7 +50,7 @@ if (!$mysqli->query($sql)) {die("Table creation failed: (" . $mysqli->errno . ")
 if ($debug) {echo 'device_scans table Exists'. "\n";}
 
 
-$sql = 'CREATE TABLE IF NOT EXISTS device_scans_hourly ('
+$sql = 'CREATE TABLE IF NOT EXISTS device_scans_hour ('
 . ' mac_id varchar(32) NOT NULL, '
 . ' collector_id varchar(32) NOT NULL, '
 . ' name varchar(512) NULL, '
