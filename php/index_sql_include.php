@@ -75,18 +75,18 @@ if ($name_f != '') {
 }
 
 // Company Name filter
-if ($company_name_f != '') {
+if (!empty($company_name_f)) {
   $company_names = quote_list($company_name_f, 1);
-  if ($company_names != '') {
+  if ($company_names != '' AND $company_names != 'NULL') {
     if ($filters != '') {$filters .= ' AND ';}
     $filters .= ' manu_id IN (' . $company_names . ')';
   }
 }
 
 // Collector filter
-if ($col_id_f != '') {
+if (!empty($col_id_f)) {
   $colids = quote_list($col_id_f, 0);
-  if ($colids != '') {
+  if ($colids != '' AND $colids != 'NULL') {
     if ($filters != '') {$filters .= ' AND ';}
     $filters .= ' collector_id IN (' . $colids . ')';
   }
