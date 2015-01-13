@@ -163,24 +163,45 @@ $sql = 'UPDATE device_scans SET seen_hour = UNIX_TIMESTAMP(FROM_UNIXTIME(seen,"%
 if ($debug) {echo "Running: $sql\n";}
 if (!$mysqli->query($sql)) {die("Update Failed: (" . $mysqli->errno . ") " . $mysqli->error);}
 
-// DELETE FROM device_scans_hourly
-$sql = 'TRUNCATE TABLE device_scans_hourly;';
+// DELETE FROM device_scans_hour
+$sql = 'TRUNCATE TABLE device_scans_hour;';
 if ($debug) {echo "Running: $sql\n";}
 if (!$mysqli->query($sql)) {die("TRUNCATE Failed: (" . $mysqli->errno . ") " . $mysqli->error);}
 
-// Insert pre-computed aggregates
-$sql = 'INSERT INTO device_scans_hourly '
-  . ' SELECT a.mac_id, collector_id, name, major_type, device_type, service_class, company_name, d.manu_id, '
-  . ' b.class, seen_hour, count(1) as hour_count '
-  . ' FROM device_scans a '
-  . ' INNER JOIN devices b ON a.mac_id=b.mac_id '
-  . ' INNER JOIN class_description c ON c.class=b.class '
-  . ' LEFT OUTER JOIN mac_roots d ON d.mac_root=b.mac_root LEFT OUTER JOIN manufacturers e ON d.manu_id=e.manu_id '
-  . ' GROUP BY a.mac_id, collector_id, name, major_type, device_type, service_class, '
-  . ' company_name, d.manu_id, b.class, seen_hour;';
+// Create pre-calcd aggregates
+$sql = 'INSERT INTO device_scans_hour (mac_id, collector_id, seen_hour, hour_count) '
+	. ' SELECT mac_id, collector_id, seen_hour, count(1) FROM device_scans GROUP BY mac_id, collector_id, seen_hour;';
+//(~30 sec.)
 if ($debug) {echo "Running: $sql\n";}
-if (!$mysqli->query($sql)) {die("INSERT Failed: (" . $mysqli->errno . ") " . $mysqli->error);}
+if (!$mysqli->query($sql)) {die("UPDATE Failed: (" . $mysqli->errno . ") " . $mysqli->error);}
 
+$sql = 'UPDATE device_scans_hour, devices SET device_scans_hour.name=devices.name, device_scans_hour.class=devices.class ' 
+	. ' WHERE device_scans_hour.mac_id=devices.mac_id;';
+//(~35 sec.)
+if ($debug) {echo "Running: $sql\n";}
+if (!$mysqli->query($sql)) {die("UPDATE Failed: (" . $mysqli->errno . ") " . $mysqli->error);}
+
+$sql = 'UPDATE device_scans_hour, devices, mac_roots, manufacturers '
+	. ' SET device_scans_hour.company_name=manufacturers.company_name,'
+	. ' device_scans_hour.manu_id=mac_roots.manu_id'
+	. ' WHERE '
+	. ' device_scans_hour.mac_id=devices.mac_id AND'
+	. ' devices.mac_root=mac_roots.mac_root AND'
+	. ' mac_roots.manu_id=manufacturers.manu_id;';
+//(~18 sec.)
+if ($debug) {echo "Running: $sql\n";}
+if (!$mysqli->query($sql)) {die("UPDATE Failed: (" . $mysqli->errno . ") " . $mysqli->error);}
+
+$sql = 'UPDATE device_scans_hour, class_description  '
+	. ' SET '
+	. ' device_scans_hour.major_type=class_description.major_type, '
+	. ' device_scans_hour.device_type=class_description.device_type, '
+	. ' device_scans_hour.service_class=class_description.service_class '
+	. ' WHERE '
+	. ' device_scans_hour.class=class_description.class;';
+//(~32 sec.)
+if ($debug) {echo "Running: $sql\n";}
+if (!$mysqli->query($sql)) {die("UPDATE Failed: (" . $mysqli->errno . ") " . $mysqli->error);}
 
 echo 'Done!';
 
@@ -194,4 +215,42 @@ function get_manu_id($company_name, &$mysqli) {
 	    return $manu_id[0]['manu_id'];
 	}
 }
+
+
+
+
+/*
+
+//// This was a first attempt which is WAY too slow on MySQL
+
+// Create a pre-aggregated table for performance
+INSERT INTO device_scans_hourly 
+SELECT a.mac_id, collector_id, name, major_type, device_type, service_class, company_name, d.manu_id, 
+b.class, seen_hour, count(1) as hour_count
+FROM device_scans a 
+INNER JOIN devices b ON a.mac_id=b.mac_id 
+INNER JOIN class_description c ON c.class=b.class 
+LEFT OUTER JOIN mac_roots d ON d.mac_root=b.mac_root 
+LEFT OUTER JOIN manufacturers e ON d.manu_id=e.manu_id 
+GROUP BY a.mac_id, collector_id, seen_hour, name, major_type, device_type, service_class, 
+company_name, d.manu_id, b.class;
+
+// Look for cases where a mac_root is duplicated
+select mac_root, count(1) from mac_roots group by mac_root having count(1) > 1;
+
+// Review the offenders
+select mac_root, a.manu_id, company_name 
+FROM mac_roots a inner join manufacturers b on a.manu_id=b.manu_id 
+where mac_root in ('00-01-C8', '08-00-30', '00-BB-3A', '00-05-4F', '10-AE-60', 'B8-27-EB', 'F0-4F-7C') 
+ORDER BY mac_root;
+
+// Clean them up
+DELETE FROM mac_roots WHERE mac_root='00-01-C8' AND manu_id=9598;
+DELETE FROM mac_roots WHERE mac_root='00-05-4F' AND manu_id=14055;
+DELETE FROM mac_roots WHERE mac_root='00-BB-3A' AND manu_id=14055;
+DELETE FROM mac_roots WHERE mac_root='08-00-30' AND manu_id=3799;
+DELETE FROM mac_roots WHERE mac_root='10-AE-60' AND manu_id=14055;
+DELETE FROM mac_roots WHERE mac_root='F0-4F-7C' AND manu_id=14055;
+DELETE FROM mac_roots WHERE mac_root='B8-27-EB' AND manu_id=985;
+*/
 ?>
