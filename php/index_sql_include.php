@@ -99,6 +99,7 @@ echo $sql;
 $data = query_to_array($sql, $mysqli);
 $series = array();
 $lsn = "views";
+$series[$lsn] = '';
 $b_data = '';
 // Data for bubble chart
 foreach ($data as $i => $v) {
