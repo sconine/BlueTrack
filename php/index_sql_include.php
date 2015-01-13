@@ -96,8 +96,6 @@ $sql .= $filters;
 //$sql .= ' LIMIT 10; ';
 
 echo $sql;
-exit;
-
 $data = query_to_array($sql, $mysqli);
 
 // Data for bubble chart
