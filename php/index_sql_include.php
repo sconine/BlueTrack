@@ -113,7 +113,7 @@ foreach ($data as $i => $v) {
             . "', f: '" . date("m/d/Y h:i a", $v['seen_hour']) 
             . "', d: '" . date("m/d/Y", $v['seen_hour']) 
             . "', h: '" . date("h:i a", round($v['seen_hour'] * 60 * 60)) 
-            . "', c: '" . "Type: $v['major_type'] - Device: $v['device_type'] - Service:  $v['service_class']"
+            . "', c: '" . "Type: " . $v['major_type'] . " - Device: " . $v['device_type'] . " - Service:" . $v['service_class']
             . "', w: '" . $v['collector_id'] 
             . "', i: '" . $v['company_name'] 
             . "', type: '" . 'X' 
