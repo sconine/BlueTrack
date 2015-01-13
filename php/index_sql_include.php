@@ -43,47 +43,8 @@ if ($end_day_f != '') {$end_day_f = strtotime($end_day_f);}
 
 // Pull data we care about
 // (for date format see: http://www.epochconverter.com/programming/mysql-from-unixtime.php) 
-$sql = 'SELECT a.mac_id, collector_id, name, major_type, device_type, service_class, company_name, d.manu_id, b.class, '.
-        ' UNIX_TIMESTAMP(FROM_UNIXTIME(seen,"%Y-%m-%d %H:00:00")) as day_hour, count(seen) as seen_count ' .
-        ' FROM device_scans a INNER JOIN devices b ON a.mac_id=b.mac_id '.
-        ' INNER JOIN class_description c ON c.class=b.class '.
-        ' LEFT OUTER JOIN mac_roots d ON d.mac_root=b.mac_root '.
-        ' LEFT OUTER JOIN manufacturers e ON d.manu_id=e.manu_id '.
-
-/* some Cleaup SQL
-// store the hourly unix time stamp
-UPDATE device_scans SET seen_hour = UNIX_TIMESTAMP(FROM_UNIXTIME(seen,"%Y-%m-%d %H:00:00")) WHERE seen_hour IS NULL;
-
-// Create a pre-aggregated table for performance
-INSERT INTO device_scans_hourly 
-SELECT a.mac_id, collector_id, name, major_type, device_type, service_class, company_name, d.manu_id, 
-b.class, seen_hour, count(1) as hour_count
-FROM device_scans a 
-INNER JOIN devices b ON a.mac_id=b.mac_id 
-INNER JOIN class_description c ON c.class=b.class 
-LEFT OUTER JOIN mac_roots d ON d.mac_root=b.mac_root 
-LEFT OUTER JOIN manufacturers e ON d.manu_id=e.manu_id 
-GROUP BY a.mac_id, collector_id, seen_hour, name, major_type, device_type, service_class, 
-company_name, d.manu_id, b.class;
-
-// Look for cases where a mac_root is duplicated
-select mac_root, count(1) from mac_roots group by mac_root having count(1) > 1;
-
-// Review the offenders
-select mac_root, a.manu_id, company_name 
-FROM mac_roots a inner join manufacturers b on a.manu_id=b.manu_id 
-where mac_root in ('00-01-C8', '08-00-30', '00-BB-3A', '00-05-4F', '10-AE-60', 'B8-27-EB', 'F0-4F-7C') 
-ORDER BY mac_root;
-
-// Clean them up
-DELETE FROM mac_roots WHERE mac_root='00-01-C8' AND manu_id=9598;
-DELETE FROM mac_roots WHERE mac_root='00-05-4F' AND manu_id=14055;
-DELETE FROM mac_roots WHERE mac_root='00-BB-3A' AND manu_id=14055;
-DELETE FROM mac_roots WHERE mac_root='08-00-30' AND manu_id=3799;
-DELETE FROM mac_roots WHERE mac_root='10-AE-60' AND manu_id=14055;
-DELETE FROM mac_roots WHERE mac_root='F0-4F-7C' AND manu_id=14055;
-DELETE FROM mac_roots WHERE mac_root='B8-27-EB' AND manu_id=985;
-*/
+$sql = 'SELECT mac_id, collector_id, name, major_type, device_type, service_class, company_name, manu_id, class, '.
+        ' seen_hour, hour_count FROM device_scans_hour ';
 
 // Setup filters
 $filters = '';
@@ -93,18 +54,18 @@ if (!empty($type_f)) {
   $class_types = quote_list($type_f, 0);
   if ($class_types != '') {
     if ($filters != '') {$filters .= ' AND ';}
-    $filters .= ' b.class IN (' . $class_types . ')';
+    $filters .= ' class IN (' . $class_types . ')';
   }
 }
 
 // Date range filters
 if ($start_day_f != '') {
     if ($filters != '') {$filters .= ' AND ';}
-    $filters .= ' seen >= ' . sqlq($start_day_f,1);
+    $filters .= ' seen_hour >= ' . sqlq($start_day_f,1);
 }
 if ($end_day_f != '') {
     if ($filters != '') {$filters .= ' AND ';}
-    $filters .= ' seen <= ' . sqlq($end_day_f,1);
+    $filters .= ' seen_hour <= ' . sqlq($end_day_f,1);
 }
 
 // Device Name filter
@@ -118,7 +79,7 @@ if ($company_name_f != '') {
   $company_names = quote_list($company_name_f, 1);
   if ($company_names != '') {
     if ($filters != '') {$filters .= ' AND ';}
-    $filters .= ' d.manu_id IN (' . $company_names . ')';
+    $filters .= ' manu_id IN (' . $company_names . ')';
   }
 }
 
@@ -132,8 +93,7 @@ if ($col_id_f != '') {
 }
 if ($filters != '') {$filters = ' WHERE ' . $filters;}
 $sql .= $filters;
-$sql .= ' GROUP BY a.mac_id, collector_id, name, major_type, device_type, service_class, company_name, d.manu_id, b.class, day_hour ';
-$sql .= ' LIMIT 10; ';
+//$sql .= ' LIMIT 10; ';
 
 echo $sql;
 $data = query_to_array($sql, $mysqli);
