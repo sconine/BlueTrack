@@ -107,10 +107,6 @@ foreach ($data as $i => $v) {
     $mctd = $v['hour_count'];
     if ($mctd > 300) {$mctd = 300;}
 
-  mac_id, collector_id, name, major_type, device_type, service_class, company_name, manu_id, class, '.
-        ' seen_hour, hour_count
-        
-
     $series[$lsn] .= "{n: '". str_replace("'", "\'", $v['name']) 
             . "', m: '" . $v['mac_id']
             . "', l: '" . date("m/d/Y h:i a", $v['seen_hour']) 
