@@ -114,14 +114,14 @@ foreach ($data as $i => $v) {
             . "', l: '" . date("m/d/Y h:i a", $v['seen_hour']) 
             . "', f: '" . date("m/d/Y h:i a", $v['seen_hour']) 
             . "', d: '" . date("m/d/Y", $v['seen_hour']) 
-            . "', h: '" . date("h:i a", round($v['seen_hour'] * 60 * 60)) 
-            . "', c: '" . "Type: " . $v['major_type'] . " - Device: " . $v['device_type'] . " - Service:" . $v['service_class']
+            . "', h: '" . date("h:i a", round($v['seen_hour'])) 
+            . "', c: '" . "Type: " . $v['major_type'] 
             . "', w: '" . $v['collector_id'] 
             . "', i: '" . $v['company_name'] 
             . "', type: '" . 'X' 
             . "', t: " . $v['hour_count']
-            . ", x: " . date("G", round($v['seen_hour'] * 60 * 60)) 
-            . ", y: " . date("z", round($v['seen_hour'] * 60 * 60)) 
+            . ", x: " . date("G", round($v['seen_hour'])) 
+            . ", y: " . date("z", round($v['seen_hour'])) 
             . ", z: " . $mctd . "}";
 }
 
