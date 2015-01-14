@@ -146,7 +146,6 @@ $(function () {
                 var det = '   <a href="analyze_one.php?mac=' + encodeURIComponent(this.point.m) + 
                           '&col=' + encodeURIComponent(this.point.w) + '" target="_n">details</a>';
                 return '<b>' + this.point.n + '</b><br>Seen: ' + this.point.t + ' times' +
-                    '<br>Avg Hour: ' + this.point.h + ', Avg Day: ' + this.point.d +
                     '<br>' + this.point.c + 
                     '<br>MAC: ' + this.point.m + 
                     '<br>MAC info: ' + this.point.i + 
