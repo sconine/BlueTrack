@@ -119,8 +119,8 @@ foreach ($data as $i => $v) {
             . "', i: '" . $v['company_name'] 
             . "', type: '" . 'X' 
             . "', t: " . $v['hour_count']
-            . ", x: " . date("h:i a", round($v['seen_hour'] * 60 * 60)) 
-            . ", y: " . date("m/d/Y", round($v['seen_hour'] * 60 * 60)) 
+            . ", x: " . date("G", round($v['seen_hour'] * 60 * 60)) 
+            . ", y: " . date("z", round($v['seen_hour'] * 60 * 60)) 
             . ", z: " . $mctd . "}";
 }
 
