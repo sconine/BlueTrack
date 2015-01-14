@@ -98,7 +98,7 @@ $sql .= $filters;
 echo $sql;
 $data = query_to_array($sql, $mysqli);
 $series = array();
-$lsn = "views";
+$lsn = '';
 $series[$lsn] = '';
 $b_data = '';
 // Data for bubble chart
@@ -107,14 +107,13 @@ foreach ($data as $i => $v) {
     // Set an upper limit on the circle size
     $mctd = $v['hour_count'];
     if ($mctd > 300) {$mctd = 300;}
+    $lsn = substr($v['company_name'], 0, 24);
 
     if ($series[$lsn] != '') {$series[$lsn] .= ',';}
     $series[$lsn] .= "{n: '". str_replace("'", "\'", $v['name']) 
             . "', m: '" . $v['mac_id']
             . "', l: '" . date("m/d/Y h:i a", $v['seen_hour']) 
             . "', f: '" . date("m/d/Y h:i a", $v['seen_hour']) 
-            . "', d: '" . date("m/d/Y", $v['seen_hour']) 
-            . "', h: '" . date("h:i a", round($v['seen_hour'])) 
             . "', c: '" . "Type: " . $v['major_type'] 
             . "', w: '" . $v['collector_id'] 
             . "', i: '" . $v['company_name'] 
@@ -129,6 +128,7 @@ foreach ($series as $lsn => $lsn_data) {
     if ($b_data != '') {$b_data .= ", \n";}
     $b_data .= "{ showInLegend: true, name: '". $lsn . "', data: [" . $lsn_data . "]}";
 }
+
 
 // this is not right
 // type: 'X', t: 1, x: 12:00 am, y: 01/11/163370, z: 1}{n: 'AGMiMac', m: '00:1B:63:5B
