@@ -108,6 +108,7 @@ foreach ($data as $i => $v) {
     $mctd = $v['hour_count'];
     if ($mctd > 300) {$mctd = 300;}
 
+    if ($series[$lsn] != '') {$series[$lsn] .= ',';}
     $series[$lsn] .= "{n: '". str_replace("'", "\'", $v['name']) 
             . "', m: '" . $v['mac_id']
             . "', l: '" . date("m/d/Y h:i a", $v['seen_hour']) 
