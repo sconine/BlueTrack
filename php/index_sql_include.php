@@ -129,6 +129,8 @@ foreach ($series as $lsn => $lsn_data) {
     $b_data .= "{ showInLegend: true, name: '". $lsn . "', data: [" . $lsn_data . "]}";
 }
 
+// this is not right
+// type: 'X', t: 1, x: 12:00 am, y: 01/11/163370, z: 1}{n: 'AGMiMac', m: '00:1B:63:5B
 
 
 
