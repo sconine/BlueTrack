@@ -99,7 +99,6 @@ echo $sql;
 $data = query_to_array($sql, $mysqli);
 $series = array();
 $lsn = '';
-$series[$lsn] = '';
 $b_data = '';
 // Data for bubble chart
 foreach ($data as $i => $v) {
@@ -108,7 +107,7 @@ foreach ($data as $i => $v) {
     $mctd = $v['hour_count'];
     if ($mctd > 300) {$mctd = 300;}
     $lsn = substr($v['company_name'], 0, 24);
-
+    if (!isset($series[$lsn])) {$series[$lsn] = '';}
     if ($series[$lsn] != '') {$series[$lsn] .= ',';}
     $series[$lsn] .= "{n: '". str_replace("'", "\'", $v['name']) 
             . "', m: '" . $v['mac_id']
