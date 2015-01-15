@@ -168,7 +168,7 @@ $(function () {
                 },
             
                 minSize:15,
-                maxSize:100
+                maxSize:15
                 
             }
         },
