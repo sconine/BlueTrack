@@ -105,19 +105,18 @@ foreach ($data as $i => $v) {
 
     // Set an upper limit on the circle size
     $mctd = $v['hour_count'];
-    if ($mctd > 300) {$mctd = 300;}
+    if ($mctd > 30) {$mctd = 30;}
     $lsn = substr($v['company_name'], 0, 24);
     if (!isset($series[$lsn])) {$series[$lsn] = '';}
     if ($series[$lsn] != '') {$series[$lsn] .= ',';}
     $series[$lsn] .= "{n: '". str_replace("'", "\'", $v['name']) 
             . "', m: '" . $v['mac_id']
             . "', l: '" . date("m/d/Y h:i a", $v['seen_hour']) 
-            . "', f: '" . date("m/d/Y h:i a", $v['seen_hour']) 
             . "', c: '" . "Type: " . $v['major_type'] 
             . "', w: '" . $v['collector_id'] 
             . "', i: '" . $v['company_name'] 
             . "', type: '" . 'X' 
-            . "', t: " . $v['hour_count']
+            . "', t: " . $mctd
             . ", x: " . date("G", round($v['seen_hour'])) 
             . ", y: " . date("z", round($v['seen_hour'])) 
             . ", z: " . $mctd . "}";
