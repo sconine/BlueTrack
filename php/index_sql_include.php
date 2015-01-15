@@ -105,7 +105,7 @@ foreach ($data as $i => $v) {
 
     // Set an upper limit on the circle size
     $mctd = $v['hour_count'];
-    if ($mctd > 30) {$mctd = 30;}
+    if ($mctd > 1) {$mctd = 1;}
     $lsn = substr($v['company_name'], 0, 24);
     if (!isset($series[$lsn])) {$series[$lsn] = '';}
     if ($series[$lsn] != '') {$series[$lsn] .= ',';}
