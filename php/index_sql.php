@@ -25,7 +25,7 @@ include 'index_sql_include.php';
 	</div>
       
 	<div class="row">
-		<div id="bydevice" style="height: 900px;"></div>
+		<div id="bydevice" style="height: 1600px;"></div>
 	</div>
 	
 	<div class="row">
