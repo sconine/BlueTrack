@@ -150,8 +150,7 @@ $(function () {
                     '<br>MAC: ' + this.point.m + 
                     '<br>MAC info: ' + this.point.i + 
                     '<br>Collectors: ' + this.point.w + 
-                    '<br>First Seen: <b>' + this.point.f +
-                    '</b><br>Last Seen: <b>' + this.point.l + '</b>' + det;
+                    '</b><br>Seen: <b>' + this.point.l + '</b>' + det;
             }
         },
         plotOptions: {
