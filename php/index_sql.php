@@ -364,8 +364,8 @@ $(function () {
         },
 
         xAxis: {
-            min: Date.UTC(2013, 0, 1),
-            max: Date.UTC(2014, 0, 1),
+            min: Date.UTC(<?php echo $start_year; ?>, 0, 1),
+            max: Date.UTC(<?php echo ($start_year + 1); ?>, 0, 1),
             labels: {
                 align: 'left',
                 x: 5,
