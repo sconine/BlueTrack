@@ -2,6 +2,13 @@
 include 'functions.php';
 include 'index_sql_include.php';
 //Using bootstrap css and library from here: http://bootswatch.com/paper/
+
+// show 3 sections
+// 1) All Traffic
+// 2) Infrequent Traffic (devices that are seen less than 4 days/month)
+// 3) Frequent Traffic (devices seen more than 4 days/month but never for more than 8 hrs. in a given 24 hr. period)
+// 4) Fixed Devices (devices seen more 8 hours in a day )
+
 ?>
 
 <html>
@@ -39,13 +46,9 @@ include 'index_sql_include.php';
 		<div id="bydevice" style="height: 320px; width: 1000px; margin: 0 auto"></div>
 	</div>
 <pre id="csv" style="display: none">Date,Time,Temperature
-2013-01-01,0,1.3
-2013-01-01,1,1.4
-2013-01-01,2,1.6
-2013-01-01,3,2.0
-2013-01-01,4,2.4
-2013-01-01,5,2.9
-2013-01-01,6,3.1
+<?php
+echo $heat_data;
+?>
 </pre>
 
 	<div class="row">
