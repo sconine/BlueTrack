@@ -95,20 +95,18 @@ if ($filters != '') {$filters = ' WHERE ' . $filters;}
 $sql .= $filters;
 //$sql .= ' LIMIT 10; ';
 
-echo $sql;
+//echo $sql;
 $data = query_to_array($sql, $mysqli);
 $series = array();
-$lsn = '';
-$b_data = '';
-// Data for bubble chart
-foreach ($data as $i => $v) {
+$min_date = 0;
 
-    // Set an upper limit on the circle size
+// Data for Heat Map
+foreach ($data as $i => $v) {
+    $key = date("Y-m-d,G", $v['seen_hour']);
+    if (!isset($series[$key])) {$series[$key] = 1;} else {$series[$key]++;}
+    if ($min_date == 0 || $v['seen_hour'] < $min_date) {$min_date = $v['seen_hour'];}
+/*
     $mctd = $v['hour_count'];
-    if ($mctd > 1) {$mctd = 1;}
-    $lsn = substr($v['company_name'], 0, 24);
-    if (!isset($series[$lsn])) {$series[$lsn] = '';}
-    if ($series[$lsn] != '') {$series[$lsn] .= ',';}
     $series[$lsn] .= "{n: '". str_replace("'", "\'", $v['name']) 
             . "', m: '" . $v['mac_id']
             . "', l: '" . date("m/d/Y h:i a", $v['seen_hour']) 
@@ -120,17 +118,21 @@ foreach ($data as $i => $v) {
             . ", x: " . date("G", round($v['seen_hour'])) 
             . ", y: " . date("z", round($v['seen_hour'])) 
             . ", z: " . $mctd . "}";
-}
+*/
 
-foreach ($series as $lsn => $lsn_data) {
-    if ($b_data != '') {$b_data .= ", \n";}
-    $b_data .= "{ showInLegend: true, name: '". $lsn . "', data: [" . $lsn_data . "]}";
 }
 
 
-// this is not right
-// type: 'X', t: 1, x: 12:00 am, y: 01/11/163370, z: 1}{n: 'AGMiMac', m: '00:1B:63:5B
+// Build a year's worth of data from the min date seen forward
+$heat_data = '';
+for ($i = $min_date; $i <= ($min_date + 60*60*24*265)); $i = $i + (60*60)) {
+    $key = date("Y-m-d,G", $i);
+    if (!isset($series[$key])) {$series[$key] = 0;} 
+}
 
+foreach ($series as $key => $v) {
+   $heat_data .= $key . ',' . $v . "\n";
+}
 
 
 
