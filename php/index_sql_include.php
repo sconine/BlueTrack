@@ -125,7 +125,7 @@ foreach ($data as $i => $v) {
 
 // Build a year's worth of data from the min date seen forward
 $heat_data = '';
-$start_year = date("Y", $min_date);;
+$start_year = date("Y", $min_date);
 $s_data = array();
 for ($i = $min_date; $i <= ($min_date + 60*60*24*265); $i = $i + (60*60)) {
     $key = date("Y-m-d,G", $i);
