@@ -125,7 +125,7 @@ foreach ($data as $i => $v) {
 
 // Build a year's worth of data from the min date seen forward
 $heat_data = '';
-for ($i = $min_date; $i <= ($min_date + 60*60*24*265)); $i = $i + (60*60)) {
+for ($i = $min_date; $i <= ($min_date + 60*60*24*265); $i = $i + (60*60)) {
     $key = date("Y-m-d,G", $i);
     if (!isset($series[$key])) {$series[$key] = 0;} 
 }
