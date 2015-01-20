@@ -45,7 +45,7 @@ include 'index_sql_include.php';
 	<div class="row">
 		<div id="bydevice" style="height: 320px; width: 1000px; margin: 0 auto"></div>
 	</div>
-<pre id="csv" style="display: none">Date,Time,Temperature
+<pre id="csv" style="display: none">Date,Time,Count
 <?php
 echo $heat_data;
 ?>
@@ -340,13 +340,13 @@ $(function () {
 
 
         title: {
-            text: 'Highcharts extended heat map',
+            text: 'Device Views Heatmap',
             align: 'left',
             x: 40
         },
 
         subtitle: {
-            text: 'Temperature variation by day and hour through 2013',
+            text: 'Device view count variation by day <?php echo ($start_month + 1) ?>/<?php echo $start_year; ?> to <?php echo ($start_month + 1) ?>/<?php echo ($start_year + 1); ?> ',
             align: 'left',
             x: 40
         },
@@ -365,7 +365,7 @@ $(function () {
 
         xAxis: {
             min: Date.UTC(<?php echo $start_year; ?>, <?php echo $start_month; ?>, 1),
-            max: Date.UTC(<?php echo ($start_year + 1); ?>, <?php echo ($start_month + 1); ?>, 1),
+            max: Date.UTC(<?php echo ($start_year + 1); ?>, <?php echo $start_month; ?>, 1),
             labels: {
                 align: 'left',
                 x: 5,
@@ -414,7 +414,7 @@ $(function () {
             nullColor: '#EFEFEF',
             colsize: 24 * 36e5, // one day
             tooltip: {
-                headerFormat: 'Temperature<br/>',
+                headerFormat: 'Device Count<br/>',
                 pointFormat: '{point.x:%e %b, %Y} {point.y}:00: <b>{point.value} ℃</b>'
             },
             turboThreshold: Number.MAX_VALUE // #3404, remove after 4.0.5 release
