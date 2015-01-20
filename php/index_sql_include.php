@@ -107,7 +107,7 @@ foreach ($data as $i => $v) {
     $seen_hour =  $v['seen_hour'] + (3600 * 5);
     $key = date("Y-m-d,G", $seen_hour);
     if (!isset($series[$key])) {$series[$key] = 1;} else {$series[$key]++;}
-    if ($min_date == 0 || $seen_hour < $min_date) {$min_date = $seen_hour];}
+    if ($min_date == 0 || $seen_hour < $min_date) {$min_date = $seen_hour;}
 /*
     $mctd = $v['hour_count'];
     $series[$lsn] .= "{n: '". str_replace("'", "\'", $v['name']) 
