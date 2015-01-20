@@ -128,12 +128,19 @@ foreach ($data as $i => $v) {
 
 // Build a year's worth of data from the min date seen forward
 $heat_data = '';
+$max_count = 0;
 $start_year = date("Y", $min_date);
 $start_month = date("m", $min_date) - 1;
 $s_data = array();
 for ($i = $min_date; $i <= ($min_date + 60*60*24*265); $i = $i + (60*60)) {
     $key = date("Y-m-d,G", $i);
-    if (!isset($series[$key])) {$s_data[$key] = 0;} else {$s_data[$key] = $series[$key];}
+    if (!isset($series[$key])) {
+            $s_data[$key] = 0;
+    } 
+    else {
+            $s_data[$key] = $series[$key];
+            if ($series[$key] > $max_count) {$max_count = $series[$key];}
+    }
 }
 
 foreach ($s_data as $key => $v) {
