@@ -104,7 +104,7 @@ $min_date = 0;
 // Data for Heat Map
 foreach ($data as $i => $v) {
     // put in EST since stored in GMT
-    $seen_hour =  $v['seen_hour'] + (3600 * 5)
+    $seen_hour =  $v['seen_hour'] + (3600 * 5);
     $key = date("Y-m-d,G", $seen_hour);
     if (!isset($series[$key])) {$series[$key] = 1;} else {$series[$key]++;}
     if ($min_date == 0 || $seen_hour < $min_date) {$min_date = $seen_hour];}
