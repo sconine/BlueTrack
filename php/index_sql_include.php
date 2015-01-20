@@ -130,7 +130,7 @@ foreach ($data as $i => $v) {
 $heat_data = '';
 $max_count = 0;
 // Always start at the beginning of a month
-$min_date = date("Y-m-1", $min_date);
+$min_date = strtotime(date("Y-m-1", $min_date));
 $start_year = date("Y", $min_date);
 $start_month = date("m", $min_date) - 1;
 $s_data = array();
