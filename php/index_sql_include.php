@@ -38,8 +38,9 @@ if(!empty($_REQUEST['col_id'])) {$col_id_f = $_REQUEST['col_id'];}
 
 $pattern = '/^[a-zA-ZvV0-9,]+$/';
 if (preg_match($pattern, implode(",", $type_f)) == 0) {$type_f = array();}
-if ($start_day_f != '') {$start_day_f = strtotime($start_day_f);}
-if ($end_day_f != '') {$end_day_f = strtotime($end_day_f);}
+// Put in GMT since our times are stored in GMT
+if ($start_day_f != '') {$start_day_f = strtotime($start_day_f) - (3600 * 5);}
+if ($end_day_f != '') {$end_day_f = strtotime($end_day_f) - (3600 * 5);}
 
 // Pull data we care about
 // (for date format see: http://www.epochconverter.com/programming/mysql-from-unixtime.php) 
@@ -102,9 +103,11 @@ $min_date = 0;
 
 // Data for Heat Map
 foreach ($data as $i => $v) {
-    $key = date("Y-m-d,G", $v['seen_hour']);
+    // put in EST since stored in GMT
+    $seen_hour =  $v['seen_hour'] + (3600 * 5)
+    $key = date("Y-m-d,G", $seen_hour);
     if (!isset($series[$key])) {$series[$key] = 1;} else {$series[$key]++;}
-    if ($min_date == 0 || $v['seen_hour'] < $min_date) {$min_date = $v['seen_hour'];}
+    if ($min_date == 0 || $seen_hour < $min_date) {$min_date = $seen_hour];}
 /*
     $mctd = $v['hour_count'];
     $series[$lsn] .= "{n: '". str_replace("'", "\'", $v['name']) 
