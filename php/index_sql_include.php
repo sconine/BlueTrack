@@ -134,7 +134,7 @@ $min_date = strtotime(date("Y-m-1", $min_date));
 $start_year = date("Y", $min_date);
 $start_month = date("m", $min_date) - 1;
 $s_data = array();
-for ($i = $min_date; $i <= ($min_date + 60*60*24*365); $i = $i + (60*60)) {
+for ($i = $min_date; $i < ($min_date + 60*60*24*365); $i = $i + (60*60)) {
     $key = date("Y-m-d,G", $i);
     if (!isset($series[$key])) {
             $s_data[$key] = 0;
