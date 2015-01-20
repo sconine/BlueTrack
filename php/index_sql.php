@@ -400,8 +400,8 @@ $(function () {
                 [0.9, '#c4463a'],
                 [1, '#c4463a']
             ],
-            min: -15,
-            max: 25,
+            min: 0,
+            max: <?php echo $max_count; ?>,
             startOnTick: false,
             endOnTick: false,
             labels: {
