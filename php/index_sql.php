@@ -112,7 +112,7 @@ echo $heat_data;
 								(devices seen more than 4 days/month but never for more than 8 hrs. in a given 24 hr. period)
 							</div>
 							<div class="col-md-4">
-								<input type="checkbox" name="traffic[]" value="Frequent" <?php echo ischecked($traffic, $traffic_f) ?>>
+								<input type="checkbox" name="traffic[]" value="Fixed" <?php echo ischecked($traffic, $traffic_f) ?>>
 								Fixed Devices<br>
 								(devices seen more 8 hours in a day )
 							</div>
