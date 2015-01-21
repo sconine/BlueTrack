@@ -99,7 +99,25 @@ echo $heat_data;
 							</div>
 						</div>
 					</div>
-					
+					<div class="form-group">
+						<div class="col-lg-12">
+							<div class="col-md-4">
+								<input type="checkbox" name="traffic[]" value="Infrequent" <?php echo ischecked($traffic, $traffic_f) ?>>
+								Infrequent Traffic<br>
+								(devices that are seen less than 4 days/month)
+							</div>
+							<div class="col-md-4">
+								<input type="checkbox" name="traffic[]" value="Frequent" <?php echo ischecked($traffic, $traffic_f) ?>>
+								Frequent Traffic<br>
+								(devices seen more than 4 days/month but never for more than 8 hrs. in a given 24 hr. period)
+							</div>
+							<div class="col-md-4">
+								<input type="checkbox" name="traffic[]" value="Frequent" <?php echo ischecked($traffic, $traffic_f) ?>>
+								Fixed Devices<br>
+								(devices seen more 8 hours in a day )
+							</div>
+						</div>
+					</div>					
 					<div class="form-group">
 						<div class="col-lg-12 col-lg-offset-2">
 							<button type="submit" class="btn btn-primary">Submit</button>
