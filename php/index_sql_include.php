@@ -28,6 +28,7 @@ $total_count_h_f = 0;
 $total_count_l_f = 0;
 $company_name_f = array();
 $col_id_f = array();
+$traffic_f = array();
 
 if(!empty($_REQUEST['type'])) {$type_f = $_REQUEST['type'];}
 if(!empty($_REQUEST['start_day'])) {$start_day_f = $_REQUEST['start_day'];}
@@ -35,6 +36,7 @@ if(!empty($_REQUEST['end_day'])) {$end_day_f = $_REQUEST['end_day'];}
 if(!empty($_REQUEST['name'])) {$name_f = $_REQUEST['name'];}
 if(!empty($_REQUEST['company_name'])) {$company_name_f = $_REQUEST['company_name'];}
 if(!empty($_REQUEST['col_id'])) {$col_id_f = $_REQUEST['col_id'];}
+if(!empty($_REQUEST['traffic'])) {$traffic_f = $_REQUEST['traffic'];}
 
 $pattern = '/^[a-zA-ZvV0-9,]+$/';
 if (preg_match($pattern, implode(",", $type_f)) == 0) {$type_f = array();}
@@ -92,6 +94,14 @@ if (!empty($col_id_f)) {
     $filters .= ' collector_id IN (' . $colids . ')';
   }
 }
+
+// Recency filter
+//Infrequent (devices that are seen less than 4 days/month)
+//Frequent (devices seen more than 4 days/month but never for more than 8 hrs. in a given 24 hr. period)
+//Fixed (devices seen more 8 hours in a day )
+
+
+
 if ($filters != '') {$filters = ' WHERE ' . $filters;}
 $sql .= $filters;
 //$sql .= ' LIMIT 10; ';
