@@ -62,6 +62,7 @@ $sql = 'CREATE TABLE IF NOT EXISTS device_scans_hour ('
 . ' class varchar(32) NULL, '
 . ' seen_hour int NOT NULL,  '
 . ' hour_count int NOT NULL,  '
+. ' frequency varchar(32) NULL, '
 . ' PRIMARY KEY (mac_id, collector_id, seen_hour), INDEX(seen_hour) '
 . ' ); ';
 if ($debug) {echo $sql . "\n";}
