@@ -95,10 +95,17 @@ if (!empty($col_id_f)) {
   }
 }
 
-// Recency filter
+// Frequency filter
 //Infrequent (devices that are seen less than 4 days/month)
-//Frequent (devices seen more than 4 days/month but never for more than 8 hrs. in a given 24 hr. period)
-//Fixed (devices seen more 8 hours in a day )
+//Frequent  (devices seen more than 4 days/month but never for more than 8 hrs. in a given 24 hr. period)
+//Fixed  (devices seen more 8 hours in a day )
+if (!empty($traffic_f)) {
+  $frequency = quote_list($traffic_f, 0);
+  if ($frequency != '' AND $frequency != 'NULL') {
+    if ($filters != '') {$filters .= ' AND ';}
+    $filters .= ' frequency IN (' . $frequency . ')';
+  }
+}
 
 
 
