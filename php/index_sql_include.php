@@ -113,7 +113,7 @@ if ($filters != '') {$filters = ' WHERE ' . $filters;}
 $sql .= $filters;
 //$sql .= ' LIMIT 10; ';
 
-//echo $sql;
+echo $sql;
 $data = query_to_array($sql, $mysqli);
 $series = array();
 $min_date = 0;
