@@ -203,25 +203,44 @@ $sql = 'UPDATE device_scans_hour, class_description  '
 if ($debug) {echo "Running: $sql\n";}
 if (!$mysqli->query($sql)) {die("UPDATE Failed: (" . $mysqli->errno . ") " . $mysqli->error);}
 
+$sql = 'UPDATE device_scans_hour A, (select mac_id '
+	. ' FROM device_scans_hour   '
+	. ' GROUP BY mac_id '
+	. ' HAVING count(DISTINCT FROM_UNIXTIME(seen_hour, "%d")) =1) B  '
+	. ' SET frequency = 'Infrequent' WHERE A.mac_id = B.mac_id; ';
+if ($debug) {echo "Running: $sql\n";}
+if (!$mysqli->query($sql)) {die("UPDATE Failed: (" . $mysqli->errno . ") " . $mysqli->error);}
+
+$sql = 'UPDATE device_scans_hour A, (select mac_id '
+	. ' FROM device_scans_hour   '
+	. ' GROUP BY mac_id '
+	. ' HAVING count(DISTINCT FROM_UNIXTIME(seen_hour, "%d")) > 1 AND count(DISTINCT FROM_UNIXTIME(seen_hour, "%d")) < 11) B  '
+	. ' SET frequency = 'Frequent' WHERE A.mac_id = B.mac_id; ';
+if ($debug) {echo "Running: $sql\n";}
+if (!$mysqli->query($sql)) {die("UPDATE Failed: (" . $mysqli->errno . ") " . $mysqli->error);}
+
+$sql = 'UPDATE device_scans_hour A, (select mac_id '
+	. ' FROM device_scans_hour  ' 
+	. ' GROUP BY mac_id '
+	. ' HAVING count(DISTINCT FROM_UNIXTIME(seen_hour, "%d")) > 10) B  '
+	. ' SET frequency = 'Fixed' WHERE A.mac_id = B.mac_id; ';
+if ($debug) {echo "Running: $sql\n";}
+if (!$mysqli->query($sql)) {die("UPDATE Failed: (" . $mysqli->errno . ") " . $mysqli->error);}
+
 /*
-update frequency
-select mac_id, collector_id, 
-count(DISTINCT FROM_UNIXTIME(seen_hour, "%d")) as DaysSeen, 
-count(mac_id) as HoursSeen,
-FROM_UNIXTIME(seen_hour, "%Y-%m") as month
-FROM  device_scans_hour  
-GROUP BY mac_id, collector_id, FROM_UNIXTIME(seen_hour, "%Y-%m") 
-HAVING DaysSeen <=1;
+select mac_id
+FROM device_scans_hour  
+GROUP BY mac_id
+HAVING count(DISTINCT FROM_UNIXTIME(seen_hour, "%d")) =1);
 
-select count(mac_id) FROM (select mac_id, collector_id, 
-count(DISTINCT FROM_UNIXTIME(seen_hour, "%d")) as DaysSeen, 
-count(mac_id) as HoursSeen,
-FROM_UNIXTIME(seen_hour, "%Y-%m") as month
-FROM  device_scans_hour  
-GROUP BY mac_id, collector_id, FROM_UNIXTIME(seen_hour, "%Y-%m") 
-HAVING DaysSeen <=1);
-
-
+1 - 3712
+2 - 823
+3 - 292 
+4 - 143
+5 - 68
+6-10 - 192
+10-20 - 127
+20+ - 94
 */
 
 echo 'Done!';
